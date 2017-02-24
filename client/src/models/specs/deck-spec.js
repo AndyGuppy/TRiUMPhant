@@ -25,7 +25,7 @@ describe('Deck', function() {
     assert.equal(0, deck1.deck.length)
   });
 
-  it('should be able to get a card', function(){
+  it('should be able to get cards', function(){
     deck1.getCards(cards)
     assert.equal(2, deck1.deck.length)
   })
