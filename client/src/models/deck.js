@@ -6,6 +6,7 @@ var Deck = function(){
 }
 
 Deck.prototype = {
+
   getCards: function(dbResults){
     for (object of dbResults){
       var newCard = new Card(object);
