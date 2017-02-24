@@ -1,10 +1,18 @@
-var Xxxxx = require('../models/xxxxx');
+var Deck = require('../models/deck');
 
 var UI = function() {
-  var xxxxx = new Xxxxx();
-  xxxxx.all(function(result){
-    this.render(result);
-  }.bind(this));
+  var deck = new Deck();
+
+  deck.getCards(CardQuery.all)
+
+
+
+
+
+  // var xxxxx = new Xxxxx();
+  // xxxxx.all(function(result){
+  //   this.render(result);
+  // }.bind(this));
 }
 
 UI.prototype = {
