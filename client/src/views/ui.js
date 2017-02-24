@@ -1,10 +1,29 @@
-var Xxxxx = require('../models/xxxxx');
+var Deck = require('../models/deck');
+var Game = require('../models/game');
 
 var UI = function() {
-  var xxxxx = new Xxxxx();
-  xxxxx.all(function(result){
-    this.render(result);
+
+  var deck = new Deck();
+  var game = new Game();
+
+
+  deck.all(function(result){
+    deck.getCards(result)
+    deck.shuffleCards();
+
+    console.log('deck.deck', deck.cards.length)
+    game.dealCards(deck.cards);
   }.bind(this));
+
+
+
+
+
+  var playTemp = document.getElementById("play-temp");
+  console.log(playTemp);
+  playTemp.addEventListener("click", this.tempclick);
+    
+
 }
 
 UI.prototype = {
@@ -24,8 +43,14 @@ UI.prototype = {
 
   render: function(xxxxx) {
 
-    }
-  }
+    },
+
+  tempclick: function() {
+    console.log("captured")
+    var pTemp = document.getElementById('play-temp');
+    pTemp.style.backgroundColor = "green";
+ }
 }
+  
 
 module.exports = UI;
