@@ -53,20 +53,24 @@ Game.prototype = {
 
     },   
 
-
-  //   if (playerChoice === card.characteristic1){
-
-  //   } else{
-
-  //   }
-
-  //   else if 
-
-  // },
-
   checkGameWon: function(){
+    if (this.playerHand === []){
+      playerWon();
+    } else {
+      if (this.computerHand === []){
+        computerWon()
+      }
+    }
+  },
+
+  playerWon: function(){
+
+  },
+
+  computerWon: function(){
 
   }
+
 }
 
 
