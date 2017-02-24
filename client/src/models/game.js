@@ -9,12 +9,14 @@ var Game = function(){
 Game.prototype = {
 
   dealCards: function(Deck){
-    for (var i = 0; i < Deck.deck.length/2; i++){
-      this.playerHand.push(Deck.deck[i])
+    console.log('deck in deal', Deck)
+    for (var i = 0; i < Deck.length/2; i++){
+      this.playerHand.push(Deck[i])
     };
-    for (var i = Deck.deck.length/2; i < Deck.deck.length; i++){
-      this.computerHand.push(Deck.deck[i])
+    for (var i = Deck.length/2; i < Deck.length; i++){
+      this.computerHand.push(Deck[i])
     };
+    console.log('player hand', this.playerHand)
   },
 
   calculateWinner: function(playerValue, computerValue, characteristic){

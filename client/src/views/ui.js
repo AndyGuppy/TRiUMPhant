@@ -1,15 +1,28 @@
 var Deck = require('../models/deck');
+var Game = require('../models/game');
 
 var UI = function() {
-  var deck = new Deck();
 
-  deck.getCards(CardQuery.all)
-  
+  var deck = new Deck();
+  var game = new Game();
+
+
+  deck.all(function(result){
+    deck.getCards(result)
+    deck.shuffleCards();
+
+    console.log('deck.deck', deck.cards.length)
+    game.dealCards(deck.cards);
+  }.bind(this));
+
+
+
 
 
   var playTemp = document.getElementById("play-temp");
   console.log(playTemp);
   playTemp.addEventListener("click", this.tempclick);
+    
 
 }
 
