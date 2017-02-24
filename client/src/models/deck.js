@@ -1,7 +1,7 @@
 var Card = require('./card');
 var shuffle = require('shuffle-array');
 
-var Deck = function(options){
+var Deck = function(){
   this.deck = [];
 }
 
