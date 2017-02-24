@@ -1,10 +1,16 @@
-var Xxxxx = require('../models/xxxxx');
+// var Xxxxx = require('../models/xxxxx');
+
+
 
 var UI = function() {
-  var xxxxx = new Xxxxx();
-  xxxxx.all(function(result){
-    this.render(result);
-  }.bind(this));
+  // var xxxxx = new Xxxxx();
+  // xxxxx.all(function(result){
+  //   this.render(result);
+  // }.bind(this));
+
+  var playTemp = document.getElementById("play-temp");
+  console.log(playTemp);
+  playTemp.addEventListener("click", this.tempclick);
 }
 
 UI.prototype = {
@@ -24,8 +30,14 @@ UI.prototype = {
 
   render: function(xxxxx) {
 
-    }
-  }
+    },
+
+  tempclick: function() {
+    console.log("captured")
+    var pTemp = document.getElementById('play-temp');
+    pTemp.style.backgroundColor = "green";
+ }
 }
+  
 
 module.exports = UI;
