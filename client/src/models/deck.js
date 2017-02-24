@@ -1,4 +1,5 @@
 var Card = require('./card');
+var shuffle = require('shuffle-array');
 
 var Deck = function(options){
   this.deck = [];
@@ -10,6 +11,10 @@ Deck.prototype = {
       var newCard = new Card(object);
       this.deck.push(newCard);
     }
+  },
+
+  shuffleCards: function(){
+    shuffle(this.deck)
   }
 }
 

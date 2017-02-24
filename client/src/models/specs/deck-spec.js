@@ -28,5 +28,11 @@ describe('Deck', function() {
   it('should be able to get cards', function(){
     deck1.getCards(cards)
     assert.equal(2, deck1.deck.length)
-  })
+  });
+
+  // it('should be able to shuffle cards', function(){
+  //   deck1.getCards(cards);
+  //   deck1.shuffleCards();
+  //   assert.equal("Dublin", deck1.deck[0].name + deck1.deck[1].name + deck1.deck[2].name)
+  // })
 });

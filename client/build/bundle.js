@@ -70,6 +70,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
+
 // var Xxxxx = require('../models/xxxxx');
 
 
@@ -113,6 +114,9 @@ UI.prototype = {
   
 
 module.exports = UI;
+
+
+throw new Error("Module parse failed: /Users/user/Google Drive/AndyG/trumped/client/src/views/ui.js Unexpected token (29:0)\nYou may need an appropriate loader to handle this file type.\n|     }\n|   }\n| }\n| \n| module.exports = UI;");
 
 
 /***/ }),
