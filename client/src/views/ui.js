@@ -4,15 +4,13 @@ var UI = function() {
   var deck = new Deck();
 
   deck.getCards(CardQuery.all)
+  
 
 
+  var playTemp = document.getElementById("play-temp");
+  console.log(playTemp);
+  playTemp.addEventListener("click", this.tempclick);
 
-
-
-  // var xxxxx = new Xxxxx();
-  // xxxxx.all(function(result){
-  //   this.render(result);
-  // }.bind(this));
 }
 
 UI.prototype = {
@@ -32,8 +30,14 @@ UI.prototype = {
 
   render: function(xxxxx) {
 
-    }
-  }
+    },
+
+  tempclick: function() {
+    console.log("captured")
+    var pTemp = document.getElementById('play-temp');
+    pTemp.style.backgroundColor = "green";
+ }
 }
+  
 
 module.exports = UI;
