@@ -34,4 +34,18 @@ describe('Game', function() {
     assert.equal(3, game1.playerHand.length)
   });
 
+  it('can let player win', function(){
+    
+    assert.equal("player wins", game1.calculateWinner(2,1,"characteristic1"))
+  });
+
+  it('can let computer win', function(){
+    
+    assert.equal("computer wins", game1.calculateWinner(1,2,"characteristic1"))
+  });
+
+  it('should be a draw', function(){
+    assert.equal("draw", game1.calculateWinner(1,1,"characteristic1"))
+  });
+
 })
