@@ -20,7 +20,7 @@ Deck.prototype = {
         var jsonString = this.responseText 
         
         var result = JSON.parse(jsonString);
-        console.log('this inside', result)
+       // console.log('this inside', result)
         callback(result);
     }); //
   },

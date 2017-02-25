@@ -11,7 +11,7 @@ var Card = function(dbOptions){
 }
 
 Card.prototype = {
-  
+   
 }
 
 module.exports = Card;

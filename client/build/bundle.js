@@ -63,36 +63,112 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+var Card = function(dbOptions){
+  this.name = dbOptions.name;
+  this.imagepth = dbOptions.imagepth;
+  this.skycode = dbOptions.skycode;
+  this.characteristic1 = {};
+  this.characteristic2 = {};
+  this.characteristic3 = {};
+  this.characteristic4 = {};
+
+
+}
+
+Card.prototype = {
+   
+}
+
+module.exports = Card;
+
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Deck = __webpack_require__(3);
-var Game = __webpack_require__(5);
+var Card = __webpack_require__(0);
+var shuffle = __webpack_require__(4);
+
+var Deck = function(){
+  this.cards = [];
+}
+
+Deck.prototype = {
+
+  makeRequest: function(url, callback) {
+    var request = new XMLHttpRequest();
+    request.open('GET', url);
+    request.onload = callback;
+    request.send();
+  },
+
+  all: function(callback){
+    this.makeRequest('http://localhost:3000/cards', function(){
+      if (this.status !== 200) return;
+        var jsonString = this.responseText 
+        
+        var result = JSON.parse(jsonString);
+       // console.log('this inside', result)
+        callback(result);
+    }); //
+  },
+
+  getCards: function(dbResults){
+    for (var object of dbResults){
+      var newCard = new Card(object);
+      this.cards.push(newCard);
+    };
+  },
+
+  
+
+  shuffleCards: function(){
+    shuffle(this.cards)
+  }
+}
+
+
+module.exports = Deck;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Deck = __webpack_require__(1);
+var Game = __webpack_require__(3);
 
 var UI = function() {
 
   var deck = new Deck();
-  var game = new Game();
+ 
 
 
   deck.all(function(result){
+    var game = new Game();
     deck.getCards(result)
     deck.shuffleCards();
 
-    console.log('deck.deck', deck.cards.length)
+    //console.log('deck.deck', deck.cards.length)
     game.dealCards(deck.cards);
+    game.displayCardInfo(game.playerHand);
+
   }.bind(this));
 
 
-
+  // get numbers from api
+  // populate template with numbers 
 
 
   var playTemp = document.getElementById("play-temp");
-  console.log(playTemp);
+  console.log("we are here",playTemp);
   playTemp.addEventListener("click", this.tempclick);
     
 
@@ -102,7 +178,6 @@ UI.prototype = {
   createText: function(text, label) {
     var p = document.createElement('p');
     p.innerHTML = label + text;
-    console.log(p);
     return p;
   },
 
@@ -129,7 +204,153 @@ module.exports = UI;
 
 
 /***/ }),
-/* 1 */
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Card = __webpack_require__(0);
+var Deck = __webpack_require__(1);
+
+var Game = function(){
+  this.playerHand = []
+  this.computerHand = []
+}
+
+Game.prototype = {
+
+  dealCards: function(Deck){
+    console.log('deck in deal', Deck)
+    for (var i = 0; i < Deck.length/2; i++){
+      this.playerHand.push(Deck[i])
+    };
+    for (var i = Deck.length/2; i < Deck.length; i++){
+      this.computerHand.push(Deck[i])
+    };
+    console.log('player hand', this.playerHand)
+  },
+
+  displayCardInfo: function(hand){
+    var cardToDisplay = hand[0].name;
+    var url = "http://api.openweathermap.org/data/2.5/weather?q="+cardToDisplay+",uk&appid=2e672e24267394ab5b555a4cc9857ccb";
+
+    this.makeRequest(url, this.getWeatherInfo);
+    
+  },
+
+   makeRequest: function(url, callback){
+        var request = new XMLHttpRequest();
+        request.open("GET", url);
+        request.onload = callback;
+        request.send();
+  },
+
+  getWeatherInfo:  function(){
+     if(this.status !== 200) return;
+
+      var jsonString = this.responseText;
+      var data = JSON.parse(jsonString);
+      console.log('this', this);
+  
+      var temp = data.main.temp;
+      var wind = data.wind.speed;
+      var humidity = data.main.humidity;
+      var pressure = data.main.pressure;
+      var name = data.name;
+      console.log("disp info", this);
+      
+
+///////////////////////////////////////////////////////////////
+      playerTemp = document.getElementById("play-temp");
+      playerWind = document.getElementById("play-wind");
+
+      var TempLi = document.createElement('li')
+      var WindLi = document.createElement('li')
+
+      
+      TempLi.innerText = "Temperature: " + temp;
+      WindLi.innerText = "Wind: " + wind;
+
+      var tempDiv = document.getElementById("player-temp");
+      var windDiv = document.getElementById("wind-temp");
+
+      tempDiv.appendChild(TempLi);
+      windDiv.appendChild(WindLi);
+
+      
+      console.log("temp: "+temp+"  wind: "+wind+"  humidity: "+humidity+"  pressure: "+pressure+ "  name: "+name);
+  },
+
+  displayInfo: function(temp, wind){
+    playerTemp = getElementById("play-temp");
+    playerWind = getElementById("play-wind");
+    
+    playerTemp.innerText = "Temperature: " + temp;
+    playerWind.innerText = "Wind: " + wind;
+    
+  },
+
+  calculateWinner: function(playerValue, computerValue, characteristic){
+    switch (characteristic){
+
+      case "characteristic1":
+        if (playerValue > computerValue) {
+          return "player wins";
+          break;
+        }else if (playerValue === computerValue) {
+          return'draw';
+          break;
+        }else {
+          return "computer wins";
+          break;
+        }
+      ;
+      case "characteristic2" : 
+      if (playerValue < computerValue) {
+        console.log("player wins");
+        break;
+      }else if (playerValue === computerValue) {
+        console.log("draw");
+        break;
+      }else {
+        console.log ("computerwins");
+        break;
+      }
+      ;
+
+      case "characteristic3": 
+      ;
+      case "characteristic4": 
+      ;
+      } 
+
+    },   
+
+  checkGameWon: function(){
+    if (this.playerHand === []){
+      playerWon();
+    } else {
+      if (this.computerHand === []){
+        computerWon()
+      }
+    }
+  },
+
+  playerWon: function(){
+
+  },
+
+  computerWon: function(){
+
+  }
+
+}
+
+
+
+
+module.exports = Game;
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -218,82 +439,10 @@ module.exports = shuffle;
 
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-var Card = function(dbOptions){
-  this.name = dbOptions.name;
-  this.imagepth = dbOptions.imagepth;
-  this.skycode = dbOptions.skycode;
-  this.characteristic1 = {};
-  this.characteristic2 = {};
-  this.characteristic3 = {};
-  this.characteristic4 = {};
-
-
-}
-
-Card.prototype = {
-  
-}
-
-module.exports = Card;
-
-
-
-/***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Card = __webpack_require__(2);
-var shuffle = __webpack_require__(1);
-
-var Deck = function(){
-  this.cards = [];
-}
-
-Deck.prototype = {
-
-  makeRequest: function(url, callback) {
-    var request = new XMLHttpRequest();
-    request.open('GET', url);
-    request.onload = callback;
-    request.send();
-  },
-
-  all: function(callback){
-    this.makeRequest('http://localhost:3000/cards', function(){
-      if (this.status !== 200) return;
-        var jsonString = this.responseText 
-        
-        var result = JSON.parse(jsonString);
-        console.log('this inside', result)
-        callback(result);
-    }); //
-  },
-
-  getCards: function(dbResults){
-    for (var object of dbResults){
-      var newCard = new Card(object);
-      this.cards.push(newCard);
-    };
-  },
-
-  
-
-  shuffleCards: function(){
-    shuffle(this.cards)
-  }
-}
-
-
-module.exports = Deck;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var UI = __webpack_require__(0);
+var UI = __webpack_require__(2);
 
 var app = function() {
   new UI();
@@ -301,92 +450,6 @@ var app = function() {
 
 window.onload = app;
 
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Card = __webpack_require__(2);
-var Deck = __webpack_require__(3);
-
-var Game = function(){
-  this.playerHand = []
-  this.computerHand = []
-}
-
-Game.prototype = {
-
-  dealCards: function(Deck){
-    console.log('deck in deal', Deck)
-    for (var i = 0; i < Deck.length/2; i++){
-      this.playerHand.push(Deck[i])
-    };
-    for (var i = Deck.length/2; i < Deck.length; i++){
-      this.computerHand.push(Deck[i])
-    };
-    console.log('player hand', this.playerHand)
-  },
-
-  calculateWinner: function(playerValue, computerValue, characteristic){
-    switch (characteristic){
-
-      case "characteristic1":
-        if (playerValue > computerValue) {
-          return "player wins";
-          break;
-        }else if (playerValue === computerValue) {
-          return'draw';
-          break;
-        }else {
-          return "computer wins";
-          break;
-        }
-      ;
-      case characteristic2: 
-      if (playerValue < computerValue) {
-        console.log("player wins");
-        break;
-      }else if (playerValue === computerValue) {
-        console.log("draw");
-        break;
-      }else {
-        console.log ("computerwins");
-        break;
-      }
-      ;
-
-      case characteristic3: 
-      ;
-      case characteristic4: 
-      ;
-      } 
-
-    },   
-
-  checkGameWon: function(){
-    if (this.playerHand === []){
-      playerWon();
-    } else {
-      if (this.computerHand === []){
-        computerWon()
-      }
-    }
-  },
-
-  playerWon: function(){
-
-  },
-
-  computerWon: function(){
-
-  }
-
-}
-
-
-
-
-module.exports = Game;
 
 /***/ })
 /******/ ]);

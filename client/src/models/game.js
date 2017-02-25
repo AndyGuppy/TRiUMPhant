@@ -19,6 +19,66 @@ Game.prototype = {
     console.log('player hand', this.playerHand)
   },
 
+  displayCardInfo: function(hand){
+    var cardToDisplay = hand[0].name;
+    var url = "http://api.openweathermap.org/data/2.5/weather?q="+cardToDisplay+",uk&appid=2e672e24267394ab5b555a4cc9857ccb";
+
+    this.makeRequest(url, this.getWeatherInfo);
+    
+  },
+
+   makeRequest: function(url, callback){
+        var request = new XMLHttpRequest();
+        request.open("GET", url);
+        request.onload = callback;
+        request.send();
+  },
+
+  getWeatherInfo:  function(){
+     if(this.status !== 200) return;
+
+      var jsonString = this.responseText;
+      var data = JSON.parse(jsonString);
+      console.log('this', this);
+  
+      var temp = data.main.temp;
+      var wind = data.wind.speed;
+      var humidity = data.main.humidity;
+      var pressure = data.main.pressure;
+      var name = data.name;
+      console.log("disp info", this);
+      
+
+///////////////////////////////////////////////////////////////
+      playerTemp = document.getElementById("play-temp");
+      playerWind = document.getElementById("play-wind");
+
+      var TempLi = document.createElement('li')
+      var WindLi = document.createElement('li')
+
+      
+      TempLi.innerText = "Temperature: " + temp;
+      WindLi.innerText = "Wind: " + wind;
+
+      var tempDiv = document.getElementById("player-temp");
+      var windDiv = document.getElementById("wind-temp");
+
+      tempDiv.appendChild(TempLi);
+      windDiv.appendChild(WindLi);
+
+      
+      console.log("temp: "+temp+"  wind: "+wind+"  humidity: "+humidity+"  pressure: "+pressure+ "  name: "+name);
+  },
+
+  displayInfo: function(temp, wind){
+    playerTemp = getElementById("play-temp");
+    playerWind = getElementById("play-wind");
+    
+    playerTemp.innerText = "Temperature: " + temp;
+    playerWind.innerText = "Wind: " + wind;
+    
+  },
+
   calculateWinner: function(playerValue, computerValue, characteristic){
     switch (characteristic){
 
@@ -34,7 +94,7 @@ Game.prototype = {
           break;
         }
       ;
-      case characteristic2: 
+      case "characteristic2" : 
       if (playerValue < computerValue) {
         console.log("player wins");
         break;
@@ -47,9 +107,9 @@ Game.prototype = {
       }
       ;
 
-      case characteristic3: 
+      case "characteristic3": 
       ;
-      case characteristic4: 
+      case "characteristic4": 
       ;
       } 
 
