@@ -1,5 +1,8 @@
 var Deck = require('../models/deck');
 var Game = require('../models/game');
+var Card = require('../models/card');
+
+var selected;
 
 var UI = function() {
 
@@ -9,23 +12,29 @@ var UI = function() {
 
   deck.all(function(result){
     var game = new Game();
+
     deck.getCards(result)
     deck.shuffleCards();
-
+    console.log('game',game);
     game.dealCards(deck.cards);
     game.displayWeatherInfo(game.playerHand, "player");
     game.displayWeatherInfo(game.computerHand, "computer");
 
+
   }.bind(this));
+
+  var playTemp = document.getElementById("play-temp");
+  playTemp.addEventListener("click", this.tempclick);
+  var playButton = document.getElementById("play-button");
+  playButton.addEventListener("click", this.playButtonClick);
+
 
 
   // get numbers from api
   // populate template with numbers 
 
 
-  var playTemp = document.getElementById("play-temp");
   
-  //playTemp.addEventListener("click", this.tempclick);
     
 
 }
@@ -43,16 +52,33 @@ UI.prototype = {
   },
 
 
-
   render: function(xxxxx) {
 
     },
 
   tempclick: function() {
-    console.log("captured")
+    console.log("temp captured")
     var pTemp = document.getElementById('play-temp');
     pTemp.style.backgroundColor = "green";
- }
+    //playerValue = playerHand[0].temp;
+    selected = "temp";
+  },
+
+  windclick: function() {
+    console.log("wind captured")
+    var pWind = document.getElementById('play-wind');
+    pWind.style.backgroundColor = "green";
+    //playerValue = playerHand[0].wind;
+   },
+
+  playButtonClick: function(){
+    //console.log(playerValue);
+
+    game.calculateWinner(selected);
+    console.log('we are here')
+
+  }
+
 }
   
 

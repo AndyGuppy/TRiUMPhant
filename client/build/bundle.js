@@ -74,8 +74,8 @@ var Card = function(dbOptions){
   this.name = dbOptions.name;
   this.imagepth = dbOptions.imagepth;
   this.skycode = dbOptions.skycode;
-  this.characteristic1 = {};
-  this.characteristic2 = {};
+  this.temp = {};
+  this.wind = {};
   this.characteristic3 = {};
   this.characteristic4 = {};
 
@@ -142,6 +142,9 @@ module.exports = Deck;
 
 var Deck = __webpack_require__(1);
 var Game = __webpack_require__(3);
+var Card = __webpack_require__(0);
+
+var selected;
 
 var UI = function() {
 
@@ -151,23 +154,29 @@ var UI = function() {
 
   deck.all(function(result){
     var game = new Game();
+
     deck.getCards(result)
     deck.shuffleCards();
-
+    console.log('game',game);
     game.dealCards(deck.cards);
     game.displayWeatherInfo(game.playerHand, "player");
     game.displayWeatherInfo(game.computerHand, "computer");
 
+
   }.bind(this));
+
+  var playTemp = document.getElementById("play-temp");
+  playTemp.addEventListener("click", this.tempclick);
+  var playButton = document.getElementById("play-button");
+  playButton.addEventListener("click", this.playButtonClick);
+
 
 
   // get numbers from api
   // populate template with numbers 
 
 
-  var playTemp = document.getElementById("play-temp");
   
-  //playTemp.addEventListener("click", this.tempclick);
     
 
 }
@@ -185,16 +194,33 @@ UI.prototype = {
   },
 
 
-
   render: function(xxxxx) {
 
     },
 
   tempclick: function() {
-    console.log("captured")
+    console.log("temp captured")
     var pTemp = document.getElementById('play-temp');
     pTemp.style.backgroundColor = "green";
- }
+    //playerValue = playerHand[0].temp;
+    selected = "temp";
+  },
+
+  windclick: function() {
+    console.log("wind captured")
+    var pWind = document.getElementById('play-wind');
+    pWind.style.backgroundColor = "green";
+    //playerValue = playerHand[0].wind;
+   },
+
+  playButtonClick: function(){
+    //console.log(playerValue);
+
+    game.calculateWinner(selected);
+    console.log('we are here')
+
+  }
+
 }
   
 
@@ -219,11 +245,12 @@ Game.prototype = {
     
     for (var i = 0; i < Deck.length/2; i++){
       this.playerHand.push(Deck[i])
+      console.log(Deck[i]);
     };
     for (var i = Deck.length/2; i < Deck.length; i++){
       this.computerHand.push(Deck[i])
     };
-    
+    console.log('player hand', this.playerHand);
   },
 
   displayWeatherInfo: function(hand, cardHolder){
@@ -267,7 +294,7 @@ Game.prototype = {
       temp = temp.toFixed(2);
       var wind = data.wind.speed;
       var humidity = data.main.humidity;
-      // var pressure = data.main.pressure;
+     
          
 ///////////////////////////////////////////////////////////////
       var playerTemp = document.getElementById("play-temp");
@@ -276,6 +303,7 @@ Game.prototype = {
       var TempLi = document.createElement('li')
       var WindLi = document.createElement('li')
 
+      console.log('playerhand', this.playerHand);
       
       TempLi.innerText = "Temperature: " + temp + " C";
       WindLi.innerText = "Wind: " + wind + " m/s";
@@ -348,14 +376,14 @@ Game.prototype = {
     
   },
 
-  calculateWinner: function(playerValue, computerValue, characteristic){
+  calculateWinner: function(characteristic){
     switch (characteristic){
 
-      case "characteristic1":
-        if (playerValue > computerValue) {
+      case "temp":
+        if (playerHand[0].temp > computerHand[0].temp) {
           return "player wins";
           break;
-        }else if (playerValue === computerValue) {
+        }else if (playerHand[0].temp === computerHand[0].temp) {
           return'draw';
           break;
         }else {

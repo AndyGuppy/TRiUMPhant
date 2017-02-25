@@ -12,11 +12,12 @@ Game.prototype = {
     
     for (var i = 0; i < Deck.length/2; i++){
       this.playerHand.push(Deck[i])
+      console.log(Deck[i]);
     };
     for (var i = Deck.length/2; i < Deck.length; i++){
       this.computerHand.push(Deck[i])
     };
-    
+    console.log('player hand', this.playerHand);
   },
 
   displayWeatherInfo: function(hand, cardHolder){
@@ -60,7 +61,7 @@ Game.prototype = {
       temp = temp.toFixed(2);
       var wind = data.wind.speed;
       var humidity = data.main.humidity;
-      // var pressure = data.main.pressure;
+     
          
 ///////////////////////////////////////////////////////////////
       var playerTemp = document.getElementById("play-temp");
@@ -69,6 +70,7 @@ Game.prototype = {
       var TempLi = document.createElement('li')
       var WindLi = document.createElement('li')
 
+      console.log('playerhand', this.playerHand);
       
       TempLi.innerText = "Temperature: " + temp + " C";
       WindLi.innerText = "Wind: " + wind + " m/s";
@@ -141,14 +143,14 @@ Game.prototype = {
     
   },
 
-  calculateWinner: function(playerValue, computerValue, characteristic){
+  calculateWinner: function(characteristic){
     switch (characteristic){
 
-      case "characteristic1":
-        if (playerValue > computerValue) {
+      case "temp":
+        if (playerHand[0].temp > computerHand[0].temp) {
           return "player wins";
           break;
-        }else if (playerValue === computerValue) {
+        }else if (playerHand[0].temp === computerHand[0].temp) {
           return'draw';
           break;
         }else {
