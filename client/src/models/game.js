@@ -9,23 +9,38 @@ var Game = function(){
 Game.prototype = {
 
   dealCards: function(Deck){
-    console.log('deck in deal', Deck)
+    
     for (var i = 0; i < Deck.length/2; i++){
       this.playerHand.push(Deck[i])
     };
     for (var i = Deck.length/2; i < Deck.length; i++){
       this.computerHand.push(Deck[i])
     };
-    console.log('player hand', this.playerHand)
+    
   },
 
-  displayCardInfo: function(hand){
+  displayWeatherInfo: function(hand, cardHolder){
     var cardToDisplay = hand[0].name;
     var url = "http://api.openweathermap.org/data/2.5/weather?q="+cardToDisplay+",uk&appid=2e672e24267394ab5b555a4cc9857ccb";
 
-    this.makeRequest(url, this.getWeatherInfo);
-    
+    if (cardHolder === "player"){
+      this.makeRequest(url, this.getPlayerWeatherInfo);
+    } else {
+      this.makeRequest(url, this.getComputerWeatherInfo);
+    }   
   },
+
+  // displayFlightInfo: function(hand, cardHolder){
+  //     var cardToDisplay = hand[0].name;
+  //     var url = ;
+
+  //     if (cardHolder === "player"){
+  //       this.makeRequest(url, this.getPlayerFlightInfo);
+  //     } else {
+  //       this.makeRequest(url, this.getComputerFlightInfo);
+  //     }   
+  //   },
+  
 
    makeRequest: function(url, callback){
         var request = new XMLHttpRequest();
@@ -34,41 +49,88 @@ Game.prototype = {
         request.send();
   },
 
-  getWeatherInfo:  function(){
+  getPlayerWeatherInfo:  function(){
      if(this.status !== 200) return;
 
       var jsonString = this.responseText;
       var data = JSON.parse(jsonString);
-      console.log('this', this);
+      
   
-      var temp = data.main.temp;
+      var temp = data.main.temp - 273.15;
+      temp = temp.toFixed(2);
       var wind = data.wind.speed;
       var humidity = data.main.humidity;
-      var pressure = data.main.pressure;
-      var name = data.name;
-      console.log("disp info", this);
-      
-
+      // var pressure = data.main.pressure;
+         
 ///////////////////////////////////////////////////////////////
-      playerTemp = document.getElementById("play-temp");
-      playerWind = document.getElementById("play-wind");
+      var playerTemp = document.getElementById("play-temp");
+      var playerWind = document.getElementById("play-wind");
 
       var TempLi = document.createElement('li')
       var WindLi = document.createElement('li')
 
       
-      TempLi.innerText = "Temperature: " + temp;
-      WindLi.innerText = "Wind: " + wind;
+      TempLi.innerText = "Temperature: " + temp + " C";
+      WindLi.innerText = "Wind: " + wind + " m/s";
 
-      var tempDiv = document.getElementById("player-temp");
-      var windDiv = document.getElementById("wind-temp");
-
-      tempDiv.appendChild(TempLi);
-      windDiv.appendChild(WindLi);
-
-      
-      console.log("temp: "+temp+"  wind: "+wind+"  humidity: "+humidity+"  pressure: "+pressure+ "  name: "+name);
+      playerTemp.appendChild(TempLi);
+      playerWind.appendChild(WindLi);
   },
+
+  getComputerWeatherInfo:  function(){
+     if(this.status !== 200) return;
+      var jsonString = this.responseText;
+      var data = JSON.parse(jsonString);
+  
+      var temp = data.main.temp - 273.15;
+      temp = temp.toFixed(2);
+      var wind = data.wind.speed;
+      // var humidity = data.main.humidity;
+      // var pressure = data.main.pressure;
+       
+///////////////////////////////////////////////////////////////
+      var computerTemp = document.getElementById("comp-temp");
+      var computerWind = document.getElementById("comp-wind");
+
+      var TempLi = document.createElement('li')
+      var WindLi = document.createElement('li')
+
+      TempLi.innerText = "Temperature: " + temp + " C";
+      WindLi.innerText = "Wind: " + wind + " m/s";
+
+      computerTemp.appendChild(TempLi);
+      computerWind.appendChild(WindLi);
+  },
+
+//   getPlayerFlightInfo:  function(){
+//      if(this.status !== 200) return;
+
+//       var jsonString = this.responseText;
+//       var data = JSON.parse(jsonString);
+//       console.log('this', this);
+  
+//       var price = "data.????"; 
+// ///////////////////////////////////////////////////////////////
+//       var playerPrice = document.getElementById("play-flight");
+//       var PriceLi = document.createElement('li')
+//       PriceLi.innerText = "Cheapest Flight: " + price;
+//       playerPrice.appendChild(PriceLi);
+//   },
+
+//   getComputerFlightInfo:  function(){
+//      if(this.status !== 200) return;
+
+//       var jsonString = this.responseText;
+//       var data = JSON.parse(jsonString);
+//       console.log('this', this);
+  
+//       var price = "data.????"; 
+// ///////////////////////////////////////////////////////////////
+//       var computerPrice = document.getElementById("comp-flight");
+//       var PriceLi = document.createElement('li')
+//       PriceLi.innerText = "Cheapest Flight: " + price;
+//       computerPrice.appendChild(PriceLi);
+//   },
 
   displayInfo: function(temp, wind){
     playerTemp = getElementById("play-temp");

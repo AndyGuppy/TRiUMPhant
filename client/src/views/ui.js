@@ -12,9 +12,9 @@ var UI = function() {
     deck.getCards(result)
     deck.shuffleCards();
 
-    //console.log('deck.deck', deck.cards.length)
     game.dealCards(deck.cards);
-    game.displayCardInfo(game.playerHand);
+    game.displayWeatherInfo(game.playerHand, "player");
+    game.displayWeatherInfo(game.computerHand, "computer");
 
   }.bind(this));
 
@@ -24,8 +24,8 @@ var UI = function() {
 
 
   var playTemp = document.getElementById("play-temp");
-  console.log("we are here",playTemp);
-  playTemp.addEventListener("click", this.tempclick);
+  
+  //playTemp.addEventListener("click", this.tempclick);
     
 
 }

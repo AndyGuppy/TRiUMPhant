@@ -18,11 +18,9 @@ Deck.prototype = {
     this.makeRequest('http://localhost:3000/cards', function(){
       if (this.status !== 200) return;
         var jsonString = this.responseText 
-        
         var result = JSON.parse(jsonString);
-       // console.log('this inside', result)
         callback(result);
-    }); //
+    }); 
   },
 
   getCards: function(dbResults){
