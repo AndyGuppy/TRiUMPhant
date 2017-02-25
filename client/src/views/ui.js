@@ -7,16 +7,12 @@ var selected;
 var UI = function() {
 
   var deck = new Deck();
-  
- 
-
 
   deck.all(function(result){
     
     var game = new Game();
     deck.getCards(result)
     deck.shuffleCards();
-    console.log('game',game);
     game.dealCards(deck.cards);
     game.displayWeatherInfo(game.playerHand, "player");
     game.displayWeatherInfo(game.computerHand, "computer");
@@ -60,7 +56,6 @@ UI.prototype = {
     },
 
   tempclick: function() {
-    console.log("temp captured")
     var pTemp = document.getElementById('play-temp');
     pTemp.style.backgroundColor = "green";
     
@@ -75,8 +70,7 @@ UI.prototype = {
    },
 
   playButtonClick: function(){
-    game.calculateWinner(selected);  // feed in temp/wind 
-    console.log('we are here')
+    game.calculateWinner(selected);  // feed in temp/wind
 
   }
 

@@ -29,7 +29,7 @@ body {
   width:14%;
 }
 
-#comp-temp, #comp-wind, #comp-flight, #comp-dayhours, #play-temp, #play-wind, #play-flight, #play-dayhours{
+#comp-temp, #comp-wind, #comp-humidity, #comp-dayhours, #play-temp, #play-wind, #play-humidity, #play-dayhours{
   background-color: ivory;
   color: black;
   border-radius: 8px;
