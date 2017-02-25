@@ -7,12 +7,13 @@ var selected;
 var UI = function() {
 
   var deck = new Deck();
+  
  
 
 
   deck.all(function(result){
+    
     var game = new Game();
-
     deck.getCards(result)
     deck.shuffleCards();
     console.log('game',game);
@@ -40,6 +41,8 @@ var UI = function() {
 }
 
 UI.prototype = {
+
+
   createText: function(text, label) {
     var p = document.createElement('p');
     p.innerHTML = label + text;
@@ -60,21 +63,19 @@ UI.prototype = {
     console.log("temp captured")
     var pTemp = document.getElementById('play-temp');
     pTemp.style.backgroundColor = "green";
-    //playerValue = playerHand[0].temp;
-    selected = "temp";
+    
+  // needs to pass 'temp' for calculateWinner to work
   },
 
   windclick: function() {
     console.log("wind captured")
     var pWind = document.getElementById('play-wind');
     pWind.style.backgroundColor = "green";
-    //playerValue = playerHand[0].wind;
+    // needs to pass 'wind' for calculateWinner to work
    },
 
   playButtonClick: function(){
-    //console.log(playerValue);
-
-    game.calculateWinner(selected);
+    game.calculateWinner(selected);  // feed in temp/wind 
     console.log('we are here')
 
   }

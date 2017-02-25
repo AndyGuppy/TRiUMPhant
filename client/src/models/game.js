@@ -26,9 +26,9 @@ Game.prototype = {
       var url = "http://api.openweathermap.org/data/2.5/weather?q="+cardToDisplay+",uk&appid=2e672e24267394ab5b555a4cc9857ccb";
 
       if (cardHolder === "player"){
-        this.makeRequest(url, this.getPlayerWeatherInfo.bind(this));
+        this.makeRequest(url, this.getPlayerWeatherInfo.bind(this)); //
       } else {
-        this.makeRequest(url, this.getComputerWeatherInfo.bind(this));
+        this.makeRequest(url, this.getComputerWeatherInfo.bind(this)); //
       }   
     },
      makeRequest: function(url, callback){
@@ -49,7 +49,9 @@ Game.prototype = {
         temp = temp.toFixed(2);
         var wind = data.wind.speed;
         var humidity = data.main.humidity;
-       
+        this.playerHand[0].temp = temp
+        this.playerHand[0].wind = wind
+
            
   ///////////////////////////////////////////////////////////////
         var playerTemp = document.getElementById("play-temp");
@@ -58,7 +60,6 @@ Game.prototype = {
         var TempLi = document.createElement('li')
         var WindLi = document.createElement('li')
 
-        console.log('playerhand', this.playerHand);
         
         TempLi.innerText = "Temperature: " + temp + " C";
         WindLi.innerText = "Wind: " + wind + " m/s";
@@ -71,10 +72,9 @@ Game.prototype = {
         var temp = data.main.temp - 273.15;
         temp = temp.toFixed(2);
         var wind = data.wind.speed;
-        // var humidity = data.main.humidity;
-        // var pressure = data.main.pressure;
-        this.playerHand[0].temp = temp
-        console.log('update hand', this.playerHand[0].temp)
+        this.computerHand[0].temp = temp
+        this.computerHand[0].wind = wind
+      
   ///////////////////////////////////////////////////////////////
         var computerTemp = document.getElementById("comp-temp");
         var computerWind = document.getElementById("comp-wind");
