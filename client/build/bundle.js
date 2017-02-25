@@ -368,29 +368,41 @@ Game.prototype = {
     cardHeader.appendChild(playerCityName); 
 
     var temp = data.main.temp - 273.15;
-    temp = temp.toFixed(2);
+    temp = temp.toFixed(1);
     var wind = data.wind.speed;
     var humidity = data.main.humidity;
+    var daylight = (data.sys.sunset - data.sys.sunrise) / 60 / 60;
+    daylight = daylight.toFixed(1)
+
     this.playerHand[0].temp = temp
     this.playerHand[0].wind = wind
     this.playerHand[0].humidity = humidity
+    this.playerHand[0].daylight = daylight
 
 /////////////////////////////////////////////////////////////
     var playerTemp = document.getElementById("play-temp");
     var playerWind = document.getElementById("play-wind");
     var playerHumid = document.getElementById("play-humidity");
+    var playerDaylight = document.getElementById("play-daylight");
 
-    var TempLi = document.createElement('li')
-    var WindLi = document.createElement('li')
-    var HumidLi = document.createElement('li')
 
-    TempLi.innerText = "Temperature: " + temp + " C";
-    WindLi.innerText = "Wind: " + wind + " m/s";
-    HumidLi.innerText = "Humidity: " + humidity + " %";
+    var tempLi = document.createElement('li');
+    var windLi = document.createElement('li');
+    var humidLi = document.createElement('li');
+    var dayLi = document.createElement('li');
 
-    playerTemp.appendChild(TempLi);
-    playerWind.appendChild(WindLi);
-    playerHumid.appendChild(HumidLi);
+
+    tempLi.innerText = "Temperature: " + temp + " C";
+    windLi.innerText = "Wind: " + wind + " m/s";
+    humidLi.innerText = "Humidity: " + humidity + " %";
+    dayLi.innerText = "Daylight: " + daylight + " hours";
+
+
+    playerTemp.appendChild(tempLi);
+    playerWind.appendChild(windLi);
+    playerHumid.appendChild(humidLi);
+    playerDaylight.appendChild(dayLi);
+
   },
 
   getComputerWeatherInfo:  function(data){
@@ -400,32 +412,40 @@ Game.prototype = {
     cardHeader.appendChild(computerCityName); 
 
     var temp = data.main.temp - 273.15;
-    temp = temp.toFixed(2);
+    temp = temp.toFixed(1);
     var wind = data.wind.speed;
     var humidity = data.main.humidity;
+    var daylight = (data.sys.sunset - data.sys.sunrise) / 60 / 60;
+    daylight = daylight.toFixed(1)
+
     this.computerHand[0].temp = temp
     this.computerHand[0].wind = wind
     this.computerHand[0].humidity = humidity
-
+    this.computerHand[0].daylight = daylight
+    
   /////////////////////////////////////////////////////////////
     var computerTemp = document.getElementById("comp-temp");
     var computerWind = document.getElementById("comp-wind");
     var computerHumid = document.getElementById("comp-humidity");
+    var computerDaylight = document.getElementById("comp-daylight");
 
 
-    var TempLi = document.createElement('li')
-    var WindLi = document.createElement('li')
-    var HumidLi = document.createElement('li')
+    var tempLi = document.createElement('li')
+    var windLi = document.createElement('li')
+    var humidLi = document.createElement('li')
+    var dayLi = document.createElement('li')
 
 
-    TempLi.innerText = "Temperature: " + temp + " C";
-    WindLi.innerText = "Wind: " + wind + " m/s";
-    HumidLi.innerText = "Humidity: " + humidity + " %";
+    tempLi.innerText = "Temperature: " + temp + " C";
+    windLi.innerText = "Wind: " + wind + " m/s";
+    humidLi.innerText = "Humidity: " + humidity + " %";
+    dayLi.innerText = "Daylight: " + daylight + " hours";
 
 
-    computerTemp.appendChild(TempLi);
-    computerWind.appendChild(WindLi);
-    computerHumid.appendChild(HumidLi);
+    computerTemp.appendChild(tempLi);
+    computerWind.appendChild(windLi);
+    computerHumid.appendChild(humidLi);
+    computerDaylight.appendChild(dayLi);
 
   },
 
