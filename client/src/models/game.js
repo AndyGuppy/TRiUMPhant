@@ -20,89 +20,77 @@ Game.prototype = {
     console.log('player hand', this.playerHand);
   },
 
+
   displayWeatherInfo: function(hand, cardHolder){
-    var cardToDisplay = hand[0].name;
-    var url = "http://api.openweathermap.org/data/2.5/weather?q="+cardToDisplay+",uk&appid=2e672e24267394ab5b555a4cc9857ccb";
+      var cardToDisplay = hand[0].name;
+      var url = "http://api.openweathermap.org/data/2.5/weather?q="+cardToDisplay+",uk&appid=2e672e24267394ab5b555a4cc9857ccb";
 
-    if (cardHolder === "player"){
-      this.makeRequest(url, this.getPlayerWeatherInfo);
-    } else {
-      this.makeRequest(url, this.getComputerWeatherInfo);
-    }   
-  },
+      if (cardHolder === "player"){
+        this.makeRequest(url, this.getPlayerWeatherInfo.bind(this));
+      } else {
+        this.makeRequest(url, this.getComputerWeatherInfo.bind(this));
+      }   
+    },
+     makeRequest: function(url, callback){
+          var request = new XMLHttpRequest();
+          request.open("GET", url);
+          request.onload = function() {
+            if (this.status != 200) return;
+            var jsonString = this.responseText;
+            var data = JSON.parse(jsonString);
 
-  // displayFlightInfo: function(hand, cardHolder){
-  //     var cardToDisplay = hand[0].name;
-  //     var url = ;
+            callback(data);
+          };
+          request.send();
+    },
 
-  //     if (cardHolder === "player"){
-  //       this.makeRequest(url, this.getPlayerFlightInfo);
-  //     } else {
-  //       this.makeRequest(url, this.getComputerFlightInfo);
-  //     }   
-  //   },
-  
-
-   makeRequest: function(url, callback){
-        var request = new XMLHttpRequest();
-        request.open("GET", url);
-        request.onload = callback;
-        request.send();
-  },
-
-  getPlayerWeatherInfo:  function(){
-     if(this.status !== 200) return;
-
-      var jsonString = this.responseText;
-      var data = JSON.parse(jsonString);
-      
-  
-      var temp = data.main.temp - 273.15;
-      temp = temp.toFixed(2);
-      var wind = data.wind.speed;
-      var humidity = data.main.humidity;
-     
-         
-///////////////////////////////////////////////////////////////
-      var playerTemp = document.getElementById("play-temp");
-      var playerWind = document.getElementById("play-wind");
-
-      var TempLi = document.createElement('li')
-      var WindLi = document.createElement('li')
-
-      console.log('playerhand', this.playerHand);
-      
-      TempLi.innerText = "Temperature: " + temp + " C";
-      WindLi.innerText = "Wind: " + wind + " m/s";
-
-      playerTemp.appendChild(TempLi);
-      playerWind.appendChild(WindLi);
-  },
-
-  getComputerWeatherInfo:  function(){
-     if(this.status !== 200) return;
-      var jsonString = this.responseText;
-      var data = JSON.parse(jsonString);
-  
-      var temp = data.main.temp - 273.15;
-      temp = temp.toFixed(2);
-      var wind = data.wind.speed;
-      // var humidity = data.main.humidity;
-      // var pressure = data.main.pressure;
+    getPlayerWeatherInfo:  function(data){
+        var temp = data.main.temp - 273.15;
+        temp = temp.toFixed(2);
+        var wind = data.wind.speed;
+        var humidity = data.main.humidity;
        
-///////////////////////////////////////////////////////////////
-      var computerTemp = document.getElementById("comp-temp");
-      var computerWind = document.getElementById("comp-wind");
+           
+  ///////////////////////////////////////////////////////////////
+        var playerTemp = document.getElementById("play-temp");
+        var playerWind = document.getElementById("play-wind");
 
-      var TempLi = document.createElement('li')
-      var WindLi = document.createElement('li')
+        var TempLi = document.createElement('li')
+        var WindLi = document.createElement('li')
 
-      TempLi.innerText = "Temperature: " + temp + " C";
-      WindLi.innerText = "Wind: " + wind + " m/s";
+        console.log('playerhand', this.playerHand);
+        
+        TempLi.innerText = "Temperature: " + temp + " C";
+        WindLi.innerText = "Wind: " + wind + " m/s";
 
-      computerTemp.appendChild(TempLi);
-      computerWind.appendChild(WindLi);
-  },
+        playerTemp.appendChild(TempLi);
+        playerWind.appendChild(WindLi);
+    },
+
+    getComputerWeatherInfo:  function(data){
+        var temp = data.main.temp - 273.15;
+        temp = temp.toFixed(2);
+        var wind = data.wind.speed;
+        // var humidity = data.main.humidity;
+        // var pressure = data.main.pressure;
+        this.playerHand[0].temp = temp
+        console.log('update hand', this.playerHand[0].temp)
+  ///////////////////////////////////////////////////////////////
+        var computerTemp = document.getElementById("comp-temp");
+        var computerWind = document.getElementById("comp-wind");
+
+        var TempLi = document.createElement('li')
+        var WindLi = document.createElement('li')
+
+        TempLi.innerText = "Temperature: " + temp + " C";
+        WindLi.innerText = "Wind: " + wind + " m/s";
+
+        computerTemp.appendChild(TempLi);
+        computerWind.appendChild(WindLi);
+    },
+
+
+
 
 //   getPlayerFlightInfo:  function(){
 //      if(this.status !== 200) return;
