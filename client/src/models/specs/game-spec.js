@@ -35,12 +35,10 @@ describe('Game', function() {
   });
 
   it('can let player win', function(){
-    
     assert.equal("player wins", game1.calculateWinner(2,1,"characteristic1"))
   });
 
   it('can let computer win', function(){
-    
     assert.equal("computer wins", game1.calculateWinner(1,2,"characteristic1"))
   });
 
