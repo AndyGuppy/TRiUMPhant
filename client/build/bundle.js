@@ -144,22 +144,28 @@ var Deck = __webpack_require__(1);
 var Game = __webpack_require__(3);
 var Card = __webpack_require__(0);
 
-// var selected;
-
 var UI = function() {
 
 game = new Game()
+
   var playTemp = document.getElementById("play-temp");
-  playTemp.addEventListener("click", this.tempclick, game);
+  playTemp.addEventListener("click", this.tempClick, game);
+
+  var playWind = document.getElementById("play-wind");
+  playWind.addEventListener("click", this.windClick, game);
+
+  var playHumidity = document.getElementById("play-humidity");
+  playHumidity.addEventListener("click", this.humidityClick, game);
   
+  var playDaylight = document.getElementById("play-daylight");
+  playDaylight.addEventListener("click", this.daylightClick, game);
+
   var playButton = document.getElementById("play-button");
   playButton.addEventListener("click", this.playButtonClick, game);
-
 
 }
 
 UI.prototype = {
-
 
   createText: function(text, label) {
     var p = document.createElement('p');
@@ -172,27 +178,40 @@ UI.prototype = {
     element.appendChild(pTag);
   },
 
-
-  tempclick: function() {
+  tempClick: function() {
     var pTemp = document.getElementById('play-temp');
+    game.resetColour();
     pTemp.style.backgroundColor = "green";
     game.selected = "temp";
-
-    
-  // needs to pass 'temp' for calculateWinner to work
   },
 
-  windclick: function() {
-    console.log("wind captured")
+  windClick: function() {
     var pWind = document.getElementById('play-wind');
+    game.resetColour();
     pWind.style.backgroundColor = "green";
-    // needs to pass 'wind' for calculateWinner to work
+    game.selected = "wind";
    },
 
-  playButtonClick: function(){
-    console.log('button clicked --' + game.selected)
-    console.log(game.calculateWinner(game.selected))
+   humidityClick: function() {
+     var pHumidity = document.getElementById('play-humidity');
+     game.resetColour();
+     pHumidity.style.backgroundColor = "green";
+     game.selected = "humidity";
+   },
 
+   daylightClick: function() {
+     var pDaylight = document.getElementById('play-daylight');
+     game.resetColour();
+     pDaylight.style.backgroundColor = "green";
+     game.selected = "daylight";
+   },
+
+
+  playButtonClick: function(){
+
+    console.log('button clicked --' + game.selected)
+    game.calculateWinner(game.selected)
+    game.selected = "";
 
   }
 
@@ -213,8 +232,8 @@ var Game = function(){
   this.playerHand = []
   this.computerHand = []
 
-  this.selected =""
 
+  this.selected =""
 
   var deck = new Deck();
 
@@ -222,9 +241,9 @@ var Game = function(){
     deck.getCards(result)
     deck.shuffleCards();
     this.dealCards(deck.cards);
+    this.displayCardCity();
     this.displayWeatherInfo(this.playerHand, "player");
     this.displayWeatherInfo(this.computerHand, "computer");
-
 
   }.bind(this));
 }
@@ -232,15 +251,29 @@ var Game = function(){
 Game.prototype = {
 
 
-  dealCards: function(Deck){
+  dealCards: function(deck){
 
-    for (var i = 0; i < Deck.length/2; i++){
-      this.playerHand.push(Deck[i])
+
+    for (var i = 0; i < deck.length/2; i++){
+      this.playerHand.push(deck[i])
     };
-    for (var i = Deck.length/2; i < Deck.length; i++){
-      this.computerHand.push(Deck[i])
+
+    for (var i = deck.length/2; i < deck.length; i++){
+      this.computerHand.push(deck[i])
 
     };
+  },
+
+  displayCardCity: function(){
+    var cardHeader = document.getElementById("player-city-header");
+    var playerCityName = document.createElement('h3');
+    playerCityName.innerText = this.playerHand[0].name;
+    cardHeader.appendChild(playerCityName); 
+
+    var cardHeader = document.getElementById("computer-city-header");
+    var computerCityName = document.createElement('h3');
+    computerCityName.innerText = this.computerHand[0].name;
+    cardHeader.appendChild(computerCityName); 
   },
 
   displayWeatherInfo: function(hand, cardHolder){
@@ -269,11 +302,6 @@ Game.prototype = {
     },
 
   getPlayerWeatherInfo:  function(data){
-    
-    var cardHeader = document.getElementById("player-city-header");
-    var playerCityName = document.createElement('h3');
-    playerCityName.innerText = data.name;
-    cardHeader.appendChild(playerCityName); 
 
     var temp = data.main.temp - 273.15;
     temp = temp.toFixed(1);
@@ -287,7 +315,6 @@ Game.prototype = {
     this.playerHand[0].wind = wind
     this.playerHand[0].humidity = humidity
     this.playerHand[0].daylight = daylight
-    console.log(this.playerHand[0])
 
 
 /////////////////////////////////////////////////////////////
@@ -317,10 +344,6 @@ Game.prototype = {
   },
 
   getComputerWeatherInfo:  function(data){
-    var cardHeader = document.getElementById("computer-city-header");
-    var computerCityName = document.createElement('h3');
-    computerCityName.innerText = data.name;
-    cardHeader.appendChild(computerCityName); 
 
     var temp = data.main.temp - 273.15;
     temp = temp.toFixed(1);
@@ -398,25 +421,33 @@ Game.prototype = {
     playerWind.innerText = "Wind: " + wind;
   },
 
-  calculateWinner: function(characteristic){
-    switch (characteristic){
+  resetColour: function(){  //really doesn't belong here!
+    document.getElementById('play-temp').style.backgroundColor = "ivory";
+    document.getElementById('play-wind').style.backgroundColor = "ivory";
+    document.getElementById('play-humidity').style.backgroundColor = "ivory";
+    document.getElementById('play-daylight').style.backgroundColor = "ivory";
+  },
 
+  calculateWinner: function(characteristic){
+    
+    switch (characteristic){
 
       case "temp":
         if (this.playerHand[0].temp > this.computerHand[0].temp) {
-          return "player wins";
+          console.log("player wins");
           break;
         }else if (this.playerHand[0].temp === this.computerHand[0].temp) {
-          return'draw';
+
+          console.log("draw");
 
           break;
         }else {
-          return "computer wins";
+          console.log("computer wins");
           break;
         };
 
 
-      case "characteristic2" : 
+      case "wind" : 
 
         if (playerValue < computerValue) {
           console.log("player wins");

@@ -2,22 +2,28 @@ var Deck = require('../models/deck');
 var Game = require('../models/game');
 var Card = require('../models/card');
 
-// var selected;
-
 var UI = function() {
 
 game = new Game()
+
   var playTemp = document.getElementById("play-temp");
-  playTemp.addEventListener("click", this.tempclick, game);
+  playTemp.addEventListener("click", this.tempClick, game);
+
+  var playWind = document.getElementById("play-wind");
+  playWind.addEventListener("click", this.windClick, game);
+
+  var playHumidity = document.getElementById("play-humidity");
+  playHumidity.addEventListener("click", this.humidityClick, game);
   
+  var playDaylight = document.getElementById("play-daylight");
+  playDaylight.addEventListener("click", this.daylightClick, game);
+
   var playButton = document.getElementById("play-button");
   playButton.addEventListener("click", this.playButtonClick, game);
-
 
 }
 
 UI.prototype = {
-
 
   createText: function(text, label) {
     var p = document.createElement('p');
@@ -30,27 +36,40 @@ UI.prototype = {
     element.appendChild(pTag);
   },
 
-
-  tempclick: function() {
+  tempClick: function() {
     var pTemp = document.getElementById('play-temp');
+    game.resetColour();
     pTemp.style.backgroundColor = "green";
     game.selected = "temp";
-
-    
-  // needs to pass 'temp' for calculateWinner to work
   },
 
-  windclick: function() {
-    console.log("wind captured")
+  windClick: function() {
     var pWind = document.getElementById('play-wind');
+    game.resetColour();
     pWind.style.backgroundColor = "green";
-    // needs to pass 'wind' for calculateWinner to work
+    game.selected = "wind";
    },
 
-  playButtonClick: function(){
-    console.log('button clicked --' + game.selected)
-    console.log(game.calculateWinner(game.selected))
+   humidityClick: function() {
+     var pHumidity = document.getElementById('play-humidity');
+     game.resetColour();
+     pHumidity.style.backgroundColor = "green";
+     game.selected = "humidity";
+   },
 
+   daylightClick: function() {
+     var pDaylight = document.getElementById('play-daylight');
+     game.resetColour();
+     pDaylight.style.backgroundColor = "green";
+     game.selected = "daylight";
+   },
+
+
+  playButtonClick: function(){
+
+    console.log('button clicked --' + game.selected)
+    game.calculateWinner(game.selected)
+    game.selected = "";
 
   }
 
