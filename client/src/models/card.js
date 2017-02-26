@@ -4,8 +4,8 @@ var Card = function(dbOptions){
   this.skycode = dbOptions.skycode;
   this.temp = {};
   this.wind = {};
-  this.characteristic3 = {};
-  this.characteristic4 = {};
+  this.humidity = {};
+  this.daylight = {};
 
 
 }

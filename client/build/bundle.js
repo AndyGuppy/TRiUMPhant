@@ -76,8 +76,8 @@ var Card = function(dbOptions){
   this.skycode = dbOptions.skycode;
   this.temp = {};
   this.wind = {};
-  this.characteristic3 = {};
-  this.characteristic4 = {};
+  this.humidity = {};
+  this.daylight = {};
 
 
 }
@@ -144,41 +144,17 @@ var Deck = __webpack_require__(1);
 var Game = __webpack_require__(3);
 var Card = __webpack_require__(0);
 
-var selected;
+// var selected;
 
 var UI = function() {
 
-  var deck = new Deck();
-  
- 
-
-
-  deck.all(function(result){
-    
-    var game = new Game();
-    deck.getCards(result)
-    deck.shuffleCards();
-    console.log('game',game);
-    game.dealCards(deck.cards);
-    game.displayWeatherInfo(game.playerHand, "player");
-    game.displayWeatherInfo(game.computerHand, "computer");
-
-
-  }.bind(this));
-
+game = new Game()
   var playTemp = document.getElementById("play-temp");
-  playTemp.addEventListener("click", this.tempclick);
-  var playButton = document.getElementById("play-button");
-  playButton.addEventListener("click", this.playButtonClick);
-
-
-
-  // get numbers from api
-  // populate template with numbers 
-
-
+  playTemp.addEventListener("click", this.tempclick, game);
   
-    
+  var playButton = document.getElementById("play-button");
+  playButton.addEventListener("click", this.playButtonClick, game);
+
 
 }
 
@@ -197,14 +173,11 @@ UI.prototype = {
   },
 
 
-  render: function(xxxxx) {
-
-    },
-
   tempclick: function() {
-    console.log("temp captured")
     var pTemp = document.getElementById('play-temp');
     pTemp.style.backgroundColor = "green";
+    game.selected = "temp";
+
     
   // needs to pass 'temp' for calculateWinner to work
   },
@@ -217,8 +190,9 @@ UI.prototype = {
    },
 
   playButtonClick: function(){
-    game.calculateWinner(selected);  // feed in temp/wind 
-    console.log('we are here')
+    console.log('button clicked --' + game.selected)
+    console.log(game.calculateWinner(game.selected))
+
 
   }
 
@@ -238,168 +212,220 @@ var Deck = __webpack_require__(1);
 var Game = function(){
   this.playerHand = []
   this.computerHand = []
+  this.selected =""
+
+
+  var deck = new Deck();
+
+  deck.all(function(result){
+    deck.getCards(result)
+    deck.shuffleCards();
+    this.dealCards(deck.cards);
+    this.displayWeatherInfo(this.playerHand, "player");
+    this.displayWeatherInfo(this.computerHand, "computer");
+
+
+  }.bind(this));
 }
 
 Game.prototype = {
 
   dealCards: function(Deck){
-    
+
     for (var i = 0; i < Deck.length/2; i++){
       this.playerHand.push(Deck[i])
-      console.log(Deck[i]);
     };
     for (var i = Deck.length/2; i < Deck.length; i++){
       this.computerHand.push(Deck[i])
     };
-    console.log('player hand', this.playerHand);
   },
 
-
   displayWeatherInfo: function(hand, cardHolder){
-      var cardToDisplay = hand[0].name;
-      var url = "http://api.openweathermap.org/data/2.5/weather?q="+cardToDisplay+",uk&appid=2e672e24267394ab5b555a4cc9857ccb";
+    var cardToDisplay = hand[0].name;
 
-      if (cardHolder === "player"){
-        this.makeRequest(url, this.getPlayerWeatherInfo.bind(this)); //
-      } else {
-        this.makeRequest(url, this.getComputerWeatherInfo.bind(this)); //
-      }   
-    },
-     makeRequest: function(url, callback){
-          var request = new XMLHttpRequest();
-          request.open("GET", url);
-          request.onload = function() {
-            if (this.status != 200) return;
-            var jsonString = this.responseText;
-            var data = JSON.parse(jsonString);
+    var url = "http://api.openweathermap.org/data/2.5/weather?q="+cardToDisplay+"&appid=2e672e24267394ab5b555a4cc9857ccb";
 
-            callback(data);
-          };
-          request.send();
-    },
+    if (cardHolder === "player"){
+      this.makeRequest(url, this.getPlayerWeatherInfo.bind(this)); //
+    } else {
+      this.makeRequest(url, this.getComputerWeatherInfo.bind(this)); //
+    }   
+  },
 
-    getPlayerWeatherInfo:  function(data){
-        var temp = data.main.temp - 273.15;
-        temp = temp.toFixed(2);
-        var wind = data.wind.speed;
-        var humidity = data.main.humidity;
-        this.playerHand[0].temp = temp
-        this.playerHand[0].wind = wind
+  makeRequest: function(url, callback){
+    var request = new XMLHttpRequest();
+    request.open("GET", url);
+    request.onload = function() {
+      if (this.status != 200) return;
+        var jsonString = this.responseText;
+        var data = JSON.parse(jsonString);
 
-           
-  ///////////////////////////////////////////////////////////////
-        var playerTemp = document.getElementById("play-temp");
-        var playerWind = document.getElementById("play-wind");
-
-        var TempLi = document.createElement('li')
-        var WindLi = document.createElement('li')
-
-        
-        TempLi.innerText = "Temperature: " + temp + " C";
-        WindLi.innerText = "Wind: " + wind + " m/s";
-
-        playerTemp.appendChild(TempLi);
-        playerWind.appendChild(WindLi);
+        callback(data);
+      };
+      request.send();
     },
 
-    getComputerWeatherInfo:  function(data){
-        var temp = data.main.temp - 273.15;
-        temp = temp.toFixed(2);
-        var wind = data.wind.speed;
-        this.computerHand[0].temp = temp
-        this.computerHand[0].wind = wind
-      
-  ///////////////////////////////////////////////////////////////
-        var computerTemp = document.getElementById("comp-temp");
-        var computerWind = document.getElementById("comp-wind");
+  getPlayerWeatherInfo:  function(data){
+    
+    var cardHeader = document.getElementById("player-city-header");
+    var playerCityName = document.createElement('h3');
+    playerCityName.innerText = data.name;
+    cardHeader.appendChild(playerCityName); 
 
-        var TempLi = document.createElement('li')
-        var WindLi = document.createElement('li')
+    var temp = data.main.temp - 273.15;
+    temp = temp.toFixed(1);
+    var wind = data.wind.speed;
+    var humidity = data.main.humidity;
+    var daylight = (data.sys.sunset - data.sys.sunrise) / 60 / 60;
+    daylight = daylight.toFixed(1)
 
-        TempLi.innerText = "Temperature: " + temp + " C";
-        WindLi.innerText = "Wind: " + wind + " m/s";
+    this.playerHand[0].temp = temp
+    this.playerHand[0].wind = wind
+    this.playerHand[0].humidity = humidity
+    this.playerHand[0].daylight = daylight
+    console.log(this.playerHand[0])
 
-        computerTemp.appendChild(TempLi);
-        computerWind.appendChild(WindLi);
-    },
+/////////////////////////////////////////////////////////////
+    var playerTemp = document.getElementById("play-temp");
+    var playerWind = document.getElementById("play-wind");
+    var playerHumid = document.getElementById("play-humidity");
+    var playerDaylight = document.getElementById("play-daylight");
 
 
+    var tempLi = document.createElement('li');
+    var windLi = document.createElement('li');
+    var humidLi = document.createElement('li');
+    var dayLi = document.createElement('li');
 
 
-//   getPlayerFlightInfo:  function(){
-//      if(this.status !== 200) return;
+    tempLi.innerText = "Temperature: " + temp + " C";
+    windLi.innerText = "Wind: " + wind + " m/s";
+    humidLi.innerText = "Humidity: " + humidity + " %";
+    dayLi.innerText = "Daylight: " + daylight + " hours";
 
-//       var jsonString = this.responseText;
-//       var data = JSON.parse(jsonString);
-//       console.log('this', this);
-  
-//       var price = "data.????"; 
-// ///////////////////////////////////////////////////////////////
-//       var playerPrice = document.getElementById("play-flight");
-//       var PriceLi = document.createElement('li')
-//       PriceLi.innerText = "Cheapest Flight: " + price;
-//       playerPrice.appendChild(PriceLi);
-//   },
 
-//   getComputerFlightInfo:  function(){
-//      if(this.status !== 200) return;
+    playerTemp.appendChild(tempLi);
+    playerWind.appendChild(windLi);
+    playerHumid.appendChild(humidLi);
+    playerDaylight.appendChild(dayLi);
 
-//       var jsonString = this.responseText;
-//       var data = JSON.parse(jsonString);
-//       console.log('this', this);
-  
-//       var price = "data.????"; 
-// ///////////////////////////////////////////////////////////////
-//       var computerPrice = document.getElementById("comp-flight");
-//       var PriceLi = document.createElement('li')
-//       PriceLi.innerText = "Cheapest Flight: " + price;
-//       computerPrice.appendChild(PriceLi);
-//   },
+  },
+
+  getComputerWeatherInfo:  function(data){
+    var cardHeader = document.getElementById("computer-city-header");
+    var computerCityName = document.createElement('h3');
+    computerCityName.innerText = data.name;
+    cardHeader.appendChild(computerCityName); 
+
+    var temp = data.main.temp - 273.15;
+    temp = temp.toFixed(1);
+    var wind = data.wind.speed;
+    var humidity = data.main.humidity;
+    var daylight = (data.sys.sunset - data.sys.sunrise) / 60 / 60;
+    daylight = daylight.toFixed(1)
+
+    this.computerHand[0].temp = temp
+    this.computerHand[0].wind = wind
+    this.computerHand[0].humidity = humidity
+    this.computerHand[0].daylight = daylight
+    
+  /////////////////////////////////////////////////////////////
+    var computerTemp = document.getElementById("comp-temp");
+    var computerWind = document.getElementById("comp-wind");
+    var computerHumid = document.getElementById("comp-humidity");
+    var computerDaylight = document.getElementById("comp-daylight");
+
+
+    var tempLi = document.createElement('li')
+    var windLi = document.createElement('li')
+    var humidLi = document.createElement('li')
+    var dayLi = document.createElement('li')
+
+
+    tempLi.innerText = "Temperature: " + temp + " C";
+    windLi.innerText = "Wind: " + wind + " m/s";
+    humidLi.innerText = "Humidity: " + humidity + " %";
+    dayLi.innerText = "Daylight: " + daylight + " hours";
+
+
+    computerTemp.appendChild(tempLi);
+    computerWind.appendChild(windLi);
+    computerHumid.appendChild(humidLi);
+    computerDaylight.appendChild(dayLi);
+
+  },
+
+  //   getPlayerFlightInfo:  function(){
+    //      if(this.status !== 200) return;
+
+    //       var jsonString = this.responseText;
+    //       var data = JSON.parse(jsonString);
+    //       console.log('this', this);
+
+    //       var price = "data.????"; 
+    // ///////////////////////////////////////////////////////////////
+    //       var playerPrice = document.getElementById("play-flight");
+    //       var PriceLi = document.createElement('li')
+    //       PriceLi.innerText = "Cheapest Flight: " + price;
+    //       playerPrice.appendChild(PriceLi);
+    //   },
+
+    //   getComputerFlightInfo:  function(){
+      //      if(this.status !== 200) return;
+
+      //       var jsonString = this.responseText;
+      //       var data = JSON.parse(jsonString);
+      //       console.log('this', this);
+
+      //       var price = "data.????"; 
+      // ///////////////////////////////////////////////////////////////
+      //       var computerPrice = document.getElementById("comp-flight");
+      //       var PriceLi = document.createElement('li')
+      //       PriceLi.innerText = "Cheapest Flight: " + price;
+      //       computerPrice.appendChild(PriceLi);
+      //   },
 
   displayInfo: function(temp, wind){
     playerTemp = getElementById("play-temp");
     playerWind = getElementById("play-wind");
-    
+
     playerTemp.innerText = "Temperature: " + temp;
     playerWind.innerText = "Wind: " + wind;
-    
   },
 
   calculateWinner: function(characteristic){
     switch (characteristic){
 
       case "temp":
-        if (playerHand[0].temp > computerHand[0].temp) {
+        if (this.playerHand[0].temp > this.computerHand[0].temp) {
           return "player wins";
           break;
-        }else if (playerHand[0].temp === computerHand[0].temp) {
+        }else if (this.playerHand[0].temp === this.computerHand[0].temp) {
           return'draw';
           break;
         }else {
           return "computer wins";
           break;
-        }
-      ;
+        };
+
       case "characteristic2" : 
-      if (playerValue < computerValue) {
-        console.log("player wins");
-        break;
-      }else if (playerValue === computerValue) {
-        console.log("draw");
-        break;
-      }else {
-        console.log ("computerwins");
-        break;
-      }
-      ;
+        if (playerValue < computerValue) {
+          console.log("player wins");
+          break;
+        }else if (playerValue === computerValue) {
+          console.log("draw");
+          break;
+        }else {
+          console.log ("computerwins");
+          break;
+      };
 
       case "characteristic3": 
       ;
       case "characteristic4": 
       ;
-      } 
-
-    },   
+    } 
+  },   
 
   checkGameWon: function(){
     if (this.playerHand === []){
@@ -424,7 +450,7 @@ Game.prototype = {
 
 
 
-module.exports = Game;
+  module.exports = Game;
 
 /***/ }),
 /* 4 */
@@ -526,7 +552,6 @@ var app = function() {
 }
 
 window.onload = app;
-
 
 /***/ })
 /******/ ]);

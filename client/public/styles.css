@@ -29,7 +29,7 @@ body {
   width:14%;
 }
 
-#comp-temp, #comp-wind, #comp-flight, #comp-dayhours, #play-temp, #play-wind, #play-flight, #play-dayhours{
+#comp-temp, #comp-wind, #comp-humidity, #comp-daylight, #play-temp, #play-wind, #play-humidity, #play-daylight{
   background-color: ivory;
   color: black;
   border-radius: 8px;
@@ -38,7 +38,7 @@ body {
 
 }
 
-#comp-temp:hover, #comp-wind:hover, #comp-flight:hover, #comp-dayhours:hover, #play-temp:hover, #play-wind:hover, #play-flight:hover, #play-dayhours:hover{background-color: red;}
+#comp-temp:hover, #comp-wind:hover, #comp-humidity:hover, #comp-daylight:hover, #play-temp:hover, #play-wind:hover, #play-humidity:hover, #play-daylight:hover{background-color: red;}
 
 .card{
   margin: 0 auto;
