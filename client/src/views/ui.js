@@ -2,37 +2,16 @@ var Deck = require('../models/deck');
 var Game = require('../models/game');
 var Card = require('../models/card');
 
-var selected;
+// var selected;
 
 var UI = function() {
 
-  var deck = new Deck();
-
-  deck.all(function(result){
-    
-    var game = new Game();
-    deck.getCards(result)
-    deck.shuffleCards();
-    game.dealCards(deck.cards);
-    game.displayWeatherInfo(game.playerHand, "player");
-    game.displayWeatherInfo(game.computerHand, "computer");
-
-
-  }.bind(this));
-
+game = new Game()
   var playTemp = document.getElementById("play-temp");
-  playTemp.addEventListener("click", this.tempclick);
+  playTemp.addEventListener("click", this.tempclick, game);
   var playButton = document.getElementById("play-button");
-  playButton.addEventListener("click", this.playButtonClick);
+  playButton.addEventListener("click", this.playButtonClick, game);
 
-
-
-  // get numbers from api
-  // populate template with numbers 
-
-
-  
-    
 
 }
 
@@ -58,6 +37,8 @@ UI.prototype = {
   tempclick: function() {
     var pTemp = document.getElementById('play-temp');
     pTemp.style.backgroundColor = "green";
+    game.selected = "temp";
+
     
   // needs to pass 'temp' for calculateWinner to work
   },
@@ -70,7 +51,9 @@ UI.prototype = {
    },
 
   playButtonClick: function(){
-    game.calculateWinner(selected);  // feed in temp/wind
+    console.log('button clicked --' + game.selected)
+    console.log(game.calculateWinner(game.selected))
+
 
   }
 
