@@ -4,18 +4,34 @@ var Deck = require('./deck');
 var Game = function(){
   this.playerHand = []
   this.computerHand = []
+
+  this.selected =""
+
+
+  var deck = new Deck();
+
+  deck.all(function(result){
+    deck.getCards(result)
+    deck.shuffleCards();
+    this.dealCards(deck.cards);
+    this.displayWeatherInfo(this.playerHand, "player");
+    this.displayWeatherInfo(this.computerHand, "computer");
+
+
+  }.bind(this));
 }
 
 Game.prototype = {
 
-  dealCards: function(deck){
 
-    for (var i = 0; i < deck.length/2; i++){
-      this.playerHand.push(deck[i])
+  dealCards: function(Deck){
 
+    for (var i = 0; i < Deck.length/2; i++){
+      this.playerHand.push(Deck[i])
     };
-    for (var i = deck.length/2; i < deck.length; i++){
-      this.computerHand.push(deck[i])
+    for (var i = Deck.length/2; i < Deck.length; i++){
+      this.computerHand.push(Deck[i])
+
     };
   },
 
@@ -58,13 +74,13 @@ Game.prototype = {
     var daylight = (data.sys.sunset - data.sys.sunrise) / 60 / 60;
     daylight = daylight.toFixed(1)
 
-    this.playerHand[0].temp = temp;
-    //console.log('playerHand', this.playerHand[0]);
-    //console.log('temp', temp);
-    //console.log('playerHand.temp', this.playerHand[0].temp);
+
+    this.playerHand[0].temp = temp
     this.playerHand[0].wind = wind
     this.playerHand[0].humidity = humidity
     this.playerHand[0].daylight = daylight
+    console.log(this.playerHand[0])
+
 
 /////////////////////////////////////////////////////////////
     var playerTemp = document.getElementById("play-temp");
@@ -176,23 +192,24 @@ Game.prototype = {
 
   calculateWinner: function(characteristic){
     switch (characteristic){
-      
-      case "temp":
-      case "Daylight":
 
-        if (playerHand[0].temp > computerHand[0].temp) {
+
+      case "temp":
+        if (this.playerHand[0].temp > this.computerHand[0].temp) {
           return "player wins";
           break;
-        }else if (playerHand[0].temp === computerHand[0].temp) {
-          return "draw";
+        }else if (this.playerHand[0].temp === this.computerHand[0].temp) {
+          return'draw';
+
           break;
         }else {
           return "computer wins";
           break;
         };
 
-      case "humidity": 
-      case "wind":
+
+      case "characteristic2" : 
+
         if (playerValue < computerValue) {
           console.log("player wins");
           break;
@@ -230,5 +247,6 @@ Game.prototype = {
   }
 
 }
+
 
   module.exports = Game;

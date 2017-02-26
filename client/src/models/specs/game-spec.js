@@ -24,7 +24,7 @@ describe('Game', function() {
 
   it('should add cards to computerHand', function() {
     deckA.getCards(cards)
-    //console.log('??', deckA)
+
     game1.dealCards(deckA)
     assert.equal(3, game1.computerHand.length)
   });
@@ -32,20 +32,22 @@ describe('Game', function() {
   it('should add cards to playerHand', function() {
     deckA.getCards(cards)
     game1.dealCards(deckA)
-    
+
     assert.equal(3, game1.playerHand.length)
   });
 
   it('can let player win', function(){
-    assert.equal("player wins", game1.calculateWinner("temp"))
+
+    assert.equal("player wins", game1.calculateWinner(2,1,"characteristic1"))
   });
 
   it('can let computer win', function(){
-    assert.equal("computer wins", game1.calculateWinner("temp"))
+    assert.equal("computer wins", game1.calculateWinner(1,2,"characteristic1"))
   });
 
   it('can be a draw', function(){
-    assert.equal("draw", game1.calculateWinner("temp"))
+    assert.equal("draw", game1.calculateWinner(1,1,"characteristic1"))
+
   });
 
 

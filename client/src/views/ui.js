@@ -1,17 +1,27 @@
-var Xxxxx = require('../models/xxxxx');
+var Deck = require('../models/deck');
+var Game = require('../models/game');
+var Card = require('../models/card');
+
+// var selected;
 
 var UI = function() {
-  var xxxxx = new Xxxxx();
-  xxxxx.all(function(result){
-    this.render(result);
-  }.bind(this));
+
+game = new Game()
+  var playTemp = document.getElementById("play-temp");
+  playTemp.addEventListener("click", this.tempclick, game);
+  
+  var playButton = document.getElementById("play-button");
+  playButton.addEventListener("click", this.playButtonClick, game);
+
+
 }
 
 UI.prototype = {
+
+
   createText: function(text, label) {
     var p = document.createElement('p');
     p.innerHTML = label + text;
-    console.log(p);
     return p;
   },
 
@@ -21,11 +31,30 @@ UI.prototype = {
   },
 
 
+  tempclick: function() {
+    var pTemp = document.getElementById('play-temp');
+    pTemp.style.backgroundColor = "green";
+    game.selected = "temp";
 
-  render: function(xxxxx) {
+    
+  // needs to pass 'temp' for calculateWinner to work
+  },
 
-    }
+  windclick: function() {
+    console.log("wind captured")
+    var pWind = document.getElementById('play-wind');
+    pWind.style.backgroundColor = "green";
+    // needs to pass 'wind' for calculateWinner to work
+   },
+
+  playButtonClick: function(){
+    console.log('button clicked --' + game.selected)
+    console.log(game.calculateWinner(game.selected))
+
+
   }
+
 }
+  
 
 module.exports = UI;
