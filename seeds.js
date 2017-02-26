@@ -10,7 +10,7 @@ db.cities.insert([
   },
   { 
       name: "Delhi",
-      imagepth: "/dehli.jpg",
+      imagepth: "/delhi.jpg",
       skycode:"DEL",
       country: "India",
       flag: "india.gif"
