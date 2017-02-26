@@ -191,8 +191,8 @@ UI.prototype = {
 
   playButtonClick: function(){
     console.log('button clicked --' + game.selected)
-    console.log(game.calculateWinner(game.selected))
-
+    game.calculateWinner(game.selected);
+    game.selected = "";
 
   }
 
@@ -398,17 +398,70 @@ Game.prototype = {
 
       case "temp":
         if (this.playerHand[0].temp > this.computerHand[0].temp) {
-          return "player wins";
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.playerHand.push(playerCard);
+          this.playerHand.push(computerCard);
+          // if (this.DrawArray.length > 0){
+          //   forEach(function(card){
+          //     this.playerHand.push(card);
+          //     this.DrawArray.shift(card);
+          //   });
+          // }
+          if(this.playerHand.length === 0){
+            console.log("player wins game");
+          }else if (this.computerHand.length === 0) {
+            console.log("computer wins game");
+          }
+
+          this.getComputerWeatherInfo;
+          this.getPlayerWeatherInfo;
+          console.log("player wins");
+          console.log(this.playerHand.length);
           break;
         }else if (this.playerHand[0].temp === this.computerHand[0].temp) {
-          return'draw';
+          // var DrawArray = [];
+          // this.DrawArray.push(playerHand[0]);
+          // this.DrawArray.push(playerHand[1]);
+          // this.DrawArray.push(playerHand[2]);
+          // this.DrawArray.push(computerHand[0]);
+          // this.DrawArray.push(computerHand[1]);
+          // this.DrawArray.push(computerHand[2]);
+          
+          // playerHand.splice(0,3);
+          // computerHand.splice(0,3);
+          
+          
+
+          console.log('draw');
           break;
         }else {
-          return "computer wins";
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.computerHand.push(playerCard);
+          this.computerHand.push(computerCard);
+          // if (this.DrawArray.length > 0){
+          //   forEach(function(card){
+          //     this.computerHand.push(card);
+          //   });
+          // };
+          this.getComputerWeatherInfo;
+          this.getPlayerWeatherInfo;
+          if(this.playerHand.length === 0){
+            console.log("player wins game");
+          }else if (this.computerHand.length === 0) {
+            console.log("computer wins game");
+          }
+          console.log("computer wins");
+          console.log(this.computerHand.length);
           break;
         };
 
-      case "characteristic2" : 
+        case "wind" : 
         if (playerValue < computerValue) {
           console.log("player wins");
           break;
@@ -418,14 +471,15 @@ Game.prototype = {
         }else {
           console.log ("computerwins");
           break;
-      };
+        };
 
-      case "characteristic3": 
-      ;
-      case "characteristic4": 
-      ;
-    } 
-  },   
+        case "characteristic3": 
+        break;
+        case "characteristic4": 
+        break;
+      }; 
+
+    },   
 
   checkGameWon: function(){
     if (this.playerHand === []){
