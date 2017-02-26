@@ -33,15 +33,33 @@ Game.prototype = {
   },
 
   displayCardCity: function(){
+    //player display
     var cardHeader = document.getElementById("player-city-header");
     var playerCityName = document.createElement('h3');
     playerCityName.innerText = this.playerHand[0].name;
-    cardHeader.appendChild(playerCityName); 
+    cardHeader.appendChild(playerCityName);
 
+    var cardHeader = document.querySelector(".player-city-image");
+    var photo = document.createElement("IMG");
+    console.log(this.playerHand[0].imagepth)
+    photo.setAttribute("src", this.playerHand[0].imagepth);
+    photo.setAttribute("width", "80%");
+    photo.setAttribute("alt", "Picture of City");
+    cardHeader.appendChild(photo);
+
+    
+    //computer display
     var cardHeader = document.getElementById("computer-city-header");
     var computerCityName = document.createElement('h3');
     computerCityName.innerText = this.computerHand[0].name;
     cardHeader.appendChild(computerCityName); 
+
+    var cardHeader = document.querySelector(".computer-city-image");
+    var photo = document.createElement("IMG");
+    photo.setAttribute("src", this.computerHand[0].imagepth);
+    photo.setAttribute("width", "80%");
+    photo.setAttribute("alt", "Picture of City");
+    cardHeader.appendChild(photo);
   },
 
   displayWeatherInfo: function(hand, cardHolder){
