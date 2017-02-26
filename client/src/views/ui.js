@@ -9,6 +9,7 @@ var UI = function() {
 game = new Game()
   var playTemp = document.getElementById("play-temp");
   playTemp.addEventListener("click", this.tempclick, game);
+  
   var playButton = document.getElementById("play-button");
   playButton.addEventListener("click", this.playButtonClick, game);
 
@@ -29,10 +30,6 @@ UI.prototype = {
     element.appendChild(pTag);
   },
 
-
-  render: function(xxxxx) {
-
-    },
 
   tempclick: function() {
     var pTemp = document.getElementById('play-temp');
