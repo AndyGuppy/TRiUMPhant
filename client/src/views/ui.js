@@ -66,14 +66,12 @@ UI.prototype = {
 
 
   playButtonClick: function(){
-<<<<<<< HEAD
-    console.log('button clicked --' + game.selected)
-    game.calculateWinner(game.selected);
-=======
+
+
 
     console.log('button clicked --' + game.selected)
     game.calculateWinner(game.selected)
->>>>>>> develop
+
     game.selected = "";
 
   }
