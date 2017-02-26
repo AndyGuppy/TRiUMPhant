@@ -4,18 +4,38 @@ var Deck = require('./deck');
 var Game = function(){
   this.playerHand = []
   this.computerHand = []
+  this.selected = ""
+
+  var deck = new Deck();
+
+  deck.all(function(result){
+    deck.getCards(result)
+    deck.shuffleCards();
+    this.dealCards(deck.cards);
+    this.getCardInfo();
+    this.displayWeatherInfo(this.playerHand, "player");
+    this.displayWeatherInfo(this.computerHand, "computer");
+  }.bind(this));
 }
 
 Game.prototype = {
 
-  dealCards: function(Deck){
+  dealCards: function(deck){
 
-    for (var i = 0; i < Deck.length/2; i++){
-      this.playerHand.push(Deck[i])
+    for (var i = 0; i < deck.length/2; i++){
+      this.playerHand.push(deck[i])
     };
-    for (var i = Deck.length/2; i < Deck.length; i++){
-      this.computerHand.push(Deck[i])
+    for (var i = deck.length/2; i < deck.length; i++){
+      this.computerHand.push(deck[i])
     };
+  },
+
+  getCardInfo: function(){
+    var cardHeader = document.getElementById("player-city-header");
+    var playerCityName = document.createElement('h3');
+    console.log('this in card', this)
+    playerCityName.innerText = this.playerHand[0].name;
+    cardHeader.appendChild(playerCityName); 
   },
 
   displayWeatherInfo: function(hand, cardHolder){
@@ -44,11 +64,6 @@ Game.prototype = {
     },
 
   getPlayerWeatherInfo:  function(data){
-    
-    var cardHeader = document.getElementById("player-city-header");
-    var playerCityName = document.createElement('h3');
-    playerCityName.innerText = data.name;
-    cardHeader.appendChild(playerCityName); 
 
     var temp = data.main.temp - 273.15;
     temp = temp.toFixed(1);
@@ -171,17 +186,17 @@ Game.prototype = {
   },
 
   calculateWinner: function(characteristic){
-    switch (characteristic){
-
+    
+    switch ("characteristic1"){
       case "temp":
-        if (playerHand[0].temp > computerHand[0].temp) {
-          return "player wins";
+        if (this.playerHand[0].temp > this.computerHand[0].temp) {
+          console.log("player wins");
           break;
-        }else if (playerHand[0].temp === computerHand[0].temp) {
-          return'draw';
+        }else if (this.playerHand[0].temp === this.computerHand[0].temp) {
+          console.log('draw');
           break;
         }else {
-          return "computer wins";
+          console.log("computer wins");
           break;
         };
 
