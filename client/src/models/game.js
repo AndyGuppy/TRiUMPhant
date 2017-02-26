@@ -4,7 +4,8 @@ var Deck = require('./deck');
 var Game = function(){
   this.playerHand = []
   this.computerHand = []
-  this.selected = ""
+
+  this.selected =""
 
   var deck = new Deck();
 
@@ -12,9 +13,10 @@ var Game = function(){
     deck.getCards(result)
     deck.shuffleCards();
     this.dealCards(deck.cards);
-    this.getCardInfo();
+
     this.displayWeatherInfo(this.playerHand, "player");
     this.displayWeatherInfo(this.computerHand, "computer");
+
   }.bind(this));
 }
 
@@ -76,6 +78,7 @@ Game.prototype = {
     this.playerHand[0].wind = wind
     this.playerHand[0].humidity = humidity
     this.playerHand[0].daylight = daylight
+    console.log(this.playerHand[0])
 
 /////////////////////////////////////////////////////////////
     var playerTemp = document.getElementById("play-temp");
@@ -190,10 +193,17 @@ Game.prototype = {
     switch ("characteristic1"){
       case "temp":
         if (this.playerHand[0].temp > this.computerHand[0].temp) {
+<<<<<<< HEAD
           console.log("player wins");
           break;
         }else if (this.playerHand[0].temp === this.computerHand[0].temp) {
           console.log('draw');
+=======
+          return "player wins";
+          break;
+        }else if (this.playerHand[0].temp === this.computerHand[0].temp) {
+          return'draw';
+>>>>>>> develop
           break;
         }else {
           console.log("computer wins");

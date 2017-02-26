@@ -2,15 +2,22 @@ var Deck = require('../models/deck');
 var Game = require('../models/game');
 var Card = require('../models/card');
 
+
+// var selected;
+
 var UI = function() {
 
-  var game = new Game();
+game = new Game()
 
   var playTemp = document.getElementById("play-temp");
   playTemp.addEventListener("click", this.tempclick, game);
   
   var playButton = document.getElementById("play-button");
   playButton.addEventListener("click", this.playButtonClick, game);
+
+
+
+
 }
 
 UI.prototype = {
@@ -27,16 +34,24 @@ UI.prototype = {
   },
 
 
+<<<<<<< HEAD
   render: function(xxxxx) {
 
   },
 
+=======
+>>>>>>> develop
   tempclick: function() {
     console.log("game in tempclick", game)
     var pTemp = document.getElementById('play-temp');
     pTemp.style.backgroundColor = "green";
     game.selected = "temp";
 
+<<<<<<< HEAD
+=======
+    
+  // needs to pass 'temp' for calculateWinner to work
+>>>>>>> develop
   },
 
   windclick: function() {
@@ -47,8 +62,14 @@ UI.prototype = {
    },
 
   playButtonClick: function(){
+<<<<<<< HEAD
     console.log('play button is clicked')
     game.calculateWinner(game.selected);  // feed in temp/wind
+=======
+    console.log('button clicked --' + game.selected)
+    console.log(game.calculateWinner(game.selected))
+
+>>>>>>> develop
 
   }
 
