@@ -6,17 +6,30 @@
 <link rel="stylesheet" type="text/css" href="./styles.css"/>
 </head>
 <body>
-
-<div id = "header">
-  <p> <h1> City Trumps </h1></p> 
-</div>
-<div class ="instructions">this is the instrutions <br>
-<button id="start-button">Start Game</button>
-</div>
-<div class = "main">
-<div class="player"><h3>Player</h3><br>
-  <div class ="pcard">PLAYERCARD FRAME COMPUTER <br>
-  <div id='player-city-header'><img src = "./images/flags/china.gif" style ="height:1%;width:4%"></div>
+  <div id = "header">
+    <p> <h1> Top "City" Trumps </h1></p> 
+  </div>
+  <div class ="instructions">
+    <p>How to play:</p>
+    <p>You should choose the attribute you think will trump the card the computer has.</p>
+    <p>What makes a good destination?</p> 
+    <ul>
+      <li>A high temperature</li>
+      <li>Low winds</li>
+      <li>Medium humidity - about 45%</li>
+      <li>Lots of daylight</li>
+      <li>A cheap flight (prices from London)</li>
+    </ul>
+    <p>Make your selection and hit play. If you win, you keep both cards, if you lose, the computer keeps them. The game is won when one player has all the cards.</p>
+    <br>
+    <div id="start">
+      <button id="start-button">Start Game</button>
+    </div>
+  </div>
+  <div class = "main">
+<div class="player"><br>
+  <div class ="pcard"><br>
+  <div id='player-city-header'><img src = "./images/flags/china.gif" style ="height:1%;width:4%"></div><br>
     <div class ="player-city-image"></div>
       <div class ="trump-items">
         <ul id= trumplist><br>
@@ -32,9 +45,9 @@
 <div class="mid">
   <button id="play-button">Play</button>
 </div>
-<div class="computer"><h3>computer</h3><br>
-  <div class ="ccard">COMPUTER FRAME COMPUTER <br>
-  <div id='computer-city-header'><img src = "./images/flags/china.gif" style ="height:1%;width:4%"></div>
+<div class="computer"><br>
+  <div class ="ccard"><br>
+  <div id='computer-city-header'><img src = "./images/flags/china.gif" style ="height:1%;width:4%"></div><br>
     <div class ="computer-city-image"></div>
       <div class ="trump-items">
         <ul id= "computer-trump-list"><br>

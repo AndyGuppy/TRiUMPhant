@@ -96,7 +96,7 @@ module.exports = Card;
 /***/ (function(module, exports, __webpack_require__) {
 
 var Card = __webpack_require__(0);
-var shuffle = __webpack_require__(4);
+var shuffle = __webpack_require__(3);
 
 var Deck = function(){
   this.cards = [];
@@ -142,7 +142,7 @@ module.exports = Deck;
 /***/ (function(module, exports, __webpack_require__) {
 
 var Deck = __webpack_require__(1);
-var Game = __webpack_require__(3);
+var Game = __webpack_require__(4);
 var Card = __webpack_require__(0);
 
 var UI = function() {
@@ -179,35 +179,35 @@ UI.prototype = {
   tempClick: function() {
     var pTemp = document.getElementById('play-temp');
     UI.prototype.resetColour();
-    pTemp.style.backgroundColor = "green";
+    pTemp.style.backgroundColor = "#5F9EA0";
     game.selected = "temp";
   },
 
   windClick: function() {
     var pWind = document.getElementById('play-wind');
     UI.prototype.resetColour();
-    pWind.style.backgroundColor = "green";
+    pWind.style.backgroundColor = "#5F9EA0";
     game.selected = "wind";
   },
 
   humidityClick: function() {
     var pHumidity = document.getElementById('play-humidity');
     UI.prototype.resetColour();
-    pHumidity.style.backgroundColor = "green";
+    pHumidity.style.backgroundColor = "#5F9EA0";
     game.selected = "humidity";
   },
 
   daylightClick: function() {
     var pDaylight = document.getElementById('play-daylight');
     UI.prototype.resetColour();
-    pDaylight.style.backgroundColor = "green";
+    pDaylight.style.backgroundColor = "#5F9EA0";
     game.selected = "daylight";
   },
 
   flightClick: function() {
     var pFlight = document.getElementById('play-flight');
     UI.prototype.resetColour();
-    pFlight.style.backgroundColor = "green";
+    pFlight.style.backgroundColor = "#5F9EA0";
     game.selected = "flight";
   },
 
@@ -221,11 +221,11 @@ UI.prototype = {
   },
 
   resetColour: function(){
-    document.getElementById('play-temp').style.backgroundColor = "ivory";
-    document.getElementById('play-wind').style.backgroundColor = "ivory";
-    document.getElementById('play-humidity').style.backgroundColor = "ivory";
-    document.getElementById('play-daylight').style.backgroundColor = "ivory";
-    document.getElementById('play-flight').style.backgroundColor = "ivory";
+    document.getElementById('play-temp').style.backgroundColor = '#F0F8FF';
+    document.getElementById('play-wind').style.backgroundColor = '#F0F8FF';
+    document.getElementById('play-humidity').style.backgroundColor = '#F0F8FF';
+    document.getElementById('play-daylight').style.backgroundColor = '#F0F8FF';
+    document.getElementById('play-flight').style.backgroundColor = '#F0F8FF';
   },
 
   startButtonClick: function(){
@@ -252,6 +252,7 @@ UI.prototype = {
     }    
     var photo = document.createElement("IMG");
     console.log(game.playerHand[0].imagepth)
+    photo.id = "image";
     photo.setAttribute("src", game.playerHand[0].imagepth);
     photo.setAttribute("width", "80%");
     photo.setAttribute("alt", "Picture of City");
@@ -312,6 +313,7 @@ UI.prototype = {
       computerCardImg.removeChild(computerCardImg.firstChild);
     }    
     var photo = document.createElement("IMG");
+    photo.id = "image";
     photo.setAttribute("src", game.computerHand[0].imagepth);
     photo.setAttribute("width", "80%");
     photo.setAttribute("alt", "Picture of City");
@@ -365,6 +367,95 @@ module.exports = UI;
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Randomize the order of the elements in a given array.
+ * @param {Array} arr - The given array.
+ * @param {Object} [options] - Optional configuration options.
+ * @param {Boolean} [options.copy] - Sets if should return a shuffled copy of the given array. By default it's a falsy value.
+ * @param {Function} [options.rng] - Specifies a custom random number generator.
+ * @returns {Array}
+ */
+function shuffle(arr, options) {
+
+  if (!Array.isArray(arr)) {
+    throw new Error('shuffle expect an array as parameter.');
+  }
+
+  options = options || {};
+
+  var collection = arr,
+      len = arr.length,
+      rng = options.rng || Math.random,
+      random,
+      temp;
+
+  if (options.copy === true) {
+    collection = arr.slice();
+  }
+
+  while (len) {
+    random = Math.floor(rng() * len);
+    len -= 1;
+    temp = collection[len];
+    collection[len] = collection[random];
+    collection[random] = temp;
+  }
+
+  return collection;
+};
+
+/**
+ * Pick one or more random elements from the given array.
+ * @param {Array} arr - The given array.
+ * @param {Object} [options] - Optional configuration options.
+ * @param {Number} [options.picks] - Specifies how many random elements you want to pick. By default it picks 1.
+ * @param {Function} [options.rng] - Specifies a custom random number generator.
+ * @returns {Object}
+ */
+shuffle.pick = function(arr, options) {
+
+  if (!Array.isArray(arr)) {
+    throw new Error('shuffle.pick() expect an array as parameter.');
+  }
+
+  options = options || {};
+
+  var rng = options.rng || Math.random,
+      picks = options.picks || 1;
+
+  if (typeof picks === 'number' && picks !== 1) {
+    var len = arr.length,
+        collection = arr.slice(),
+        random = [],
+        index;
+
+    while (picks && len) {
+      index = Math.floor(rng() * len);
+      random.push(collection[index]);
+      collection.splice(index, 1);
+      len -= 1;
+      picks -= 1;
+    }
+
+    return random;
+  }
+
+  return arr[Math.floor(rng() * arr.length)];
+};
+
+/**
+ * Expose
+ */
+module.exports = shuffle;
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Card = __webpack_require__(0);
@@ -645,95 +736,6 @@ Game.prototype = {
 
 
   module.exports = Game;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Randomize the order of the elements in a given array.
- * @param {Array} arr - The given array.
- * @param {Object} [options] - Optional configuration options.
- * @param {Boolean} [options.copy] - Sets if should return a shuffled copy of the given array. By default it's a falsy value.
- * @param {Function} [options.rng] - Specifies a custom random number generator.
- * @returns {Array}
- */
-function shuffle(arr, options) {
-
-  if (!Array.isArray(arr)) {
-    throw new Error('shuffle expect an array as parameter.');
-  }
-
-  options = options || {};
-
-  var collection = arr,
-      len = arr.length,
-      rng = options.rng || Math.random,
-      random,
-      temp;
-
-  if (options.copy === true) {
-    collection = arr.slice();
-  }
-
-  while (len) {
-    random = Math.floor(rng() * len);
-    len -= 1;
-    temp = collection[len];
-    collection[len] = collection[random];
-    collection[random] = temp;
-  }
-
-  return collection;
-};
-
-/**
- * Pick one or more random elements from the given array.
- * @param {Array} arr - The given array.
- * @param {Object} [options] - Optional configuration options.
- * @param {Number} [options.picks] - Specifies how many random elements you want to pick. By default it picks 1.
- * @param {Function} [options.rng] - Specifies a custom random number generator.
- * @returns {Object}
- */
-shuffle.pick = function(arr, options) {
-
-  if (!Array.isArray(arr)) {
-    throw new Error('shuffle.pick() expect an array as parameter.');
-  }
-
-  options = options || {};
-
-  var rng = options.rng || Math.random,
-      picks = options.picks || 1;
-
-  if (typeof picks === 'number' && picks !== 1) {
-    var len = arr.length,
-        collection = arr.slice(),
-        random = [],
-        index;
-
-    while (picks && len) {
-      index = Math.floor(rng() * len);
-      random.push(collection[index]);
-      collection.splice(index, 1);
-      len -= 1;
-      picks -= 1;
-    }
-
-    return random;
-  }
-
-  return arr[Math.floor(rng() * arr.length)];
-};
-
-/**
- * Expose
- */
-module.exports = shuffle;
-
 
 /***/ }),
 /* 5 */
