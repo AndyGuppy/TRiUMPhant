@@ -6,6 +6,7 @@ var Card = function(dbOptions){
   this.wind = {};
   this.humidity = {};
   this.daylight = {};
+  this.price = {};
 
 
 }

@@ -78,6 +78,7 @@ var Card = function(dbOptions){
   this.wind = {};
   this.humidity = {};
   this.daylight = {};
+  this.price = {};
 
 
 }
@@ -238,12 +239,15 @@ var Game = function(){
   var deck = new Deck();
 
   deck.all(function(result){
-    deck.getCards(result)
+    deck.getCards(result);
     deck.shuffleCards();
     this.dealCards(deck.cards);
     this.displayCardCity();
     this.displayWeatherInfo(this.playerHand, "player");
     this.displayWeatherInfo(this.computerHand, "computer");
+    this.displayFlightInfo(this.playerHand, "player");
+    this.displayFlightInfo(this.computerHand, "computer");
+
 
   }.bind(this));
 }
@@ -265,15 +269,35 @@ Game.prototype = {
   },
 
   displayCardCity: function(){
+    //player display
     var cardHeader = document.getElementById("player-city-header");
     var playerCityName = document.createElement('h3');
     playerCityName.innerText = this.playerHand[0].name;
-    cardHeader.appendChild(playerCityName); 
+///////////////////////////////
+    cardHeader.appendChild(playerCityName);
 
+    var cardHeader = document.querySelector(".player-city-image");
+    var photo = document.createElement("IMG");
+    console.log(this.playerHand[0].imagepth)
+    photo.setAttribute("src", this.playerHand[0].imagepth);
+    photo.setAttribute("width", "80%");
+    photo.setAttribute("alt", "Picture of City");
+    cardHeader.appendChild(photo);
+
+    
+    //computer display
     var cardHeader = document.getElementById("computer-city-header");
     var computerCityName = document.createElement('h3');
     computerCityName.innerText = this.computerHand[0].name;
+
     cardHeader.appendChild(computerCityName); 
+
+    var cardHeader = document.querySelector(".computer-city-image");
+    var photo = document.createElement("IMG");
+    photo.setAttribute("src", this.computerHand[0].imagepth);
+    photo.setAttribute("width", "80%");
+    photo.setAttribute("alt", "Picture of City");
+    cardHeader.appendChild(photo);
   },
 
   displayWeatherInfo: function(hand, cardHolder){
@@ -288,6 +312,19 @@ Game.prototype = {
     }   
   },
 
+  displayFlightInfo: function(hand, cardHolder){
+    var cardToDisplay = hand[0].skycode;
+    console.log('look here', cardToDisplay);
+
+    var url = 'http://partners.api.skyscanner.net/apiservices/browsedates/v1.0/GB/GBP/en-GB/LON/'+cardToDisplay+'/anytime/anytime?apiKey=st987503221578212781689572896099';
+
+    if (cardHolder === "player"){
+      this.makeRequest(url, this.getPlayerFlightInfo.bind(this));
+    } else {
+      this.makeRequest(url, this.getComputerFlightInfo.bind(this));
+    }
+  },
+
   makeRequest: function(url, callback){
     var request = new XMLHttpRequest();
     request.open("GET", url);
@@ -295,7 +332,7 @@ Game.prototype = {
       if (this.status != 200) return;
         var jsonString = this.responseText;
         var data = JSON.parse(jsonString);
-
+  
         callback(data);
       };
       request.send();
@@ -317,7 +354,6 @@ Game.prototype = {
     this.playerHand[0].daylight = daylight
 
 
-/////////////////////////////////////////////////////////////
     var playerTemp = document.getElementById("play-temp");
     var playerWind = document.getElementById("play-wind");
     var playerHumid = document.getElementById("play-humidity");
@@ -383,35 +419,25 @@ Game.prototype = {
 
   },
 
-  //   getPlayerFlightInfo:  function(){
-    //      if(this.status !== 200) return;
+  getPlayerFlightInfo:  function(data){
 
-    //       var jsonString = this.responseText;
-    //       var data = JSON.parse(jsonString);
-    //       console.log('this', this);
+    var price = data.Dates.OutboundDates[0].Price; 
+    this.playerHand[0].price = price;
+    var playerPrice = document.getElementById("play-flight");
+    var PriceLi = document.createElement('li');
+    PriceLi.innerText = "Flight from London: £" + price;
+    playerPrice.appendChild(PriceLi);
+  },
 
-    //       var price = "data.????"; 
-    // ///////////////////////////////////////////////////////////////
-    //       var playerPrice = document.getElementById("play-flight");
-    //       var PriceLi = document.createElement('li')
-    //       PriceLi.innerText = "Cheapest Flight: " + price;
-    //       playerPrice.appendChild(PriceLi);
-    //   },
+  getComputerFlightInfo:  function(data){
 
-    //   getComputerFlightInfo:  function(){
-      //      if(this.status !== 200) return;
-
-      //       var jsonString = this.responseText;
-      //       var data = JSON.parse(jsonString);
-      //       console.log('this', this);
-
-      //       var price = "data.????"; 
-      // ///////////////////////////////////////////////////////////////
-      //       var computerPrice = document.getElementById("comp-flight");
-      //       var PriceLi = document.createElement('li')
-      //       PriceLi.innerText = "Cheapest Flight: " + price;
-      //       computerPrice.appendChild(PriceLi);
-      //   },
+    var price = data.Dates.OutboundDates[0].Price;
+    this.computerHand[0].price = price;
+    var computerPrice = document.getElementById("comp-flight");
+    var PriceLi = document.createElement('li');
+    PriceLi.innerText = "Flight from London: £" + price;
+    computerPrice.appendChild(PriceLi);
+  },
 
   displayInfo: function(temp, wind){
     playerTemp = getElementById("play-temp");
