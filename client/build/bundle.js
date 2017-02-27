@@ -147,7 +147,9 @@ var Card = __webpack_require__(0);
 
 var UI = function() {
 
-game = new Game()
+  game = new Game()
+
+  // this.showButtonClick(game);
 
   var playTemp = document.getElementById("play-temp");
   playTemp.addEventListener("click", this.tempClick, game);
@@ -167,9 +169,8 @@ game = new Game()
   var playButton = document.getElementById("play-button");
   playButton.addEventListener("click", this.playButtonClick, game);
 
-  var showButton = document.getElementById("show-button");
-  showButton.addEventListener("click", this.showButtonClick, game);
-
+  var startButton = document.getElementById("start-button");
+  startButton.addEventListener("click", this.startButtonClick, game);
 
 }
 
@@ -187,36 +188,39 @@ UI.prototype = {
     UI.prototype.resetColour();
     pWind.style.backgroundColor = "green";
     game.selected = "wind";
-   },
+  },
 
   humidityClick: function() {
-     var pHumidity = document.getElementById('play-humidity');
-     UI.prototype.resetColour();
-     pHumidity.style.backgroundColor = "green";
-     game.selected = "humidity";
-   },
+    var pHumidity = document.getElementById('play-humidity');
+    UI.prototype.resetColour();
+    pHumidity.style.backgroundColor = "green";
+    game.selected = "humidity";
+  },
 
   daylightClick: function() {
-     var pDaylight = document.getElementById('play-daylight');
-     UI.prototype.resetColour();
-     pDaylight.style.backgroundColor = "green";
-     game.selected = "daylight";
-   },
+    var pDaylight = document.getElementById('play-daylight');
+    UI.prototype.resetColour();
+    pDaylight.style.backgroundColor = "green";
+    game.selected = "daylight";
+  },
 
-   flightClick: function() {
-      var pFlight = document.getElementById('play-flight');
-      UI.prototype.resetColour();
-      pFlight.style.backgroundColor = "green";
-      game.selected = "flight";
-    },
+  flightClick: function() {
+    var pFlight = document.getElementById('play-flight');
+    UI.prototype.resetColour();
+    pFlight.style.backgroundColor = "green";
+    game.selected = "flight";
+  },
+
   playButtonClick: function(){
     console.log('button clicked --' + game.selected)
-    game.calculateWinner(game.selected)
+    var winner = game.calculateWinner(game.selected)
     game.selected = "";
-    },
+    var ccard = document.querySelector(".ccard");
+    ccard.style.visibility = 'visible';
+    window.alert(winner);
+  },
 
   resetColour: function(){
-
     document.getElementById('play-temp').style.backgroundColor = "ivory";
     document.getElementById('play-wind').style.backgroundColor = "ivory";
     document.getElementById('play-humidity').style.backgroundColor = "ivory";
@@ -224,14 +228,19 @@ UI.prototype = {
     document.getElementById('play-flight').style.backgroundColor = "ivory";
   },
 
-  showButtonClick: function(){
+  startButtonClick: function(){
+
+    var instr = document.querySelector(".instructions");
+    instr.style.display = 'none';
+    var main = document.querySelector(".main");
+    main.style.display = 'block';
 
     UI.prototype.resetColour();
 
     console.log('button clicked --' + game.selected)
     var playerCardHeader = document.getElementById("player-city-header");
     while (playerCardHeader.hasChildNodes()) {
-        playerCardHeader.removeChild(playerCardHeader.firstChild);
+      playerCardHeader.removeChild(playerCardHeader.firstChild);
     } 
     var playerCityName = document.createElement('h3');
     playerCityName.innerText = game.playerHand[0].name;
@@ -239,7 +248,7 @@ UI.prototype = {
 
     var playerCardImg = document.querySelector(".player-city-image");
     while (playerCardImg.hasChildNodes()) {
-        playerCardImg.removeChild(playerCardImg.firstChild);
+      playerCardImg.removeChild(playerCardImg.firstChild);
     }    
     var photo = document.createElement("IMG");
     console.log(game.playerHand[0].imagepth)
@@ -255,20 +264,20 @@ UI.prototype = {
     var playerPrice = document.getElementById("play-flight");
 
     while (playerTemp.hasChildNodes()) {
-           playerTemp.removeChild(playerTemp.firstChild);
-       }
-       while (playerWind.hasChildNodes()) {
-           playerWind.removeChild(playerWind.firstChild);
-       }
-       while (playerHumid.hasChildNodes()) {
-           playerHumid.removeChild(playerHumid.firstChild);
-       }
-       while (playerDaylight.hasChildNodes()) {
-           playerDaylight.removeChild(playerDaylight.firstChild);
-       }
-       while (playerPrice.hasChildNodes()) {
-           playerPrice.removeChild(playerPrice.firstChild);
-       }
+      playerTemp.removeChild(playerTemp.firstChild);
+    }
+    while (playerWind.hasChildNodes()) {
+      playerWind.removeChild(playerWind.firstChild);
+    }
+    while (playerHumid.hasChildNodes()) {
+      playerHumid.removeChild(playerHumid.firstChild);
+    }
+    while (playerDaylight.hasChildNodes()) {
+      playerDaylight.removeChild(playerDaylight.firstChild);
+    }
+    while (playerPrice.hasChildNodes()) {
+      playerPrice.removeChild(playerPrice.firstChild);
+    }
 
     var tempLi = document.createElement('li');
     var windLi = document.createElement('li');
@@ -289,10 +298,10 @@ UI.prototype = {
     playerPrice.appendChild(PriceLi);
 
 
-    //computer display
+     //computer display
     var computerCardHeader = document.getElementById("computer-city-header");
     while (computerCardHeader.hasChildNodes()) {
-        computerCardHeader.removeChild(computerCardHeader.firstChild);
+      computerCardHeader.removeChild(computerCardHeader.firstChild);
     } 
     var computerCityName = document.createElement('h3');
     computerCityName.innerText = game.computerHand[0].name;
@@ -300,7 +309,7 @@ UI.prototype = {
 
     var computerCardImg = document.querySelector(".computer-city-image");
     while (computerCardImg.hasChildNodes()) {
-        computerCardImg.removeChild(computerCardImg.firstChild);
+      computerCardImg.removeChild(computerCardImg.firstChild);
     }    
     var photo = document.createElement("IMG");
     photo.setAttribute("src", game.computerHand[0].imagepth);
@@ -314,26 +323,24 @@ UI.prototype = {
     var computerDaylight = document.getElementById("comp-daylight");
     var computerPrice = document.getElementById("comp-flight");
 
-      while (computerTemp.hasChildNodes()) {
-           computerTemp.removeChild(computerTemp.firstChild);
-       }
-       while (computerWind.hasChildNodes()) {
-           computerWind.removeChild(computerWind.firstChild);
-       }
-       while (computerHumid.hasChildNodes()) {
-           computerHumid.removeChild(computerHumid.firstChild);
-       }
-       while (computerDaylight.hasChildNodes()) {
-           computerDaylight.removeChild(computerDaylight.firstChild);
-       }
+    while (computerTemp.hasChildNodes()) {
+     computerTemp.removeChild(computerTemp.firstChild);
+    }
+    while (computerWind.hasChildNodes()) {
+     computerWind.removeChild(computerWind.firstChild);
+    }
+    while (computerHumid.hasChildNodes()) {
+     computerHumid.removeChild(computerHumid.firstChild);
+    }
+    while (computerDaylight.hasChildNodes()) {
+     computerDaylight.removeChild(computerDaylight.firstChild);
+    }
 
     var tempLi = document.createElement('li')
     var windLi = document.createElement('li')
     var humidLi = document.createElement('li')
     var dayLi = document.createElement('li')
     var PriceLi = document.createElement('li');
-    
-
 
     tempLi.innerText = "Temperature: " + game.computerHand[0].temp + " C";
     windLi.innerText = "Wind: " + game.computerHand[0].wind + " m/s";
@@ -341,23 +348,17 @@ UI.prototype = {
     dayLi.innerText = "Daylight: " + game.computerHand[0].daylight + " hours";
     PriceLi.innerText = "Flight from London: £" + game.computerHand[0].price;
 
-
     computerTemp.appendChild(tempLi);
     computerWind.appendChild(windLi);
     computerHumid.appendChild(humidLi);
     computerDaylight.appendChild(dayLi);
     computerPrice.appendChild(PriceLi);
 
-    
-    
-    
 
-
-  }
-
+  },
 
 }
-  
+
 
 module.exports = UI;
 
@@ -512,10 +513,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.playerHand.push(playerCard);
           this.playerHand.push(computerCard);
-         
-          
-          
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
 
@@ -531,8 +528,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.computerHand.push(playerCard);
           this.computerHand.push(computerCard);
-          
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
          
@@ -552,8 +547,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.computerHand.push(playerCard);
           this.computerHand.push(computerCard);
-          
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
           
@@ -569,8 +562,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.computerHand.push(playerCard);
           this.computerHand.push(computerCard);
-          
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
           console.log("computer wins");
@@ -587,8 +578,7 @@ Game.prototype = {
           this.playerHand.shift();
           this.computerHand.shift();
           this.playerHand.push(playerCard);
-          this.playerHand.push(computerCard);       
-          this.displayCardCity();
+          this.playerHand.push(computerCard);
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
           console.log('player wins');
@@ -600,8 +590,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.computerHand.push(playerCard);
           this.computerHand.push(computerCard);
-          
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
           console.log("computer wins");
@@ -616,10 +604,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.playerHand.push(playerCard);
           this.playerHand.push(computerCard);
-                   
-                    
-                    
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
           console.log('player wins');
@@ -631,8 +615,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.computerHand.push(playerCard);
           this.computerHand.push(computerCard);
-          
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
           console.log("computer wins");

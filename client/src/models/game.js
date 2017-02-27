@@ -144,10 +144,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.playerHand.push(playerCard);
           this.playerHand.push(computerCard);
-         
-          
-          
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
 
@@ -163,8 +159,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.computerHand.push(playerCard);
           this.computerHand.push(computerCard);
-          
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
          
@@ -184,8 +178,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.computerHand.push(playerCard);
           this.computerHand.push(computerCard);
-          
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
           
@@ -201,8 +193,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.computerHand.push(playerCard);
           this.computerHand.push(computerCard);
-          
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
           console.log("computer wins");
@@ -219,8 +209,7 @@ Game.prototype = {
           this.playerHand.shift();
           this.computerHand.shift();
           this.playerHand.push(playerCard);
-          this.playerHand.push(computerCard);       
-          this.displayCardCity();
+          this.playerHand.push(computerCard);
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
           console.log('player wins');
@@ -232,8 +221,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.computerHand.push(playerCard);
           this.computerHand.push(computerCard);
-          
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
           console.log("computer wins");
@@ -248,10 +235,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.playerHand.push(playerCard);
           this.playerHand.push(computerCard);
-                   
-                    
-                    
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
           console.log('player wins');
@@ -263,8 +246,6 @@ Game.prototype = {
           this.computerHand.shift();
           this.computerHand.push(playerCard);
           this.computerHand.push(computerCard);
-          
-          this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
           console.log("computer wins");
