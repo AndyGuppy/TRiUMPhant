@@ -42,7 +42,49 @@ db.cities.insert([
       skycode:"JFK",
       country: "United States",
       flag: "unitedstates.gif"
-    }
+    },
+    { 
+      name: "Edinburgh",
+      imagepth: "./images/edinburgh.jpg",
+      skycode:"EDI",
+      country: "Scotland",
+      flag: "scotland.gif"
+    },
+    { 
+      name: "Rio De Janeiro",
+      imagepth: "./images/rio.jpg",
+      skycode:"GIG",
+      country: "Brazil",
+      flag: "brazil.gif"
+    },
+    { 
+      name: "Sydney",
+      imagepth: "./images/sydney.jpg",
+      skycode:"SYD",
+      country: "Australia",
+      flag: "australia.gif"
+    },
+    { 
+      name: "Barcelona",
+      imagepth: "./images/barcelona.jpg",
+      skycode:"MAD",
+      country: "Spain",
+      flag: "spain.gif"
+    },
+    { 
+      name: "Amsterdam",
+      imagepth: "./images/amsterdam.jpg",
+      skycode:"AMS",
+      country: "Netherlands",
+      flag: "netherlands.gif"
+    },
+    { 
+      name: "Los Angeles",
+      imagepth: "./images/la.jpg",
+      skycode:"LAX",
+      country: "United States",
+      flag: "unitedstates.gif"
+    },
   ]
 );
 
