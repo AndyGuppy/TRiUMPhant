@@ -5,29 +5,37 @@ var Game = function(){
   this.playerHand = []
   this.computerHand = []
 
+
   this.selected =""
 
   var deck = new Deck();
 
   deck.all(function(result){
-    deck.getCards(result)
+    deck.getCards(result);
     deck.shuffleCards();
     this.dealCards(deck.cards);
     this.displayWeatherInfo(this.playerHand, "player");
     this.displayWeatherInfo(this.computerHand, "computer");
+    this.displayFlightInfo(this.playerHand, "player");
+    this.displayFlightInfo(this.computerHand, "computer");
+
 
   }.bind(this));
 }
 
 Game.prototype = {
 
+
   dealCards: function(deck){
+
 
     for (var i = 0; i < deck.length/2; i++){
       this.playerHand.push(deck[i])
     };
+
     for (var i = deck.length/2; i < deck.length; i++){
       this.computerHand.push(deck[i])
+
     };
   },
 
@@ -44,6 +52,19 @@ Game.prototype = {
     }   
   },
 
+  displayFlightInfo: function(hand, cardHolder){
+    var cardToDisplay = hand[0].skycode;
+    console.log('look here', cardToDisplay);
+
+    var url = 'http://partners.api.skyscanner.net/apiservices/browsedates/v1.0/GB/GBP/en-GB/LON/'+cardToDisplay+'/anytime/anytime?apiKey=st987503221578212781689572896099';
+
+    if (cardHolder === "player"){
+      this.makeRequest(url, this.getPlayerFlightInfo.bind(this));
+    } else {
+      this.makeRequest(url, this.getComputerFlightInfo.bind(this));
+    }
+  },
+
   makeRequest: function(url, callback){
     var request = new XMLHttpRequest();
     request.open("GET", url);
@@ -51,7 +72,7 @@ Game.prototype = {
       if (this.status != 200) return;
         var jsonString = this.responseText;
         var data = JSON.parse(jsonString);
-
+  
         callback(data);
       };
       request.send();
@@ -66,11 +87,11 @@ Game.prototype = {
     var daylight = (data.sys.sunset - data.sys.sunrise) / 60 / 60;
     daylight = daylight.toFixed(1)
 
+
     this.playerHand[0].temp = temp
     this.playerHand[0].wind = wind
     this.playerHand[0].humidity = humidity
     this.playerHand[0].daylight = daylight
-
 
 
   },
@@ -89,80 +110,185 @@ Game.prototype = {
     this.computerHand[0].humidity = humidity
     this.computerHand[0].daylight = daylight
 
+    
+
+
   },
 
-  //   getPlayerFlightInfo:  function(){
-    //      if(this.status !== 200) return;
+  getPlayerFlightInfo:  function(data){
 
-    //       var jsonString = this.responseText;
-    //       var data = JSON.parse(jsonString);
-    //       console.log('this', this);
+    var price = data.Dates.OutboundDates[0].Price; 
+    this.playerHand[0].price = price;
+    var playerPrice = document.getElementById("play-flight");
+    var PriceLi = document.createElement('li');
+    PriceLi.innerText = "Flight from London: £" + price;
+    playerPrice.appendChild(PriceLi);
+  },
 
-    //       var price = "data.????"; 
-    // ///////////////////////////////////////////////////////////////
-    //       var playerPrice = document.getElementById("play-flight");
-    //       var PriceLi = document.createElement('li')
-    //       PriceLi.innerText = "Cheapest Flight: " + price;
-    //       playerPrice.appendChild(PriceLi);
-    //   },
+  getComputerFlightInfo:  function(data){
 
-    //   getComputerFlightInfo:  function(){
-      //      if(this.status !== 200) return;
+    var price = data.Dates.OutboundDates[0].Price;
+    this.computerHand[0].price = price;
+    var computerPrice = document.getElementById("comp-flight");
+    var PriceLi = document.createElement('li');
+    PriceLi.innerText = "Flight from London: £" + price;
+    computerPrice.appendChild(PriceLi);
+  },
 
-      //       var jsonString = this.responseText;
-      //       var data = JSON.parse(jsonString);
-      //       console.log('this', this);
-
-      //       var price = "data.????"; 
-      // ///////////////////////////////////////////////////////////////
-      //       var computerPrice = document.getElementById("comp-flight");
-      //       var PriceLi = document.createElement('li')
-      //       PriceLi.innerText = "Cheapest Flight: " + price;
-      //       computerPrice.appendChild(PriceLi);
-      //   },
 
 
   calculateWinner: function(characteristic){
     
     switch (characteristic){
+
       case "temp":
         if (this.playerHand[0].temp > this.computerHand[0].temp) {
+
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.playerHand.push(playerCard);
+          this.playerHand.push(computerCard);
+         
+          
+          
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+
           console.log("player wins");
-          break;
-        }else if (this.playerHand[0].temp === this.computerHand[0].temp) {
-          console.log("draw");
+
+          console.log("player hand", this.playerHand.length);
+
           break;
         }else {
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.computerHand.push(playerCard);
+          this.computerHand.push(computerCard);
+          
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+         
+         
           console.log("computer wins");
+          console.log("computer hand", this.computerHand.length);
           break;
         };
 
-      case "wind" : 
-        if (playerValue < computerValue) {
-          console.log("player wins");
-          break;
-        }else if (playerValue === computerValue) {
-          console.log("draw");
+
+        case "wind" : 
+
+        if (this.playerHand[0].wind < this.computerHand[0].wind) {
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.computerHand.push(playerCard);
+          this.computerHand.push(computerCard);
+          
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+          
+          
+          console.log("computer wins");
+          console.log("computer hand", this.computerHand.length);
+
           break;
         }else {
-          console.log ("computerwins");
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.computerHand.push(playerCard);
+          this.computerHand.push(computerCard);
+          
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+          console.log("computer wins");
+          console.log("computer hand", this.computerHand.length);
           break;
-      };
+        };
 
-      case "characteristic3": 
-      ;
-      case "characteristic4": 
-      ;
-    } 
-  },   
+        case "humidity": 
+        var playerHumidity = Math.abs(this.playerHand[0].humidity - 45);
+        var computerHumidity = Math.abs(this.computerHand[0].humidity - 45);
+        if (playerHumidity < computerHumidity){
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.playerHand.push(playerCard);
+          this.playerHand.push(computerCard);
+                   
+                    
+                    
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+          console.log('player wins');
+          console.log("player hand", this.playerHand.length);
+        }else {
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.computerHand.push(playerCard);
+          this.computerHand.push(computerCard);
+          
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+          console.log("computer wins");
+          console.log("computer hand", this.computerHand.length);          
+        }
+        break;
+        case "daylight": 
+        if (this.playerHand[0].daylight > this.computerHand[0].daylight){
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.playerHand.push(playerCard);
+          this.playerHand.push(computerCard);
+                   
+                    
+                    
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+          console.log('player wins');
+          console.log("player hand", this.playerHand.length);
+        }else{
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.computerHand.push(playerCard);
+          this.computerHand.push(computerCard);
+          
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+          console.log("computer wins");
+          console.log("computer hand", this.computerHand.length);
+        }
+        break;
+      }; 
+
+    },   
 
   checkGameWon: function(){
-    if (this.playerHand === []){
+    if(this.playerHand.length === 0){
+      computerWon();
+    }else if (this.computerHand.length === 0) {
       playerWon();
-    } else {
-      if (this.computerHand === []){
-        computerWon()
-      }
     }
   },
 
@@ -175,8 +301,6 @@ Game.prototype = {
   }
 
 }
-
-
 
 
   module.exports = Game;

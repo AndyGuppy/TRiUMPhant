@@ -188,6 +188,7 @@ UI.prototype = {
     computerWind.appendChild(windLi);
     computerHumid.appendChild(humidLi);
     computerDaylight.appendChild(dayLi);
+
   }
 
 
