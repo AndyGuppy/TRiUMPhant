@@ -21,7 +21,7 @@ body {
 }
 
 .mid{
-  background-color: gray;
+  background-color: black;
   color: ivory;
   border-radius: 25px;
   text-align: center;
@@ -38,7 +38,7 @@ body {
 
 }
 
-#comp-temp:hover, #comp-wind:hover, #comp-humidity:hover, #comp-daylight:hover, #play-temp:hover, #play-wind:hover, #play-humidity:hover, #play-daylight:hover{background-color: red;}
+#play-temp:hover, #play-wind:hover, #play-humidity:hover, #play-daylight:hover{background-color: red;}
 
 .card{
   margin: 0 auto;
@@ -83,5 +83,16 @@ body {
 
 }
 h3 {
-    display: inline;
+  display: inline;
+}
+
+button{
+  background-color: cyan;
+  width: 95%;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 8px;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }

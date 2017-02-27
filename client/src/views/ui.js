@@ -21,57 +21,175 @@ game = new Game()
   var playButton = document.getElementById("play-button");
   playButton.addEventListener("click", this.playButtonClick, game);
 
+  var showButton = document.getElementById("show-button");
+  showButton.addEventListener("click", this.showButtonClick, game);
+
+
 }
 
 UI.prototype = {
 
-  createText: function(text, label) {
-    var p = document.createElement('p');
-    p.innerHTML = label + text;
-    return p;
-  },
-
-  appendText: function(element, text, label) {
-    var pTag = this.createText(text, label);
-    element.appendChild(pTag);
-  },
-
   tempClick: function() {
     var pTemp = document.getElementById('play-temp');
-    game.resetColour();
+    UI.prototype.resetColour();
     pTemp.style.backgroundColor = "green";
     game.selected = "temp";
   },
 
   windClick: function() {
     var pWind = document.getElementById('play-wind');
-    game.resetColour();
+    UI.prototype.resetColour();
     pWind.style.backgroundColor = "green";
     game.selected = "wind";
    },
 
-   humidityClick: function() {
+  humidityClick: function() {
      var pHumidity = document.getElementById('play-humidity');
-     game.resetColour();
+     UI.prototype.resetColour();
      pHumidity.style.backgroundColor = "green";
      game.selected = "humidity";
    },
 
-   daylightClick: function() {
+  daylightClick: function() {
      var pDaylight = document.getElementById('play-daylight');
-     game.resetColour();
+     UI.prototype.resetColour();
      pDaylight.style.backgroundColor = "green";
      game.selected = "daylight";
    },
 
 
   playButtonClick: function(){
-
     console.log('button clicked --' + game.selected)
     game.calculateWinner(game.selected)
     game.selected = "";
+    },
 
+  resetColour: function(){
+
+    document.getElementById('play-temp').style.backgroundColor = "ivory";
+    document.getElementById('play-wind').style.backgroundColor = "ivory";
+    document.getElementById('play-humidity').style.backgroundColor = "ivory";
+    document.getElementById('play-daylight').style.backgroundColor = "ivory";
+
+  },
+
+  showButtonClick: function(){
+
+    UI.prototype.resetColour();
+
+    console.log('button clicked --' + game.selected)
+    var playerCardHeader = document.getElementById("player-city-header");
+    while (playerCardHeader.hasChildNodes()) {
+        playerCardHeader.removeChild(playerCardHeader.firstChild);
+    } 
+    var playerCityName = document.createElement('h3');
+    playerCityName.innerText = game.playerHand[0].name;
+    playerCardHeader.appendChild(playerCityName);
+
+    var playerCardImg = document.querySelector(".player-city-image");
+    while (playerCardImg.hasChildNodes()) {
+        playerCardImg.removeChild(playerCardImg.firstChild);
+    }    
+    var photo = document.createElement("IMG");
+    console.log(game.playerHand[0].imagepth)
+    photo.setAttribute("src", game.playerHand[0].imagepth);
+    photo.setAttribute("width", "80%");
+    photo.setAttribute("alt", "Picture of City");
+    playerCardImg.appendChild(photo);
+
+    var playerTemp = document.getElementById("play-temp");
+    var playerWind = document.getElementById("play-wind");
+    var playerHumid = document.getElementById("play-humidity");
+    var playerDaylight = document.getElementById("play-daylight");
+
+    while (playerTemp.hasChildNodes()) {
+           playerTemp.removeChild(playerTemp.firstChild);
+       }
+       while (playerWind.hasChildNodes()) {
+           playerWind.removeChild(playerWind.firstChild);
+       }
+       while (playerHumid.hasChildNodes()) {
+           playerHumid.removeChild(playerHumid.firstChild);
+       }
+       while (playerDaylight.hasChildNodes()) {
+           playerDaylight.removeChild(playerDaylight.firstChild);
+       }
+
+    var tempLi = document.createElement('li');
+    var windLi = document.createElement('li');
+    var humidLi = document.createElement('li');
+    var dayLi = document.createElement('li');
+
+
+    tempLi.innerText = "Temperature: " + game.playerHand[0].temp + " C";
+    windLi.innerText = "Wind: " + game.playerHand[0].wind + " m/s";
+    humidLi.innerText = "Humidity: " + game.playerHand[0].humidity + " %";
+    dayLi.innerText = "Daylight: " + game.playerHand[0].daylight + " hours";
+
+
+    playerTemp.appendChild(tempLi);
+    playerWind.appendChild(windLi);
+    playerHumid.appendChild(humidLi);
+    playerDaylight.appendChild(dayLi);
+
+
+    
+    //computer display
+    var computerCardHeader = document.getElementById("computer-city-header");
+    while (computerCardHeader.hasChildNodes()) {
+        computerCardHeader.removeChild(computerCardHeader.firstChild);
+    } 
+    var computerCityName = document.createElement('h3');
+    computerCityName.innerText = game.computerHand[0].name;
+    computerCardHeader.appendChild(computerCityName); 
+
+    var computerCardImg = document.querySelector(".computer-city-image");
+    while (computerCardImg.hasChildNodes()) {
+        computerCardImg.removeChild(computerCardImg.firstChild);
+    }    
+    var photo = document.createElement("IMG");
+    photo.setAttribute("src", game.computerHand[0].imagepth);
+    photo.setAttribute("width", "80%");
+    photo.setAttribute("alt", "Picture of City");
+    computerCardImg.appendChild(photo);
+
+    var computerTemp = document.getElementById("comp-temp");
+    var computerWind = document.getElementById("comp-wind");
+    var computerHumid = document.getElementById("comp-humidity");
+    var computerDaylight = document.getElementById("comp-daylight");
+
+      while (computerTemp.hasChildNodes()) {
+           computerTemp.removeChild(computerTemp.firstChild);
+       }
+       while (computerWind.hasChildNodes()) {
+           computerWind.removeChild(computerWind.firstChild);
+       }
+       while (computerHumid.hasChildNodes()) {
+           computerHumid.removeChild(computerHumid.firstChild);
+       }
+       while (computerDaylight.hasChildNodes()) {
+           computerDaylight.removeChild(computerDaylight.firstChild);
+       }
+
+    var tempLi = document.createElement('li')
+    var windLi = document.createElement('li')
+    var humidLi = document.createElement('li')
+    var dayLi = document.createElement('li')
+    
+
+
+    tempLi.innerText = "Temperature: " + game.computerHand[0].temp + " C";
+    windLi.innerText = "Wind: " + game.computerHand[0].wind + " m/s";
+    humidLi.innerText = "Humidity: " + game.computerHand[0].humidity + " %";
+    dayLi.innerText = "Daylight: " + game.computerHand[0].daylight + " hours";
+
+
+    computerTemp.appendChild(tempLi);
+    computerWind.appendChild(windLi);
+    computerHumid.appendChild(humidLi);
+    computerDaylight.appendChild(dayLi);
   }
+
 
 }
   

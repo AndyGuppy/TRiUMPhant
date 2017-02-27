@@ -13,7 +13,6 @@ var Game = function(){
     deck.getCards(result)
     deck.shuffleCards();
     this.dealCards(deck.cards);
-    this.displayCardCity();
     this.displayWeatherInfo(this.playerHand, "player");
     this.displayWeatherInfo(this.computerHand, "computer");
 
@@ -32,35 +31,6 @@ Game.prototype = {
     };
   },
 
-  displayCardCity: function(){
-    //player display
-    var cardHeader = document.getElementById("player-city-header");
-    var playerCityName = document.createElement('h3');
-    playerCityName.innerText = this.playerHand[0].name;
-    cardHeader.appendChild(playerCityName);
-
-    var cardHeader = document.querySelector(".player-city-image");
-    var photo = document.createElement("IMG");
-    console.log(this.playerHand[0].imagepth)
-    photo.setAttribute("src", this.playerHand[0].imagepth);
-    photo.setAttribute("width", "80%");
-    photo.setAttribute("alt", "Picture of City");
-    cardHeader.appendChild(photo);
-
-    
-    //computer display
-    var cardHeader = document.getElementById("computer-city-header");
-    var computerCityName = document.createElement('h3');
-    computerCityName.innerText = this.computerHand[0].name;
-    cardHeader.appendChild(computerCityName); 
-
-    var cardHeader = document.querySelector(".computer-city-image");
-    var photo = document.createElement("IMG");
-    photo.setAttribute("src", this.computerHand[0].imagepth);
-    photo.setAttribute("width", "80%");
-    photo.setAttribute("alt", "Picture of City");
-    cardHeader.appendChild(photo);
-  },
 
   displayWeatherInfo: function(hand, cardHolder){
     var cardToDisplay = hand[0].name;
@@ -101,29 +71,7 @@ Game.prototype = {
     this.playerHand[0].humidity = humidity
     this.playerHand[0].daylight = daylight
 
-/////////////////////////////////////////////////////////////
-    var playerTemp = document.getElementById("play-temp");
-    var playerWind = document.getElementById("play-wind");
-    var playerHumid = document.getElementById("play-humidity");
-    var playerDaylight = document.getElementById("play-daylight");
 
-
-    var tempLi = document.createElement('li');
-    var windLi = document.createElement('li');
-    var humidLi = document.createElement('li');
-    var dayLi = document.createElement('li');
-
-
-    tempLi.innerText = "Temperature: " + temp + " C";
-    windLi.innerText = "Wind: " + wind + " m/s";
-    humidLi.innerText = "Humidity: " + humidity + " %";
-    dayLi.innerText = "Daylight: " + daylight + " hours";
-
-
-    playerTemp.appendChild(tempLi);
-    playerWind.appendChild(windLi);
-    playerHumid.appendChild(humidLi);
-    playerDaylight.appendChild(dayLi);
 
   },
 
@@ -140,30 +88,6 @@ Game.prototype = {
     this.computerHand[0].wind = wind
     this.computerHand[0].humidity = humidity
     this.computerHand[0].daylight = daylight
-    
-  /////////////////////////////////////////////////////////////
-    var computerTemp = document.getElementById("comp-temp");
-    var computerWind = document.getElementById("comp-wind");
-    var computerHumid = document.getElementById("comp-humidity");
-    var computerDaylight = document.getElementById("comp-daylight");
-
-
-    var tempLi = document.createElement('li')
-    var windLi = document.createElement('li')
-    var humidLi = document.createElement('li')
-    var dayLi = document.createElement('li')
-
-
-    tempLi.innerText = "Temperature: " + temp + " C";
-    windLi.innerText = "Wind: " + wind + " m/s";
-    humidLi.innerText = "Humidity: " + humidity + " %";
-    dayLi.innerText = "Daylight: " + daylight + " hours";
-
-
-    computerTemp.appendChild(tempLi);
-    computerWind.appendChild(windLi);
-    computerHumid.appendChild(humidLi);
-    computerDaylight.appendChild(dayLi);
 
   },
 
@@ -197,20 +121,6 @@ Game.prototype = {
       //       computerPrice.appendChild(PriceLi);
       //   },
 
-  displayInfo: function(temp, wind){
-    playerTemp = getElementById("play-temp");
-    playerWind = getElementById("play-wind");
-
-    playerTemp.innerText = "Temperature: " + temp;
-    playerWind.innerText = "Wind: " + wind;
-  },
-
-  resetColour: function(){  //really doesn't belong here!
-    document.getElementById('play-temp').style.backgroundColor = "ivory";
-    document.getElementById('play-wind').style.backgroundColor = "ivory";
-    document.getElementById('play-humidity').style.backgroundColor = "ivory";
-    document.getElementById('play-daylight').style.backgroundColor = "ivory";
-  },
 
   calculateWinner: function(characteristic){
     
