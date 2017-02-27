@@ -161,6 +161,9 @@ game = new Game()
   var playDaylight = document.getElementById("play-daylight");
   playDaylight.addEventListener("click", this.daylightClick, game);
 
+  var playFlight = document.getElementById("play-flight");
+  playFlight.addEventListener("click", this.flightClick, game);
+
   var playButton = document.getElementById("play-button");
   playButton.addEventListener("click", this.playButtonClick, game);
 
@@ -200,7 +203,12 @@ UI.prototype = {
      game.selected = "daylight";
    },
 
-
+   flightClick: function() {
+      var pFlight = document.getElementById('play-flight');
+      UI.prototype.resetColour();
+      pFlight.style.backgroundColor = "green";
+      game.selected = "flight";
+    },
   playButtonClick: function(){
     console.log('button clicked --' + game.selected)
     game.calculateWinner(game.selected)
@@ -213,7 +221,7 @@ UI.prototype = {
     document.getElementById('play-wind').style.backgroundColor = "ivory";
     document.getElementById('play-humidity').style.backgroundColor = "ivory";
     document.getElementById('play-daylight').style.backgroundColor = "ivory";
-
+    document.getElementById('play-flight').style.backgroundColor = "ivory";
   },
 
   showButtonClick: function(){
@@ -244,6 +252,7 @@ UI.prototype = {
     var playerWind = document.getElementById("play-wind");
     var playerHumid = document.getElementById("play-humidity");
     var playerDaylight = document.getElementById("play-daylight");
+    var playerPrice = document.getElementById("play-flight");
 
     while (playerTemp.hasChildNodes()) {
            playerTemp.removeChild(playerTemp.firstChild);
@@ -257,26 +266,29 @@ UI.prototype = {
        while (playerDaylight.hasChildNodes()) {
            playerDaylight.removeChild(playerDaylight.firstChild);
        }
+       while (playerPrice.hasChildNodes()) {
+           playerPrice.removeChild(playerPrice.firstChild);
+       }
 
     var tempLi = document.createElement('li');
     var windLi = document.createElement('li');
     var humidLi = document.createElement('li');
     var dayLi = document.createElement('li');
-
+    var PriceLi = document.createElement('li');
 
     tempLi.innerText = "Temperature: " + game.playerHand[0].temp + " C";
     windLi.innerText = "Wind: " + game.playerHand[0].wind + " m/s";
     humidLi.innerText = "Humidity: " + game.playerHand[0].humidity + " %";
     dayLi.innerText = "Daylight: " + game.playerHand[0].daylight + " hours";
-
+    PriceLi.innerText = "Flight from London: £" + game.playerHand[0].price;
 
     playerTemp.appendChild(tempLi);
     playerWind.appendChild(windLi);
     playerHumid.appendChild(humidLi);
     playerDaylight.appendChild(dayLi);
+    playerPrice.appendChild(PriceLi);
 
 
-    
     //computer display
     var computerCardHeader = document.getElementById("computer-city-header");
     while (computerCardHeader.hasChildNodes()) {
@@ -300,6 +312,7 @@ UI.prototype = {
     var computerWind = document.getElementById("comp-wind");
     var computerHumid = document.getElementById("comp-humidity");
     var computerDaylight = document.getElementById("comp-daylight");
+    var computerPrice = document.getElementById("comp-flight");
 
       while (computerTemp.hasChildNodes()) {
            computerTemp.removeChild(computerTemp.firstChild);
@@ -318,6 +331,7 @@ UI.prototype = {
     var windLi = document.createElement('li')
     var humidLi = document.createElement('li')
     var dayLi = document.createElement('li')
+    var PriceLi = document.createElement('li');
     
 
 
@@ -325,12 +339,19 @@ UI.prototype = {
     windLi.innerText = "Wind: " + game.computerHand[0].wind + " m/s";
     humidLi.innerText = "Humidity: " + game.computerHand[0].humidity + " %";
     dayLi.innerText = "Daylight: " + game.computerHand[0].daylight + " hours";
+    PriceLi.innerText = "Flight from London: £" + game.computerHand[0].price;
 
 
     computerTemp.appendChild(tempLi);
     computerWind.appendChild(windLi);
     computerHumid.appendChild(humidLi);
     computerDaylight.appendChild(dayLi);
+    computerPrice.appendChild(PriceLi);
+
+    
+    
+    
+
 
   }
 
@@ -466,20 +487,14 @@ Game.prototype = {
 
     var price = data.Dates.OutboundDates[0].Price; 
     this.playerHand[0].price = price;
-    var playerPrice = document.getElementById("play-flight");
-    var PriceLi = document.createElement('li');
-    PriceLi.innerText = "Flight from London: £" + price;
-    playerPrice.appendChild(PriceLi);
+
   },
 
   getComputerFlightInfo:  function(data){
 
     var price = data.Dates.OutboundDates[0].Price;
     this.computerHand[0].price = price;
-    var computerPrice = document.getElementById("comp-flight");
-    var PriceLi = document.createElement('li');
-    PriceLi.innerText = "Flight from London: £" + price;
-    computerPrice.appendChild(PriceLi);
+
   },
 
 
@@ -572,10 +587,7 @@ Game.prototype = {
           this.playerHand.shift();
           this.computerHand.shift();
           this.playerHand.push(playerCard);
-          this.playerHand.push(computerCard);
-                   
-                    
-                    
+          this.playerHand.push(computerCard);       
           this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");

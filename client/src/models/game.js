@@ -119,20 +119,14 @@ Game.prototype = {
 
     var price = data.Dates.OutboundDates[0].Price; 
     this.playerHand[0].price = price;
-    var playerPrice = document.getElementById("play-flight");
-    var PriceLi = document.createElement('li');
-    PriceLi.innerText = "Flight from London: £" + price;
-    playerPrice.appendChild(PriceLi);
+
   },
 
   getComputerFlightInfo:  function(data){
 
     var price = data.Dates.OutboundDates[0].Price;
     this.computerHand[0].price = price;
-    var computerPrice = document.getElementById("comp-flight");
-    var PriceLi = document.createElement('li');
-    PriceLi.innerText = "Flight from London: £" + price;
-    computerPrice.appendChild(PriceLi);
+
   },
 
 
@@ -225,10 +219,7 @@ Game.prototype = {
           this.playerHand.shift();
           this.computerHand.shift();
           this.playerHand.push(playerCard);
-          this.playerHand.push(computerCard);
-                   
-                    
-                    
+          this.playerHand.push(computerCard);       
           this.displayCardCity();
           this.displayWeatherInfo(this.playerHand, "player");
           this.displayWeatherInfo(this.computerHand, "computer");
