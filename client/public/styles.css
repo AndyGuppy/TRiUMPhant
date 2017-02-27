@@ -50,7 +50,18 @@ body {
   height:90%;
 }
 
-.city-image{
+.player-city-image{
+  margin: 0 auto;
+  border-radius: 18px;
+  background-color: white;
+  background-border: black;
+  background-border-width: 2px;
+  width:75%;
+  height:30%;
+
+}
+
+.computer-city-image{
   margin: 0 auto;
   border-radius: 18px;
   background-color: white;
