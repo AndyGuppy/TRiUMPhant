@@ -96,16 +96,12 @@ Game.prototype = {
     var playerDaylight = document.getElementById("play-daylight");
 
 
-    // var tempLi = document.createElement('li');
-    // var windLi = document.createElement('li');
-    // var humidLi = document.createElement('li');
-    // var dayLi = document.createElement('li');
+    var tempLi = document.createElement('li');
+    var windLi = document.createElement('li');
+    var humidLi = document.createElement('li');
+    var dayLi = document.createElement('li');
 
 
-    var tempLi = document.getElementById('pTempLi');
-    var windLi = document.getElementById('pWindLi');
-    var humidLi = document.getElementById('pHumidLi');
-    var dayLi = document.getElementById('pDayLi');
 
     tempLi.innerText = "Temperature: " + temp + " C";
     windLi.innerText = "Wind: " + wind + " m/s";
