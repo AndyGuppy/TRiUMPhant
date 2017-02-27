@@ -73,7 +73,7 @@ UI.prototype = {
     game.calculateWinner(game.selected)
 
     game.selected = "";
-
+    game.resetColour();
   }
 
 }

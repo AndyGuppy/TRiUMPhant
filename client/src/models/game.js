@@ -36,11 +36,17 @@ Game.prototype = {
     var cardHeader = document.getElementById("player-city-header");
     var playerCityName = document.createElement('h3');
     playerCityName.innerText = this.playerHand[0].name;
+    while (cardHeader.hasChildNodes()) {
+         cardHeader.removeChild(cardHeader.firstChild);
+     }
     cardHeader.appendChild(playerCityName); 
 
     var cardHeader = document.getElementById("computer-city-header");
     var computerCityName = document.createElement('h3');
     computerCityName.innerText = this.computerHand[0].name;
+    while (cardHeader.hasChildNodes()) {
+         cardHeader.removeChild(cardHeader.firstChild);
+     }
     cardHeader.appendChild(computerCityName); 
   },
 
@@ -90,11 +96,16 @@ Game.prototype = {
     var playerDaylight = document.getElementById("play-daylight");
 
 
-    var tempLi = document.createElement('li');
-    var windLi = document.createElement('li');
-    var humidLi = document.createElement('li');
-    var dayLi = document.createElement('li');
+    // var tempLi = document.createElement('li');
+    // var windLi = document.createElement('li');
+    // var humidLi = document.createElement('li');
+    // var dayLi = document.createElement('li');
 
+
+    var tempLi = document.getElementById('pTempLi');
+    var windLi = document.getElementById('pWindLi');
+    var humidLi = document.getElementById('pHumidLi');
+    var dayLi = document.getElementById('pDayLi');
 
     tempLi.innerText = "Temperature: " + temp + " C";
     windLi.innerText = "Wind: " + wind + " m/s";
@@ -130,10 +141,10 @@ Game.prototype = {
     var computerDaylight = document.getElementById("comp-daylight");
 
 
-    var tempLi = document.createElement('li')
-    var windLi = document.createElement('li')
-    var humidLi = document.createElement('li')
-    var dayLi = document.createElement('li')
+    var tempLi = document.getElementById('cTempLi');
+    var windLi = document.getElementById('cWindLi');
+    var humidLi = document.getElementById('cHumidLi');
+    var dayLi = document.getElementById('cDayLi');
 
 
     tempLi.innerText = "Temperature: " + temp + " C";
@@ -179,12 +190,21 @@ Game.prototype = {
       //       computerPrice.appendChild(PriceLi);
       //   },
 
-  displayInfo: function(temp, wind){
-    playerTemp = getElementById("play-temp");
-    playerWind = getElementById("play-wind");
+  displayPlayerInfo: function(){
+    playerTemp = document.getElementById("play-temp");
+    playerWind = document.getElementById("play-wind");
 
-    playerTemp.innerText = "Temperature: " + temp;
-    playerWind.innerText = "Wind: " + wind;
+
+    playerTemp.innerText = "Temperature: " + playerHand[0].temp;
+    playerWind.innerText = "Wind: " + playerHand[0].wind;
+  },
+
+  displayComputerInfo: function(){
+    computerTemp = document.getElementById("comp-temp");
+    computerWind = document.getElementById("comp-wind");
+
+    computerTemp.innerText = "Temperature: " + computerHand[0].temp;
+    computerWind.innerText = "Wind: " + computerHand[0].wind;
   },
 
   resetColour: function(){  //really doesn't belong here!
@@ -193,6 +213,8 @@ Game.prototype = {
     document.getElementById('play-humidity').style.backgroundColor = "ivory";
     document.getElementById('play-daylight').style.backgroundColor = "ivory";
   },
+
+ 
 
   calculateWinner: function(characteristic){
     
@@ -206,38 +228,15 @@ Game.prototype = {
           this.computerHand.shift();
           this.playerHand.push(playerCard);
           this.playerHand.push(computerCard);
-          // if (this.DrawArray.length > 0){
-          //   forEach(function(card){
-          //     this.playerHand.push(card);
-          //     this.DrawArray.shift(card);
-          //   });
-          // }
-          if(this.playerHand.length === 0){
-            console.log("player wins game");
-          }else if (this.computerHand.length === 0) {
-            console.log("computer wins game");
-          }
+         
+          
+          
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
 
-          this.getComputerWeatherInfo;
-          this.getPlayerWeatherInfo;
           console.log("player wins");
-          console.log(this.playerHand.length);
-          break;
-        }else if (this.playerHand[0].temp === this.computerHand[0].temp) {
-          // var DrawArray = [];
-          // this.DrawArray.push(playerHand[0]);
-          // this.DrawArray.push(playerHand[1]);
-          // this.DrawArray.push(playerHand[2]);
-          // this.DrawArray.push(computerHand[0]);
-          // this.DrawArray.push(computerHand[1]);
-          // this.DrawArray.push(computerHand[2]);
-          
-          // playerHand.splice(0,3);
-          // computerHand.splice(0,3);
-          
-          
-
-          console.log('draw');
+          console.log("player hand", this.playerHand.length);
           break;
         }else {
           var playerCard = this.playerHand[0];
@@ -246,51 +245,124 @@ Game.prototype = {
           this.computerHand.shift();
           this.computerHand.push(playerCard);
           this.computerHand.push(computerCard);
-          // if (this.DrawArray.length > 0){
-          //   forEach(function(card){
-          //     this.computerHand.push(card);
-          //   });
-          // };
-          this.getComputerWeatherInfo;
-          this.getPlayerWeatherInfo;
-          if(this.playerHand.length === 0){
-            console.log("player wins game");
-          }else if (this.computerHand.length === 0) {
-            console.log("computer wins game");
-          }
+          
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+         
+         
           console.log("computer wins");
-          console.log(this.computerHand.length);
+          console.log("computer hand", this.computerHand.length);
           break;
         };
 
         case "wind" : 
 
-        if (playerValue < computerValue) {
-          console.log("player wins");
-          break;
-        }else if (playerValue === computerValue) {
-          console.log("draw");
+        if (this.playerHand[0].wind < this.computerHand[0].wind) {
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.computerHand.push(playerCard);
+          this.computerHand.push(computerCard);
+          
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+          
+          
+          console.log("computer wins");
+          console.log("computer hand", this.computerHand.length);
           break;
         }else {
-          console.log ("computerwins");
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.computerHand.push(playerCard);
+          this.computerHand.push(computerCard);
+          
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+          console.log("computer wins");
+          console.log("computer hand", this.computerHand.length);
           break;
         };
 
-        case "characteristic3": 
+        case "humidity": 
+        var playerHumidity = Math.abs(this.playerHand[0].humidity - 45);
+        var computerHumidity = Math.abs(this.computerHand[0].humidity - 45);
+        if (playerHumidity < computerHumidity){
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.playerHand.push(playerCard);
+          this.playerHand.push(computerCard);
+                   
+                    
+                    
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+          console.log('player wins');
+          console.log("player hand", this.playerHand.length);
+        }else {
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.computerHand.push(playerCard);
+          this.computerHand.push(computerCard);
+          
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+          console.log("computer wins");
+          console.log("computer hand", this.computerHand.length);          
+        }
         break;
-        case "characteristic4": 
+        case "daylight": 
+        if (this.playerHand[0].daylight > this.computerHand[0].daylight){
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.playerHand.push(playerCard);
+          this.playerHand.push(computerCard);
+                   
+                    
+                    
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+          console.log('player wins');
+          console.log("player hand", this.playerHand.length);
+        }else{
+          var playerCard = this.playerHand[0];
+          var computerCard = this.computerHand[0];
+          this.playerHand.shift();
+          this.computerHand.shift();
+          this.computerHand.push(playerCard);
+          this.computerHand.push(computerCard);
+          
+          this.displayCardCity();
+          this.displayWeatherInfo(this.playerHand, "player");
+          this.displayWeatherInfo(this.computerHand, "computer");
+          console.log("computer wins");
+          console.log("computer hand", this.computerHand.length);
+        }
         break;
       }; 
 
     },   
 
   checkGameWon: function(){
-    if (this.playerHand === []){
+    if(this.playerHand.length === 0){
+      computerWon();
+    }else if (this.computerHand.length === 0) {
       playerWon();
-    } else {
-      if (this.computerHand === []){
-        computerWon()
-      }
     }
   },
 
