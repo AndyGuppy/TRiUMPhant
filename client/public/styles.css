@@ -9,7 +9,6 @@ body {
   background-attachment: fixed;
   background-size: cover;
   font-family: "Lucida Console", Monaco, monospace;
-
 }
 
 .main{
@@ -212,6 +211,7 @@ button{
    width: 80%;
    clear: both;
    align-content: center;
+   background:rgba(0,0,0,0.5);
 
 }
 #but {  
@@ -220,7 +220,7 @@ button{
 
 #text {
   margin: auto;
-  color: black;
+  color: white;
   width: 80%;
   font-size: 40px;
   text-align: center;
