@@ -68,9 +68,11 @@ UI.prototype = {
     game.selected = "flight";
   },
 
+
   playButtonClick: function(){
     var nextButton = document.getElementById('play-button');
     var ccard = document.querySelector(".ccard");
+    var pcard = document.querySelector(".pcard");
     
     var winner = "";
     if (nextButton.innerText !== "New Game"){
@@ -80,18 +82,41 @@ UI.prototype = {
         gamecheck = game.checkGameWon()
         if(gamecheck === "Play On"){  //game has not been won
           if (nextButton.innerText === "Next"){ //button says next
-            ccard.style.visibility = "hidden";
+            if (game.whosTurn === "computer"){
+            ccard.style.visibility = "visible";
+            pcard.style.visibility = "hidden";
             winner = "PLAYER : " + game.playerHand.length + " vs " + game.computerHand.length + " : COMPUTER";
             nextButton.innerText = "Play" 
             UI.prototype.startButtonClick();
             game.selected = "";
+            UI.prototype.resetCompColour();
+          }else{
+            ccard.style.visibility = "hidden";
+            pcard.style.visibility = "visible";
+            winner = "PLAYER : " + game.playerHand.length + " vs " + game.computerHand.length + " : COMPUTER";
+            nextButton.innerText = "Play" 
+            UI.prototype.startButtonClick();
+            game.selected = "";
+            UI.prototype.resetCompColour();
+          }
           } else { //button says play
-
+            if (game.whosTurn === "player"){
             winner = game.calculateWinner(game.selected)
             game.selected = "";
             ccard.style.visibility = 'visible'; //makes ccard visible
             nextButton.innerText = "Next" //changes button to next
-          
+            
+            }else {
+            console.log('am i here?', parseInt(game.choiceNumber()))
+            var someNumber = parseInt(game.choiceNumber());
+            game.selected = game.computerChoice(someNumber);
+            console.log('what about here?', game)
+            winner = game.calculateWinner(game.selected);
+            game.selected = "";
+            ccard.style.visibility = 'visible'; //makes ccard visible
+            nextButton.innerText = "Next" //changes button to next
+            
+            };
           }
         }
         break;
@@ -117,6 +142,14 @@ UI.prototype = {
     var msg = document.getElementById('text');
     msg.innerText = winner 
 
+  },
+
+  resetCompColour: function(){
+    document.getElementById('comp-temp').style.backgroundColor = 'transparent';
+    document.getElementById('comp-wind').style.backgroundColor = 'transparent';
+    document.getElementById('comp-humidity').style.backgroundColor = 'transparent';
+    document.getElementById('comp-daylight').style.backgroundColor = 'transparent';
+    
   },
 
   resetColour: function(){

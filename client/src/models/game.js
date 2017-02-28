@@ -5,6 +5,7 @@ var Game = function(){
   this.playerHand = []
   this.computerHand = []
   this.selected =""
+  this.whosTurn = "player"
 
   var deck = new Deck();
 
@@ -140,9 +141,43 @@ Game.prototype = {
     this.displayWeatherInfo(game.playerHand, "player");
     this.displayWeatherInfo(game.computerHand, "computer");   
      }
+    game.whosTurn = "computer"
     console.log("computer wins");
     console.log("computer hand", game.computerHand.length);
     return 'computer wins';
+  },
+
+  choiceNumber: function(){
+    return Math.random() * (4 - 1) + 1;
+  },
+
+  computerChoice: function(comp_choice) {
+    var cTemp = document.getElementById("comp-temp")
+    var cWind = document.getElementById("comp-wind")
+    var cHumid = document.getElementById("comp-humidity")
+    var cDayl = document.getElementById("comp-daylight")
+
+
+    switch (comp_choice){
+      case 1:
+        cTemp.style.backgroundColor = "#5F9EA0";
+        return "temp";
+        break;
+     
+      case 2:
+        cWind.style.backgroundColor = "#5F9EA0"
+        return "wind";
+        break;
+      case 3:
+        cHumid.style.backgroundColor = "#5F9EA0"
+        return "humidity";
+        break;
+
+      case 4:
+        cDayl.style.backgroundColor = "#5F9EA0"
+        return "daylight";
+        break;
+    };
   },
 
   playWins: function(){
@@ -156,7 +191,7 @@ Game.prototype = {
    this.displayWeatherInfo(game.playerHand, "player");
    this.displayWeatherInfo(game.computerHand, "computer");   
     }
-
+    game.whosTurn = "player"
     console.log("player wins");
     console.log("player hand", game.playerHand.length);
     return 'player wins';
