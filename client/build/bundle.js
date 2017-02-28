@@ -75,7 +75,7 @@ var Card = function(dbOptions){
   this.imagepth = dbOptions.imagepth;
   this.skycode = dbOptions.skycode;
   this.flag = '/images/flags/' + dbOptions.flag;
-  this.temp = {};
+  this.temp = 0;
   this.wind = {};
   this.humidity = {};
   this.daylight = {};
@@ -217,22 +217,63 @@ UI.prototype = {
     var ccard = document.querySelector(".ccard");
     
     var winner = "";
-    if (nextButton.innerText === "Next"){
-      ccard.style.visibility = "hidden";
-      winner = "PLAYER : " + game.playerHand.length + " vs " + game.computerHand.length + " : COMPUTER";
-      nextButton.innerText = "Play" 
-      UI.prototype.startButtonClick();
-      console.log('Next button clicked --' + game.selected)
-      } else {
-        winner = game.calculateWinner(game.selected)
-        game.selected = "";
-        ccard.style.visibility = 'visible';
-        nextButton.innerText = "Next"
-        console.log('Play button clicked --' + game.selected)
+    if (nextButton.innerText !== "New Game"){
+      switch (gamecheck = game.checkGameWon()) {
+
+        case "Play On" :
+        gamecheck = game.checkGameWon()
+        if(gamecheck === "Play On"){ 
+          if (nextButton.innerText === "Next"){
+            ccard.style.visibility = "hidden";
+            winner = "PLAYER : " + game.playerHand.length + " vs " + game.computerHand.length + " : COMPUTER";
+            nextButton.innerText = "Play" 
+            UI.prototype.startButtonClick();
+            console.log('Next button clicked --' + game.selected)
+          } else {
+            winner = game.calculateWinner(game.selected)
+            game.selected = "";
+            ccard.style.visibility = 'visible';
+            nextButton.innerText = "Next"
+            console.log('Play button clicked --' + game.selected)
+          }
+        }
+        break;
+
+        case "Computer Has Won The Game!!" :
+          winner = "You Lose -- Computer Wins the Game"
+          nextButton.innerText = "New Game" 
+          var msg = document.getElementById('text');
+          msg.innerText = winner 
+          console.log(winner)
+
+
+        break;
+
+        case "Player Has Won The Game!!" :
+          winner - "Whey Hey -- You WON"
+          nextButton.innerText = "New Game"
+          var msg = document.getElementById('text');
+          msg.innerText = winner 
+          console.log(winner)
+
+
+        break;
+
+
+
       }
-      var msg = document.getElementById('text');
-      msg.innerText = winner 
-      console.log(winner)
+    }else
+      {
+         // game.resetGame();
+         // UI.prototype.startButtonClick();
+         // nextButton.innerText = "Play";
+         location.href = "http://localhost:3000/";
+    }
+    
+
+    var msg = document.getElementById('text');
+    msg.innerText = winner 
+    console.log(winner)
 
   },
 
@@ -249,8 +290,8 @@ UI.prototype = {
     var div = document.getElementById(divID);
     while (div.hasChildNodes()) {
       div.removeChild(div.firstChild);
-  }
-},
+    }
+  },
 
   startButtonClick: function(){
 
@@ -325,7 +366,7 @@ UI.prototype = {
     playerPrice.appendChild(PriceLi);
 
 
-     //computer display
+    //computer display
     var computerCardHeader = document.getElementById("computer-city-header");
     while (computerCardHeader.hasChildNodes()) {
       computerCardHeader.removeChild(computerCardHeader.firstChild);
@@ -353,40 +394,40 @@ UI.prototype = {
 
     while (computerTemp.hasChildNodes()) {
      computerTemp.removeChild(computerTemp.firstChild);
-    }
-    while (computerWind.hasChildNodes()) {
+   }
+   while (computerWind.hasChildNodes()) {
      computerWind.removeChild(computerWind.firstChild);
-    }
-    while (computerHumid.hasChildNodes()) {
+   }
+   while (computerHumid.hasChildNodes()) {
      computerHumid.removeChild(computerHumid.firstChild);
-    }
-    while (computerDaylight.hasChildNodes()) {
+   }
+   while (computerDaylight.hasChildNodes()) {
      computerDaylight.removeChild(computerDaylight.firstChild);
-    }
-    while (computerPrice.hasChildNodes()) {
-      computerPrice.removeChild(computerPrice.firstChild);
-    }
+   }
+   while (computerPrice.hasChildNodes()) {
+    computerPrice.removeChild(computerPrice.firstChild);
+  }
 
-    var tempLi = document.createElement('li')
-    var windLi = document.createElement('li')
-    var humidLi = document.createElement('li')
-    var dayLi = document.createElement('li')
-    var PriceLi = document.createElement('li');
+  var tempLi = document.createElement('li')
+  var windLi = document.createElement('li')
+  var humidLi = document.createElement('li')
+  var dayLi = document.createElement('li')
+  var PriceLi = document.createElement('li');
 
-    tempLi.innerText = "Temperature: " + game.computerHand[0].temp + " C";
-    windLi.innerText = "Wind: " + game.computerHand[0].wind + " m/s";
-    humidLi.innerText = "Humidity: " + game.computerHand[0].humidity + " %";
-    dayLi.innerText = "Daylight: " + game.computerHand[0].daylight + " hours";
-    PriceLi.innerText = "Flight from London: £" + game.computerHand[0].price;
+  tempLi.innerText = "Temperature: " + game.computerHand[0].temp + " C";
+  windLi.innerText = "Wind: " + game.computerHand[0].wind + " m/s";
+  humidLi.innerText = "Humidity: " + game.computerHand[0].humidity + " %";
+  dayLi.innerText = "Daylight: " + game.computerHand[0].daylight + " hours";
+  PriceLi.innerText = "Flight from London: £" + game.computerHand[0].price;
 
-    computerTemp.appendChild(tempLi);
-    computerWind.appendChild(windLi);
-    computerHumid.appendChild(humidLi);
-    computerDaylight.appendChild(dayLi);
-    computerPrice.appendChild(PriceLi);
+  computerTemp.appendChild(tempLi);
+  computerWind.appendChild(windLi);
+  computerHumid.appendChild(humidLi);
+  computerDaylight.appendChild(dayLi);
+  computerPrice.appendChild(PriceLi);
 
 
-  },
+},
 
 }
 
@@ -417,9 +458,29 @@ var Game = function(){
     this.displayFlightInfo(this.playerHand, "player");
     this.displayFlightInfo(this.computerHand, "computer");
   }.bind(this));
+
 }
 
 Game.prototype = {
+
+  resetGame: function(){
+    this.playerHand = []
+    this.computerHand = []
+    this.selected =""
+
+    var deck = new Deck();
+
+    deck.all(function(result){
+      deck.getCards(result);
+      deck.shuffleCards();
+      this.dealCards(deck.cards);
+      this.displayWeatherInfo(this.playerHand, "player");
+      this.displayWeatherInfo(this.computerHand, "computer");
+      this.displayFlightInfo(this.playerHand, "player");
+      this.displayFlightInfo(this.computerHand, "computer");
+    }.bind(this));
+
+  },
 
   dealCards: function(deck){
     for (var i = 0; i < deck.length/2; i++){
@@ -516,8 +577,10 @@ Game.prototype = {
     game.computerHand.shift();
     game.computerHand.push(playerCard);
     game.computerHand.push(computerCard);
+     if(game.playerHand.length !== 0){
     this.displayWeatherInfo(game.playerHand, "player");
-    this.displayWeatherInfo(game.computerHand, "computer");
+    this.displayWeatherInfo(game.computerHand, "computer");   
+     }
     console.log("computer wins");
     console.log("computer hand", game.computerHand.length);
     return 'computer wins';
@@ -530,19 +593,21 @@ Game.prototype = {
     game.computerHand.shift();
     game.playerHand.push(playerCard);
     game.playerHand.push(computerCard);
-    this.displayWeatherInfo(game.playerHand, "player");
-    this.displayWeatherInfo(game.computerHand, "computer");
+    if(game.computerHand.length !== 0){
+   this.displayWeatherInfo(game.playerHand, "player");
+   this.displayWeatherInfo(game.computerHand, "computer");   
+    }
+
     console.log("player wins");
     console.log("player hand", game.playerHand.length);
     return 'player wins';
   },
 
   calculateWinner: function(characteristic){
-    
     switch (characteristic){
 
       case "temp":
-        if (this.playerHand[0].temp > this.computerHand[0].temp) {
+        if (parseFloat(this.playerHand[0].temp) > parseFloat(this.computerHand[0].temp)) {
           return  Game.prototype.playWins()
           break;
         }else {
@@ -552,10 +617,10 @@ Game.prototype = {
 
       case "wind" : 
         if (this.playerHand[0].wind < this.computerHand[0].wind) {
-          return Game.prototype.compWins()
+          return Game.prototype.playWins()
           break;
         }else {
-          return Game.prototype.playWins()
+          return Game.prototype.compWins()
           break;
         };
 
@@ -569,7 +634,7 @@ Game.prototype = {
         }
         break;
         case "daylight": 
-        if (this.playerHand[0].daylight > this.computerHand[0].daylight){
+        if (parseFloat(this.playerHand[0].daylight) > parseFloat(this.computerHand[0].daylight)){
           return Game.prototype.playWins()
         }else{
           return Game.prototype.compWins()
@@ -579,13 +644,15 @@ Game.prototype = {
 
     },   
 
-  checkGameWon: function(){
-    if(this.playerHand.length === 0){
-      computerWon();
-    }else if (this.computerHand.length === 0) {
-      playerWon();
-    }
-  },
+    checkGameWon: function(){
+       if (this.playerHand.length === 0){
+        return "Computer Has Won The Game!!";
+       }else if (this.computerHand.length === 0) {
+         return "Player Has Won The Game!!";
+       }else{
+         return "Play On";
+       }
+     },
 
   playerWon: function(){
 
