@@ -93,11 +93,11 @@ UI.prototype = {
   },
 
   resetColour: function(){
-    document.getElementById('play-temp').style.backgroundColor = '#F0F8FF';
-    document.getElementById('play-wind').style.backgroundColor = '#F0F8FF';
-    document.getElementById('play-humidity').style.backgroundColor = '#F0F8FF';
-    document.getElementById('play-daylight').style.backgroundColor = '#F0F8FF';
-    document.getElementById('play-flight').style.backgroundColor = '#F0F8FF';
+    document.getElementById('play-temp').style.backgroundColor = 'transparent';
+    document.getElementById('play-wind').style.backgroundColor = 'transparent';
+    document.getElementById('play-humidity').style.backgroundColor = 'transparent';
+    document.getElementById('play-daylight').style.backgroundColor = 'transparent';
+    document.getElementById('play-flight').style.backgroundColor = 'transparent';
   },
 
   clear: function(divID){
