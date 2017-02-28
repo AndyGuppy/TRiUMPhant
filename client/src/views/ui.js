@@ -69,12 +69,27 @@ UI.prototype = {
   },
 
   playButtonClick: function(){
-    console.log('button clicked --' + game.selected)
-    var winner = game.calculateWinner(game.selected)
-    game.selected = "";
+    var nextButton = document.getElementById('play-button');
     var ccard = document.querySelector(".ccard");
-    ccard.style.visibility = 'visible';
-    window.alert(winner);
+    
+    var winner = "";
+    if (nextButton.innerText === "Next"){
+      ccard.style.visibility = "hidden";
+      winner = "PLAYER : " + game.playerHand.length + " vs " + game.computerHand.length + " : COMPUTER";
+      nextButton.innerText = "Play" 
+      UI.prototype.startButtonClick();
+      console.log('Next button clicked --' + game.selected)
+      } else {
+        winner = game.calculateWinner(game.selected)
+        game.selected = "";
+        ccard.style.visibility = 'visible';
+        nextButton.innerText = "Next"
+        console.log('Play button clicked --' + game.selected)
+      }
+      var msg = document.getElementById('text');
+      msg.innerText = winner 
+      console.log(winner)
+
   },
 
   resetColour: function(){
@@ -84,6 +99,14 @@ UI.prototype = {
     document.getElementById('play-daylight').style.backgroundColor = "ivory";
     document.getElementById('play-flight').style.backgroundColor = "ivory";
   },
+
+  clear: function(divID){
+    console.log("hiding - " + divID)
+    var div = document.getElementById(divID);
+    while (div.hasChildNodes()) {
+      div.removeChild(div.firstChild);
+  }
+},
 
   startButtonClick: function(){
 
@@ -95,6 +118,8 @@ UI.prototype = {
     UI.prototype.resetColour();
 
     console.log('button clicked --' + game.selected)
+
+    // UI.prototype.clear("player-city-header");
     var playerCardHeader = document.getElementById("player-city-header");
     while (playerCardHeader.hasChildNodes()) {
       playerCardHeader.removeChild(playerCardHeader.firstChild);
@@ -191,6 +216,9 @@ UI.prototype = {
     }
     while (computerDaylight.hasChildNodes()) {
      computerDaylight.removeChild(computerDaylight.firstChild);
+    }
+    while (computerPrice.hasChildNodes()) {
+      computerPrice.removeChild(computerPrice.firstChild);
     }
 
     var tempLi = document.createElement('li')

@@ -20,8 +20,9 @@ body {
   height: 90%;
   background-image: url('./images/cardback.jpg');
   background-size: 100%;
+  margin: 20px;
   /*background-size: cover;*/
-  /*background-color: gray;*/
+  background-color: gray;
   color: ivory;
   border-radius: 25px;
   text-align: center;
@@ -31,7 +32,7 @@ body {
 
 .player{
   height: 90%;
-
+  margin: 20px;
   background-color: gray;
   color: ivory;
   border-radius: 25px;
@@ -55,6 +56,7 @@ body {
   border-radius: 8px;
   text-align: left;
   width:70%;
+  cursor: pointer;
 
 }
 
@@ -120,6 +122,11 @@ body {
 }
 h3 {
   display: inline;
+
+}
+
+#pcity{
+  font-weight: bold;
 }
 
 button{
@@ -131,4 +138,29 @@ button{
   padding: 5px;
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+#footer {
+  position: relative;
+  
+  margin: auto;
+   margin-top: -180px; /* negative value of footer height */
+   height: 180px;
+   width: 80%;
+   clear: both;
+   align-content: center;
+
+}
+#but {  
+  margin: auto;
+  width: 40px;
+  
+  }
+
+#text {
+  margin: auto;
+  color: ivory;
+  width: 80%;
+  font-size: 40px;
+  text-align: center;
 }
