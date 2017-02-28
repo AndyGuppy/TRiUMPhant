@@ -17,9 +17,29 @@ var Game = function(){
     this.displayFlightInfo(this.playerHand, "player");
     this.displayFlightInfo(this.computerHand, "computer");
   }.bind(this));
+
 }
 
 Game.prototype = {
+
+  resetGame: function(){
+    this.playerHand = []
+    this.computerHand = []
+    this.selected =""
+
+    var deck = new Deck();
+
+    deck.all(function(result){
+      deck.getCards(result);
+      deck.shuffleCards();
+      this.dealCards(deck.cards);
+      this.displayWeatherInfo(this.playerHand, "player");
+      this.displayWeatherInfo(this.computerHand, "computer");
+      this.displayFlightInfo(this.playerHand, "player");
+      this.displayFlightInfo(this.computerHand, "computer");
+    }.bind(this));
+
+  },
 
   dealCards: function(deck){
     for (var i = 0; i < deck.length/2; i++){
@@ -116,8 +136,10 @@ Game.prototype = {
     game.computerHand.shift();
     game.computerHand.push(playerCard);
     game.computerHand.push(computerCard);
+     if(game.playerHand.length !== 0){
     this.displayWeatherInfo(game.playerHand, "player");
-    this.displayWeatherInfo(game.computerHand, "computer");
+    this.displayWeatherInfo(game.computerHand, "computer");   
+     }
     console.log("computer wins");
     console.log("computer hand", game.computerHand.length);
     return 'computer wins';
@@ -130,19 +152,21 @@ Game.prototype = {
     game.computerHand.shift();
     game.playerHand.push(playerCard);
     game.playerHand.push(computerCard);
-    this.displayWeatherInfo(game.playerHand, "player");
-    this.displayWeatherInfo(game.computerHand, "computer");
+    if(game.computerHand.length !== 0){
+   this.displayWeatherInfo(game.playerHand, "player");
+   this.displayWeatherInfo(game.computerHand, "computer");   
+    }
+
     console.log("player wins");
     console.log("player hand", game.playerHand.length);
     return 'player wins';
   },
 
   calculateWinner: function(characteristic){
-    
     switch (characteristic){
 
       case "temp":
-        if (this.playerHand[0].temp > this.computerHand[0].temp) {
+        if (parseFloat(this.playerHand[0].temp) > parseFloat(this.computerHand[0].temp)) {
           return  Game.prototype.playWins()
           break;
         }else {
@@ -152,10 +176,10 @@ Game.prototype = {
 
       case "wind" : 
         if (this.playerHand[0].wind < this.computerHand[0].wind) {
-          return Game.prototype.compWins()
+          return Game.prototype.playWins()
           break;
         }else {
-          return Game.prototype.playWins()
+          return Game.prototype.compWins()
           break;
         };
 
@@ -169,7 +193,7 @@ Game.prototype = {
         }
         break;
         case "daylight": 
-        if (this.playerHand[0].daylight > this.computerHand[0].daylight){
+        if (parseFloat(this.playerHand[0].daylight) > parseFloat(this.computerHand[0].daylight)){
           return Game.prototype.playWins()
         }else{
           return Game.prototype.compWins()
@@ -179,13 +203,15 @@ Game.prototype = {
 
     },   
 
-  checkGameWon: function(){
-    if(this.playerHand.length === 0){
-      computerWon();
-    }else if (this.computerHand.length === 0) {
-      playerWon();
-    }
-  },
+    checkGameWon: function(){
+       if (this.playerHand.length === 0){
+        return "Computer Has Won The Game!!";
+       }else if (this.computerHand.length === 0) {
+         return "Player Has Won The Game!!";
+       }else{
+         return "Play On";
+       }
+     },
 
   playerWon: function(){
 

@@ -73,22 +73,63 @@ UI.prototype = {
     var ccard = document.querySelector(".ccard");
     
     var winner = "";
-    if (nextButton.innerText === "Next"){
-      ccard.style.visibility = "hidden";
-      winner = "PLAYER : " + game.playerHand.length + " vs " + game.computerHand.length + " : COMPUTER";
-      nextButton.innerText = "Play" 
-      UI.prototype.startButtonClick();
-      console.log('Next button clicked --' + game.selected)
-      } else {
-        winner = game.calculateWinner(game.selected)
-        game.selected = "";
-        ccard.style.visibility = 'visible';
-        nextButton.innerText = "Next"
-        console.log('Play button clicked --' + game.selected)
+    if (nextButton.innerText !== "New Game"){
+      switch (gamecheck = game.checkGameWon()) {
+
+        case "Play On" :
+        gamecheck = game.checkGameWon()
+        if(gamecheck === "Play On"){ 
+          if (nextButton.innerText === "Next"){
+            ccard.style.visibility = "hidden";
+            winner = "PLAYER : " + game.playerHand.length + " vs " + game.computerHand.length + " : COMPUTER";
+            nextButton.innerText = "Play" 
+            UI.prototype.startButtonClick();
+            console.log('Next button clicked --' + game.selected)
+          } else {
+            winner = game.calculateWinner(game.selected)
+            game.selected = "";
+            ccard.style.visibility = 'visible';
+            nextButton.innerText = "Next"
+            console.log('Play button clicked --' + game.selected)
+          }
+        }
+        break;
+
+        case "Computer Has Won The Game!!" :
+          winner = "You Lose -- Computer Wins the Game"
+          nextButton.innerText = "New Game" 
+          var msg = document.getElementById('text');
+          msg.innerText = winner 
+          console.log(winner)
+
+
+        break;
+
+        case "Player Has Won The Game!!" :
+          winner - "Whey Hey -- You WON"
+          nextButton.innerText = "New Game"
+          var msg = document.getElementById('text');
+          msg.innerText = winner 
+          console.log(winner)
+
+
+        break;
+
+
+
       }
-      var msg = document.getElementById('text');
-      msg.innerText = winner 
-      console.log(winner)
+    }else
+      {
+         // game.resetGame();
+         // UI.prototype.startButtonClick();
+         // nextButton.innerText = "Play";
+         location.href = "http://localhost:3000/";
+    }
+    
+
+    var msg = document.getElementById('text');
+    msg.innerText = winner 
+    console.log(winner)
 
   },
 
@@ -105,8 +146,8 @@ UI.prototype = {
     var div = document.getElementById(divID);
     while (div.hasChildNodes()) {
       div.removeChild(div.firstChild);
-  }
-},
+    }
+  },
 
   startButtonClick: function(){
 
@@ -181,7 +222,7 @@ UI.prototype = {
     playerPrice.appendChild(PriceLi);
 
 
-     //computer display
+    //computer display
     var computerCardHeader = document.getElementById("computer-city-header");
     while (computerCardHeader.hasChildNodes()) {
       computerCardHeader.removeChild(computerCardHeader.firstChild);
@@ -209,40 +250,40 @@ UI.prototype = {
 
     while (computerTemp.hasChildNodes()) {
      computerTemp.removeChild(computerTemp.firstChild);
-    }
-    while (computerWind.hasChildNodes()) {
+   }
+   while (computerWind.hasChildNodes()) {
      computerWind.removeChild(computerWind.firstChild);
-    }
-    while (computerHumid.hasChildNodes()) {
+   }
+   while (computerHumid.hasChildNodes()) {
      computerHumid.removeChild(computerHumid.firstChild);
-    }
-    while (computerDaylight.hasChildNodes()) {
+   }
+   while (computerDaylight.hasChildNodes()) {
      computerDaylight.removeChild(computerDaylight.firstChild);
-    }
-    while (computerPrice.hasChildNodes()) {
-      computerPrice.removeChild(computerPrice.firstChild);
-    }
+   }
+   while (computerPrice.hasChildNodes()) {
+    computerPrice.removeChild(computerPrice.firstChild);
+  }
 
-    var tempLi = document.createElement('li')
-    var windLi = document.createElement('li')
-    var humidLi = document.createElement('li')
-    var dayLi = document.createElement('li')
-    var PriceLi = document.createElement('li');
+  var tempLi = document.createElement('li')
+  var windLi = document.createElement('li')
+  var humidLi = document.createElement('li')
+  var dayLi = document.createElement('li')
+  var PriceLi = document.createElement('li');
 
-    tempLi.innerText = "Temperature: " + game.computerHand[0].temp + " C";
-    windLi.innerText = "Wind: " + game.computerHand[0].wind + " m/s";
-    humidLi.innerText = "Humidity: " + game.computerHand[0].humidity + " %";
-    dayLi.innerText = "Daylight: " + game.computerHand[0].daylight + " hours";
-    PriceLi.innerText = "Flight from London: £" + game.computerHand[0].price;
+  tempLi.innerText = "Temperature: " + game.computerHand[0].temp + " C";
+  windLi.innerText = "Wind: " + game.computerHand[0].wind + " m/s";
+  humidLi.innerText = "Humidity: " + game.computerHand[0].humidity + " %";
+  dayLi.innerText = "Daylight: " + game.computerHand[0].daylight + " hours";
+  PriceLi.innerText = "Flight from London: £" + game.computerHand[0].price;
 
-    computerTemp.appendChild(tempLi);
-    computerWind.appendChild(windLi);
-    computerHumid.appendChild(humidLi);
-    computerDaylight.appendChild(dayLi);
-    computerPrice.appendChild(PriceLi);
+  computerTemp.appendChild(tempLi);
+  computerWind.appendChild(windLi);
+  computerHumid.appendChild(humidLi);
+  computerDaylight.appendChild(dayLi);
+  computerPrice.appendChild(PriceLi);
 
 
-  },
+},
 
 }
 
