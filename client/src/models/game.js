@@ -165,6 +165,10 @@ Game.prototype = {
   calculateWinner: function(characteristic){
     switch (characteristic){
 
+      case "":
+        return "Make a selection before playing";
+        break;
+
       case "temp":
         if (parseFloat(this.playerHand[0].temp) > parseFloat(this.computerHand[0].temp)) {
           return  Game.prototype.playWins()

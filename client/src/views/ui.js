@@ -78,19 +78,20 @@ UI.prototype = {
 
         case "Play On" :
         gamecheck = game.checkGameWon()
-        if(gamecheck === "Play On"){ 
-          if (nextButton.innerText === "Next"){
+        if(gamecheck === "Play On"){  //game has not been won
+          if (nextButton.innerText === "Next"){ //button says next
             ccard.style.visibility = "hidden";
             winner = "PLAYER : " + game.playerHand.length + " vs " + game.computerHand.length + " : COMPUTER";
             nextButton.innerText = "Play" 
             UI.prototype.startButtonClick();
-            console.log('Next button clicked --' + game.selected)
-          } else {
+            game.selected = "";
+          } else { //button says play
+
             winner = game.calculateWinner(game.selected)
             game.selected = "";
-            ccard.style.visibility = 'visible';
-            nextButton.innerText = "Next"
-            console.log('Play button clicked --' + game.selected)
+            ccard.style.visibility = 'visible'; //makes ccard visible
+            nextButton.innerText = "Next" //changes button to next
+          
           }
         }
         break;
@@ -100,36 +101,21 @@ UI.prototype = {
           nextButton.innerText = "New Game" 
           var msg = document.getElementById('text');
           msg.innerText = winner 
-          console.log(winner)
-
-
         break;
 
         case "Player Has Won The Game!!" :
-          winner - "Whey Hey -- You WON"
+          winner = "Whey Hey -- You WON"
           nextButton.innerText = "New Game"
           var msg = document.getElementById('text');
           msg.innerText = winner 
-          console.log(winner)
-
-
         break;
-
-
-
       }
-    }else
-      {
-         // game.resetGame();
-         // UI.prototype.startButtonClick();
-         // nextButton.innerText = "Play";
+    } else {
          location.href = "http://localhost:3000/";
     }
     
-
     var msg = document.getElementById('text');
     msg.innerText = winner 
-    console.log(winner)
 
   },
 
@@ -160,7 +146,6 @@ UI.prototype = {
 
     console.log('button clicked --' + game.selected)
 
-    // UI.prototype.clear("player-city-header");
     var playerCardHeader = document.getElementById("player-city-header");
     while (playerCardHeader.hasChildNodes()) {
       playerCardHeader.removeChild(playerCardHeader.firstChild);
