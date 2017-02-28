@@ -121,12 +121,12 @@ Game.prototype = {
 
   getPlayerFlightInfo:  function(data){
     var price = data.Dates.OutboundDates[0].Price; 
-    this.playerHand[0].price = price;
+    game.playerHand[0].price = price;
   },
 
   getComputerFlightInfo:  function(data){
     var price = data.Dates.OutboundDates[0].Price;
-    this.computerHand[0].price = price;
+    game.computerHand[0].price = price;
   },
 
   compWins: function(){
@@ -198,6 +198,13 @@ Game.prototype = {
         break;
         case "daylight": 
         if (parseFloat(this.playerHand[0].daylight) > parseFloat(this.computerHand[0].daylight)){
+          return Game.prototype.playWins()
+        }else{
+          return Game.prototype.compWins()
+        }
+        break;
+        case "flight": 
+        if (parseFloat(this.playerHand[0].price) > parseFloat(this.computerHand[0].price)){
           return Game.prototype.playWins()
         }else{
           return Game.prototype.compWins()
