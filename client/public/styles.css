@@ -12,8 +12,6 @@ body {
 
 }
 
-
-
 .main{
   display: none;
 }
@@ -43,8 +41,11 @@ body {
 }
 
 #image{
+  margin: 0;
   padding: 1px;
   border: 1px solid #5F9EA0;
+  width: auto;
+  max-height:150px;
 }
 
 .instructions{
@@ -53,6 +54,7 @@ body {
 }
 
 .computer{
+  max-height: 450px;
   height: 90%;
   background-image: url('./images/darkprint.jpg');
   background-size: 100%;
@@ -61,11 +63,14 @@ body {
   background-color: gray;
   color: ivory;
   text-align: center;
-  float:left; 
+  float:right; 
   width:38%;
+  margin-right: 10%
 }
 
 .player{
+  min-height: 450px;
+  max-height: 450px;
   height: 90%;
   margin: 20px;
   background-image: url('./images/darkprint.jpg');
@@ -77,6 +82,7 @@ body {
   width:38%;
   border-color: #2F4F4F;
   border-width: 15px;
+  margin-left: 10%
 }
 
 /*.mid{
@@ -89,12 +95,14 @@ body {
 }*/
 
 #comp-temp, #comp-wind, #comp-humidity, #comp-daylight, #comp-flight, #play-temp, #play-wind, #play-humidity, #play-daylight, #play-flight{
-  color: black;
+  color: #F0F8FF;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  /*background:rgba(0,0,0,0.5);*/
   text-align: left;
   width:90%;
   padding: 5px 5px 5px 5px;
   margin: 5px 0px 5px 0px;
-
+  list-style: none;
 
 }
 
@@ -103,6 +111,8 @@ body {
 
 
 .pcard{
+  min-height: 450px;
+  max-height: 450px;
   margin: 0 auto;
  /* background-image: url('./images/cardback.jpg');*/
   /*background-size: cover;*/
@@ -115,6 +125,8 @@ body {
 }
 
 .ccard{
+  min-height: 450px;
+  max-height: 450px;
   margin: 0 auto;
   visibility: hidden;
   background-color: #5F9EA0;
@@ -126,50 +138,55 @@ body {
 }
 
 #computer-city-header{
+  padding: 10px;
   font-size: 25px;
   color: #F0F8FF;
-
 }
 
 #player-city-header{
+  padding: 10px;
   font-size: 25px;
   color: #F0F8FF;
 }
 
 .player-city-image{
   margin: 0 auto;
+  padding-bottom: 5px;
   border-radius: 18px;
   /*background-color: white;*/
   background-border: black;
   background-border-width: 2px;
-  width:75%;
-  height:30%;
-
+  width: auto;
+  max-height:180px;
 }
 
 .computer-city-image{
   margin: 0 auto;
+  padding-bottom: 5px;
   border-radius: 18px;
  /* background-color: white;*/
   background-border: black;
   background-border-width: 2px;
-  width:75%;
-  height:30%;
-
+  width: auto;
+  max-height:180px;
 }
 
 .trump-items{
   margin: 0 auto;
-  background-color: #F0F8FF;
+  padding: 0;
+  /*background-color: #F0F8FF;*/
   background-border: black;
   background-border-width: 2px;
   width:85%;
   height:30%;
+  max-height: 220px;
+  background:rgba(0,0,0,0.5);
   
+
 }
+
 h3 {
   display: inline;
-
 }
 
 #pcity{
@@ -189,7 +206,6 @@ button{
 
 #footer {
   position: relative;
-  
   margin: auto;
    margin-top: -180px; /* negative value of footer height */
    height: 180px;
@@ -199,14 +215,12 @@ button{
 
 }
 #but {  
-  margin: auto;
-  width: 40px;
-  
+  text-align: center; 
   }
 
 #text {
   margin: auto;
-  color: ivory;
+  color: black;
   width: 80%;
   font-size: 40px;
   text-align: center;
