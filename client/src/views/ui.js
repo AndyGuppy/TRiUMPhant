@@ -36,35 +36,35 @@ UI.prototype = {
   tempClick: function() {
     var pTemp = document.getElementById('play-temp');
     UI.prototype.resetColour();
-    pTemp.style.backgroundColor = "green";
+    pTemp.style.backgroundColor = "#5F9EA0";
     game.selected = "temp";
   },
 
   windClick: function() {
     var pWind = document.getElementById('play-wind');
     UI.prototype.resetColour();
-    pWind.style.backgroundColor = "green";
+    pWind.style.backgroundColor = "#5F9EA0";
     game.selected = "wind";
   },
 
   humidityClick: function() {
     var pHumidity = document.getElementById('play-humidity');
     UI.prototype.resetColour();
-    pHumidity.style.backgroundColor = "green";
+    pHumidity.style.backgroundColor = "#5F9EA0";
     game.selected = "humidity";
   },
 
   daylightClick: function() {
     var pDaylight = document.getElementById('play-daylight');
     UI.prototype.resetColour();
-    pDaylight.style.backgroundColor = "green";
+    pDaylight.style.backgroundColor = "#5F9EA0";
     game.selected = "daylight";
   },
 
   flightClick: function() {
     var pFlight = document.getElementById('play-flight');
     UI.prototype.resetColour();
-    pFlight.style.backgroundColor = "green";
+    pFlight.style.backgroundColor = "#5F9EA0";
     game.selected = "flight";
   },
 
@@ -93,11 +93,11 @@ UI.prototype = {
   },
 
   resetColour: function(){
-    document.getElementById('play-temp').style.backgroundColor = "ivory";
-    document.getElementById('play-wind').style.backgroundColor = "ivory";
-    document.getElementById('play-humidity').style.backgroundColor = "ivory";
-    document.getElementById('play-daylight').style.backgroundColor = "ivory";
-    document.getElementById('play-flight').style.backgroundColor = "ivory";
+    document.getElementById('play-temp').style.backgroundColor = '#F0F8FF';
+    document.getElementById('play-wind').style.backgroundColor = '#F0F8FF';
+    document.getElementById('play-humidity').style.backgroundColor = '#F0F8FF';
+    document.getElementById('play-daylight').style.backgroundColor = '#F0F8FF';
+    document.getElementById('play-flight').style.backgroundColor = '#F0F8FF';
   },
 
   clear: function(divID){
@@ -134,6 +134,7 @@ UI.prototype = {
     }    
     var photo = document.createElement("IMG");
     console.log(game.playerHand[0].imagepth)
+    photo.id = "image";
     photo.setAttribute("src", game.playerHand[0].imagepth);
     photo.setAttribute("width", "80%");
     photo.setAttribute("alt", "Picture of City");
@@ -194,6 +195,7 @@ UI.prototype = {
       computerCardImg.removeChild(computerCardImg.firstChild);
     }    
     var photo = document.createElement("IMG");
+    photo.id = "image";
     photo.setAttribute("src", game.computerHand[0].imagepth);
     photo.setAttribute("width", "80%");
     photo.setAttribute("alt", "Picture of City");
