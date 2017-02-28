@@ -213,7 +213,15 @@ UI.prototype = {
     windLi.innerText = "Wind: " + game.playerHand[0].wind + " m/s";
     humidLi.innerText = "Humidity: " + game.playerHand[0].humidity + " %";
     dayLi.innerText = "Daylight: " + game.playerHand[0].daylight + " hours";
-    PriceLi.innerText = "Flight from London: £" + game.playerHand[0].price;
+    //PriceLi.innerText = "Flight from London: £" + game.playerHand[0].price;
+
+    var playPrice = game.playerHand[0].price;
+         if (typeof playPrice === 'number'){
+       PriceLi.innerText = "Flight from London: £" + playPrice;
+       }else{
+         PriceLi.innerText = "No Flights Available";
+         game.playerHand[0].price = 0;
+       }
 
     playerTemp.appendChild(tempLi);
     playerWind.appendChild(windLi);
@@ -274,7 +282,15 @@ UI.prototype = {
   windLi.innerText = "Wind: " + game.computerHand[0].wind + " m/s";
   humidLi.innerText = "Humidity: " + game.computerHand[0].humidity + " %";
   dayLi.innerText = "Daylight: " + game.computerHand[0].daylight + " hours";
-  PriceLi.innerText = "Flight from London: £" + game.computerHand[0].price;
+  //PriceLi.innerText = "Flight from London: £" + game.computerHand[0].price;
+
+  var compPrice = game.computerHand[0].price;
+       if (typeof compPrice === 'number'){
+     PriceLi.innerText = "Flight from London: £" + compPrice;
+     }else{
+       PriceLi.innerText = "No Flights Available";
+       game.computerHand[0].price = 0;
+     }
 
   computerTemp.appendChild(tempLi);
   computerWind.appendChild(windLi);
