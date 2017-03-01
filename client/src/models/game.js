@@ -121,6 +121,7 @@ Game.prototype = {
   },
 
   getPlayerFlightInfo:  function(data){
+    console.log(data)
     var price = data.Dates.OutboundDates[0].Price; 
     game.playerHand[0].price = price;
   },
@@ -138,8 +139,10 @@ Game.prototype = {
     game.computerHand.push(playerCard);
     game.computerHand.push(computerCard);
      if(game.playerHand.length !== 0){
-    this.displayWeatherInfo(game.playerHand, "player");
-    this.displayWeatherInfo(game.computerHand, "computer");   
+      this.displayWeatherInfo(game.playerHand, "player");
+      this.displayWeatherInfo(game.computerHand, "computer");   
+      this.displayFlightInfo(game.playerHand, "player");
+      this.displayFlightInfo(game.computerHand, "computer"); 
      }
     game.whosTurn = "computer"
     console.log("computer wins");
@@ -148,7 +151,7 @@ Game.prototype = {
   },
 
   choiceNumber: function(){
-    return Math.random() * (4 - 1) + 1;
+    return Math.random() * (5 - 1) + 1;
   },
 
   computerChoice: function(comp_choice) {
@@ -156,7 +159,7 @@ Game.prototype = {
     var cWind = document.getElementById("comp-wind")
     var cHumid = document.getElementById("comp-humidity")
     var cDayl = document.getElementById("comp-daylight")
-
+    var cPrice = document.getElementById("comp-flight")
 
     switch (comp_choice){
       case 1:
@@ -177,6 +180,11 @@ Game.prototype = {
         cDayl.style.backgroundColor = "#5F9EA0"
         return "daylight";
         break;
+
+      case 5:
+        cPrice.style.backgroundColor = "#5F9EA0"
+        return "flight";
+        break;
     };
   },
 
@@ -188,8 +196,10 @@ Game.prototype = {
     game.playerHand.push(playerCard);
     game.playerHand.push(computerCard);
     if(game.computerHand.length !== 0){
-   this.displayWeatherInfo(game.playerHand, "player");
-   this.displayWeatherInfo(game.computerHand, "computer");   
+     this.displayWeatherInfo(game.playerHand, "player");
+     this.displayWeatherInfo(game.computerHand, "computer");  
+     this.displayFlightInfo(game.playerHand, "player");
+     this.displayFlightInfo(game.computerHand, "computer");  
     }
     game.whosTurn = "player"
     console.log("player wins");
@@ -239,7 +249,7 @@ Game.prototype = {
         }
         break;
         case "flight": 
-        if (parseFloat(this.playerHand[0].price) > parseFloat(this.computerHand[0].price)){
+        if (parseFloat(this.playerHand[0].price) < parseFloat(this.computerHand[0].price)){
           return Game.prototype.playWins()
         }else{
           return Game.prototype.compWins()
@@ -258,15 +268,6 @@ Game.prototype = {
          return "Play On";
        }
      },
-
-  playerWon: function(){
-
-  },
-
-  computerWon: function(){
-
-  }
-
 }
 
 

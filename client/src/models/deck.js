@@ -30,8 +30,6 @@ Deck.prototype = {
     };
   },
 
-  
-
   shuffleCards: function(){
     shuffle(this.cards)
   }

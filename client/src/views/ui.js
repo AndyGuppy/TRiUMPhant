@@ -60,65 +60,60 @@ UI.prototype = {
     UI.prototype.divClick('play-flight',"flight")
   },
 
-
   playButtonClick: function(){
     var nextButton = document.getElementById('play-button');
     var ccard = document.querySelector(".ccard");
     var pcard = document.querySelector(".pcard");
-    
     var winner = "";
     if (nextButton.innerText !== "New Game"){
       switch (gamecheck = game.checkGameWon()) {
 
         case "Play On" :
-        gamecheck = game.checkGameWon()
-        if(gamecheck === "Play On"){  //game has not been won
-          if (nextButton.innerText === "Next"){ //button says next
-            if (game.whosTurn === "computer"){
-            ccard.style.visibility = "visible";
-            pcard.style.visibility = "hidden";
-            winner = "PLAYER : " + game.playerHand.length + " vs " + game.computerHand.length + " : COMPUTER";
-            nextButton.innerText = "Play" 
-            UI.prototype.startButtonClick();
-            game.selected = "";
-            UI.prototype.resetCompColour();
-          }else{
-            ccard.style.visibility = "hidden";
-            pcard.style.visibility = "visible";
-            winner = "PLAYER : " + game.playerHand.length + " vs " + game.computerHand.length + " : COMPUTER";
-            nextButton.innerText = "Play" 
-            UI.prototype.startButtonClick();
-            game.selected = "";
-            UI.prototype.resetCompColour();
-          }
-          } 
-          else 
-          { //button says play
-            if (game.whosTurn === "player"){
-
-            winner = game.calculateWinner(game.selected)
-            if(game.selected) {
-              ccard.style.visibility = 'visible'; //makes ccard visible
+          gamecheck = game.checkGameWon()
+          if(gamecheck === "Play On"){  //game has not been won
+            if (nextButton.innerText === "Next"){ //button says next
+              if (game.whosTurn === "computer"){
+                ccard.style.visibility = "visible";
+                pcard.style.visibility = "hidden";
+                winner = "PLAYER : " + game.playerHand.length + " vs " + game.computerHand.length + " : COMPUTER";
+                nextButton.innerText = "Play" 
+                UI.prototype.startButtonClick();
+                game.selected = "";
+                UI.prototype.resetCompColour();
+              }
+              else
+              {
+                ccard.style.visibility = "hidden";
+                pcard.style.visibility = "visible";
+                winner = "PLAYER : " + game.playerHand.length + " vs " + game.computerHand.length + " : COMPUTER";
+                nextButton.innerText = "Play" 
+                UI.prototype.startButtonClick();
+                game.selected = "";
+                UI.prototype.resetCompColour();
+              }
+            } 
+            else 
+            { //button says play
+              if (game.whosTurn === "player"){
+                winner = game.calculateWinner(game.selected)
+                if(game.selected) {
+                  ccard.style.visibility = 'visible'; //makes ccard visible
+                }
+                game.selected = "";
+                nextButton.innerText = "Next" //changes button to next
+              }
+              else 
+              {
+                var someNumber = parseInt(game.choiceNumber());
+                game.selected = game.computerChoice(someNumber);
+                winner = game.calculateWinner(game.selected);
+                game.selected = "";
+                ccard.style.visibility = 'visible'; //makes ccard visible
+                pcard.style.visibility = "visible";
+                nextButton.innerText = "Next" //changes button to next
+              };
             }
-            game.selected = "";
-            nextButton.innerText = "Next" //changes button to next
-
-            
-            }else {
-            console.log('am i here?', parseInt(game.choiceNumber()))
-            var someNumber = parseInt(game.choiceNumber());
-            game.selected = game.computerChoice(someNumber);
-            console.log('what about here?', game)
-            winner = game.calculateWinner(game.selected);
-            game.selected = "";
-            ccard.style.visibility = 'visible'; //makes ccard visible
-            pcard.style.visibility = "visible";
-
-            nextButton.innerText = "Next" //changes button to next
-            
-            };
           }
-        }
         break;
 
         case "Computer Has Won The Game!!" :
@@ -135,8 +130,10 @@ UI.prototype = {
           msg.innerText = winner 
         break;
       }
-    } else {
-         location.href = "http://localhost:3000/";
+    } 
+    else 
+    {
+      location.href = "http://localhost:3000/";
     }
     
     var msg = document.getElementById('text');
@@ -149,7 +146,7 @@ UI.prototype = {
     document.getElementById('comp-wind').style.backgroundColor = 'transparent';
     document.getElementById('comp-humidity').style.backgroundColor = 'transparent';
     document.getElementById('comp-daylight').style.backgroundColor = 'transparent';
-    
+    document.getElementById('comp-flight').style.backgroundColor = 'transparent';
   },
 
   resetColour: function(){
