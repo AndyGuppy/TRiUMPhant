@@ -114,6 +114,8 @@ UI.prototype = {
             winner = game.calculateWinner(game.selected);
             game.selected = "";
             ccard.style.visibility = 'visible'; //makes ccard visible
+            pcard.style.visibility = "visible";
+
             nextButton.innerText = "Next" //changes button to next
             
             };
