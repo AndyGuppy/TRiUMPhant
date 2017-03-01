@@ -33,39 +33,31 @@ var UI = function() {
 
 UI.prototype = {
 
-  tempClick: function() {
-    var pTemp = document.getElementById('play-temp');
+  divClick: function(divId,selected){
+    var divId = document.getElementById(divId);
     UI.prototype.resetColour();
-    pTemp.style.backgroundColor = "#5F9EA0";
-    game.selected = "temp";
+    divId.style.backgroundColor = "#5F9EA0";
+    game.selected = selected;
+  },
+
+  tempClick: function() {
+    UI.prototype.divClick('play-temp',"temp")
   },
 
   windClick: function() {
-    var pWind = document.getElementById('play-wind');
-    UI.prototype.resetColour();
-    pWind.style.backgroundColor = "#5F9EA0";
-    game.selected = "wind";
+    UI.prototype.divClick('play-wind',"wind")
   },
 
   humidityClick: function() {
-    var pHumidity = document.getElementById('play-humidity');
-    UI.prototype.resetColour();
-    pHumidity.style.backgroundColor = "#5F9EA0";
-    game.selected = "humidity";
+    UI.prototype.divClick('play-humidity',"humidity")
   },
 
   daylightClick: function() {
-    var pDaylight = document.getElementById('play-daylight');
-    UI.prototype.resetColour();
-    pDaylight.style.backgroundColor = "#5F9EA0";
-    game.selected = "daylight";
+    UI.prototype.divClick('play-daylight',"daylight")
   },
 
   flightClick: function() {
-    var pFlight = document.getElementById('play-flight');
-    UI.prototype.resetColour();
-    pFlight.style.backgroundColor = "#5F9EA0";
-    game.selected = "flight";
+    UI.prototype.divClick('play-flight',"flight")
   },
 
 
@@ -99,12 +91,18 @@ UI.prototype = {
             game.selected = "";
             UI.prototype.resetCompColour();
           }
-          } else { //button says play
+          } 
+          else 
+          { //button says play
             if (game.whosTurn === "player"){
+
             winner = game.calculateWinner(game.selected)
+            if(game.selected) {
+              ccard.style.visibility = 'visible'; //makes ccard visible
+            }
             game.selected = "";
-            ccard.style.visibility = 'visible'; //makes ccard visible
             nextButton.innerText = "Next" //changes button to next
+
             
             }else {
             console.log('am i here?', parseInt(game.choiceNumber()))
@@ -163,165 +161,73 @@ UI.prototype = {
   },
 
   clear: function(divID){
-    console.log("hiding - " + divID)
-    var div = document.getElementById(divID);
-    while (div.hasChildNodes()) {
-      div.removeChild(div.firstChild);
+    while (divID.hasChildNodes()) {
+      divID.removeChild(divID.firstChild);
     }
   },
 
-  startButtonClick: function(){
+  imgAppend: function(divId, elem, value) {
+   var divId = document.querySelector(divId);
+   UI.prototype.clear(divId)
+   var elem = document.createElement(elem);
+   elem.id = "image";
+   elem.setAttribute("src", value);
+   elem.setAttribute("width", "80%");
+   elem.setAttribute("alt", "Picture of City");
+   divId.appendChild(elem);
+   },
 
+  elemAppend: function(divId, elem, value) {
+  var divId = document.getElementById(divId);
+  UI.prototype.clear(divId)
+  var elem = document.createElement(elem);
+  elem.innerText = value;
+  divId.appendChild(elem);
+  },
+
+  startButtonClick: function(){
+    var value = "";
     var instr = document.querySelector(".instructions");
     instr.style.display = 'none';
     var main = document.querySelector(".main");
     main.style.display = 'block';
-
     UI.prototype.resetColour();
-
     console.log('button clicked --' + game.selected)
 
-    var playerCardHeader = document.getElementById("player-city-header");
-    while (playerCardHeader.hasChildNodes()) {
-      playerCardHeader.removeChild(playerCardHeader.firstChild);
-    } 
-    var playerCityName = document.createElement('h3');
-    playerCityName.innerText = game.playerHand[0].name;
-    playerCardHeader.appendChild(playerCityName);
-
-    var playerCardImg = document.querySelector(".player-city-image");
-    while (playerCardImg.hasChildNodes()) {
-      playerCardImg.removeChild(playerCardImg.firstChild);
-    }    
-    var photo = document.createElement("IMG");
-    console.log(game.playerHand[0].imagepth)
-    photo.id = "image";
-    photo.setAttribute("src", game.playerHand[0].imagepth);
-    photo.setAttribute("width", "80%");
-    photo.setAttribute("alt", "Picture of City");
-    playerCardImg.appendChild(photo);
-
-    var playerTemp = document.getElementById("play-temp");
-    var playerWind = document.getElementById("play-wind");
-    var playerHumid = document.getElementById("play-humidity");
-    var playerDaylight = document.getElementById("play-daylight");
-    var playerPrice = document.getElementById("play-flight");
-
-    while (playerTemp.hasChildNodes()) {
-      playerTemp.removeChild(playerTemp.firstChild);
-    }
-    while (playerWind.hasChildNodes()) {
-      playerWind.removeChild(playerWind.firstChild);
-    }
-    while (playerHumid.hasChildNodes()) {
-      playerHumid.removeChild(playerHumid.firstChild);
-    }
-    while (playerDaylight.hasChildNodes()) {
-      playerDaylight.removeChild(playerDaylight.firstChild);
-    }
-    while (playerPrice.hasChildNodes()) {
-      playerPrice.removeChild(playerPrice.firstChild);
-    }
-
-    var tempLi = document.createElement('li');
-    var windLi = document.createElement('li');
-    var humidLi = document.createElement('li');
-    var dayLi = document.createElement('li');
-    var PriceLi = document.createElement('li');
-
-    tempLi.innerText = "Temperature: " + game.playerHand[0].temp + " C";
-    windLi.innerText = "Wind: " + game.playerHand[0].wind + " m/s";
-    humidLi.innerText = "Humidity: " + game.playerHand[0].humidity + " %";
-    dayLi.innerText = "Daylight: " + game.playerHand[0].daylight + " hours";
-    //PriceLi.innerText = "Flight from London: £" + game.playerHand[0].price;
-
+    //player display
+    UI.prototype.elemAppend("player-city-header", 'h3', game.playerHand[0].name)
+    UI.prototype.imgAppend(".player-city-image", "IMG", game.playerHand[0].imagepth)
+    UI.prototype.elemAppend("play-temp","li", "Temperature: " + game.playerHand[0].temp + " C")
+    UI.prototype.elemAppend("play-wind", "li", "Wind: " + game.playerHand[0].wind + " m/s")
+    UI.prototype.elemAppend("play-humidity", "li", "Humidity: " + game.playerHand[0].humidity + " %")
+    UI.prototype.elemAppend("play-daylight", "li", "Daylight: " + game.playerHand[0].daylight + " hours")
     var playPrice = game.playerHand[0].price;
          if (typeof playPrice === 'number'){
-       PriceLi.innerText = "Flight from London: £" + playPrice;
+          value = "Flight from London: £" + playPrice;
        }else{
-         PriceLi.innerText = "No Flights Available";
+         value = "No Flights Available";
          game.playerHand[0].price = 0;
        }
-
-    playerTemp.appendChild(tempLi);
-    playerWind.appendChild(windLi);
-    playerHumid.appendChild(humidLi);
-    playerDaylight.appendChild(dayLi);
-    playerPrice.appendChild(PriceLi);
-
+    UI.prototype.elemAppend("play-flight","li", value)
 
     //computer display
-    var computerCardHeader = document.getElementById("computer-city-header");
-    while (computerCardHeader.hasChildNodes()) {
-      computerCardHeader.removeChild(computerCardHeader.firstChild);
-    } 
-    var computerCityName = document.createElement('h3');
-    computerCityName.innerText = game.computerHand[0].name;
-    computerCardHeader.appendChild(computerCityName); 
-
-    var computerCardImg = document.querySelector(".computer-city-image");
-    while (computerCardImg.hasChildNodes()) {
-      computerCardImg.removeChild(computerCardImg.firstChild);
-    }    
-    var photo = document.createElement("IMG");
-    photo.id = "image";
-    photo.setAttribute("src", game.computerHand[0].imagepth);
-    photo.setAttribute("width", "80%");
-    photo.setAttribute("alt", "Picture of City");
-    computerCardImg.appendChild(photo);
-
-    var computerTemp = document.getElementById("comp-temp");
-    var computerWind = document.getElementById("comp-wind");
-    var computerHumid = document.getElementById("comp-humidity");
-    var computerDaylight = document.getElementById("comp-daylight");
-    var computerPrice = document.getElementById("comp-flight");
-
-    while (computerTemp.hasChildNodes()) {
-     computerTemp.removeChild(computerTemp.firstChild);
-   }
-   while (computerWind.hasChildNodes()) {
-     computerWind.removeChild(computerWind.firstChild);
-   }
-   while (computerHumid.hasChildNodes()) {
-     computerHumid.removeChild(computerHumid.firstChild);
-   }
-   while (computerDaylight.hasChildNodes()) {
-     computerDaylight.removeChild(computerDaylight.firstChild);
-   }
-   while (computerPrice.hasChildNodes()) {
-    computerPrice.removeChild(computerPrice.firstChild);
-  }
-
-  var tempLi = document.createElement('li')
-  var windLi = document.createElement('li')
-  var humidLi = document.createElement('li')
-  var dayLi = document.createElement('li')
-  var PriceLi = document.createElement('li');
-
-  tempLi.innerText = "Temperature: " + game.computerHand[0].temp + " C";
-  windLi.innerText = "Wind: " + game.computerHand[0].wind + " m/s";
-  humidLi.innerText = "Humidity: " + game.computerHand[0].humidity + " %";
-  dayLi.innerText = "Daylight: " + game.computerHand[0].daylight + " hours";
-  //PriceLi.innerText = "Flight from London: £" + game.computerHand[0].price;
-
-  var compPrice = game.computerHand[0].price;
-       if (typeof compPrice === 'number'){
-     PriceLi.innerText = "Flight from London: £" + compPrice;
-     }else{
-       PriceLi.innerText = "No Flights Available";
-       game.computerHand[0].price = 0;
-     }
-
-  computerTemp.appendChild(tempLi);
-  computerWind.appendChild(windLi);
-  computerHumid.appendChild(humidLi);
-  computerDaylight.appendChild(dayLi);
-  computerPrice.appendChild(PriceLi);
-
-
-},
-
+    UI.prototype.elemAppend("computer-city-header", 'h3', game.computerHand[0].name)
+    UI.prototype.imgAppend(".computer-city-image", "IMG", game.computerHand[0].imagepth)
+    UI.prototype.elemAppend("comp-temp", "li", "Temperature: " + game.computerHand[0].temp + " C")
+    UI.prototype.elemAppend("comp-wind", "li", "Wind: " + game.computerHand[0].wind + " m/s")
+    UI.prototype.elemAppend("comp-humidity", "li", "Humidity: " + game.computerHand[0].humidity + " %")
+    UI.prototype.elemAppend("comp-daylight", "li", "Daylight: " + game.computerHand[0].daylight + " hours")
+    var compPrice = game.computerHand[0].price;
+      if (typeof compPrice === 'number'){
+        value = "Flight from London: £" + compPrice;
+        }
+      else
+        {
+        value = "No Flights Available";
+         game.computerHand[0].price = 0;
+        }
+    UI.prototype.elemAppend("comp-flight", "li", value)
+  },
 }
-
 
 module.exports = UI;
