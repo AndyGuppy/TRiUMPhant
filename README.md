@@ -22,6 +22,7 @@ Cards are to contain the Following choices
 
 
 Weather info to be obtained from - api.openweathermap.org
+
 Flight info to be obtained from - partners.api.skyscanner.net
 
 
